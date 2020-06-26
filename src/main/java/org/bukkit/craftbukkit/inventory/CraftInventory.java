@@ -3,6 +3,7 @@ package org.bukkit.craftbukkit.inventory;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.server.IHopper;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.InventoryCrafting;

@@ -104,6 +104,8 @@ import net.minecraft.server.WorldMap;
 import net.minecraft.server.WorldNBTStorage;
 import net.minecraft.server.WorldServer;
 import net.minecraft.server.WorldSettings;
+import net.minecraft.server.dedicated.DedicatedPlayerList;
+import net.minecraft.server.dedicated.DedicatedServer;
 import org.apache.commons.lang.Validate;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;

@@ -88,7 +88,7 @@ public class CraftBlockState implements BlockState {
         this.data = data;
     }
 
-    public BlockPosition getPosition() {
+    public BlockPos getPosition() {
         return this.position;
     }
 

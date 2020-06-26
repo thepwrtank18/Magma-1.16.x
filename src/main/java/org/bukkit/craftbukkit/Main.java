@@ -191,7 +191,7 @@ public class Main {
                 }
 
                 System.out.println("Loading libraries, please wait...");
-                net.minecraft.server.Main.main(options);
+//                net.minecraft.server.Main.main(options); - Magma
             } catch (Throwable t) {
                 t.printStackTrace();
             }
