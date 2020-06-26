@@ -389,6 +389,7 @@ project(':forge') {
         installer 'net.minecrell:terminalconsoleappender:1.2.+'
         installer 'net.sf.jopt-simple:jopt-simple:5.0.4'
 
+
         installer 'org.fusesource.jansi:jansi:1.18'
         installer 'jline:jline:2.13'
         installer 'com.googlecode.json-simple:json-simple:1.1.1'
