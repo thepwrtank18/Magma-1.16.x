@@ -1,7 +1,7 @@
 <div align="center">
 <img src="https://i.imgur.com/zTCTCWG.png" alt="Magma logo" align="middle"></img>
 
-![](https://img.shields.io/badge/Minecraft%20Forge-1.15.2%20--%2032.2.0%20--feae488-orange.svg?style=for-the-badge) ![](https://img.shields.io/badge/Status-Unstable-red?style=for-the-badge) [![](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.hexeption.dev%2Fjob%2FMagma%2520Foundation%2Fjob%2FMagma-1.15.x%2Fjob%2F1.15.x%2F&style=for-the-badge)](https://ci.hexeption.dev/job/Magma%20Foundation/job/Magma-1.15.x/job/1.15.x/)
+![](https://img.shields.io/badge/Minecraft%20Forge-1.16.1%20--%2032.0.0%20--9cf9305-orange.svg?style=for-the-badge) ![](https://img.shields.io/badge/Status-Unstable-red?style=for-the-badge) [![](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.hexeption.dev%2Fjob%2FMagma%2520Foundation%2Fjob%2FMagma-1.16.x%2Fjob%2F1.16.x%2F&style=for-the-badge)](https://ci.hexeption.dev/job/Magma%20Foundation/job/Magma-1.16.x/job/1.16.x/)
 </div>
 
 ## About
@@ -14,39 +14,20 @@ We hope to eliminate all issues with craftbukkit forge servers. In the end, we e
 
 ## Progress
 Patches so far
-- [x] CraftBukkit
-- [x] Spigot
+- [ ] CraftBukkit
+- [ ] Spigot
 - [ ] Paper
 
-https://github.com/Hexeption/Magma-1.15-Remaining-Patches
+https://github.com/Hexeption/Magma-1.16-Remaining-Patches
 
 ## Downloads & Install
-1. Download and install [Java 8](https://adoptopenjdk.net/?variant=openjdk8&jvmVariant=hotspot) 
-2. Download the installer from [here](https://ci.hexeption.dev/job/Magma%20Foundation/job/Magma-1.15.x/job/1.15.x/lastSuccessfulBuild/)
-3. Install the server using the Gui and selecting Server or use the terminal 
-`java -jar forge-1.15.2-31.2.0-installer.jar --installServer`
-4. Now launch it using `java -jar forge-1.15.2-31.2.0.jar`
-
-### Building the sources
-* Checkout project
-  * You can use IDE or clone from console:
-  `git clone https://github.com/magmafoundation/Magma-1.15.x.git`
-* Setup
-  * Build with Linux:
-  `bash gradlew setup`
-  * Build with Windows:
-  `gradlew.bat setup `
-* Building
-  * Build with Linux:
-  `bash gradlew setup installerJar`
-  * Build with Windows:
-  `gradlew.bat setup installerJar`
+No Downloads at this time.
 
 ## Contribute to Magma
 
 If you wish to inspect Magma, submit PRs, or otherwise work with Magma itself, you're in the right place!.
 
-Please read the [CONTRIBUTING.md](https://github.com/magmafoundation/Magma-1.15.x/blob/master/CONTRIBUTING.md) to see how to contribute, setup, and run.
+Please read the [CONTRIBUTING.md](https://github.com/magmafoundation/Magma-1.16.x/blob/master/CONTRIBUTING.md) to see how to contribute, setup, and run.
 
 ## Chat
 
