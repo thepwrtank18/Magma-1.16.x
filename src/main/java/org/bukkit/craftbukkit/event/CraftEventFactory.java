@@ -19,7 +19,7 @@ import net.minecraft.server.ChatModifier;
 import net.minecraft.server.Container;
 import net.minecraft.server.ContainerMerchant;
 import net.minecraft.server.DamageSource;
-import net.minecraft.server.Entity;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.EntityAnimal;
 import net.minecraft.server.EntityAreaEffectCloud;
 import net.minecraft.server.EntityDamageSource;

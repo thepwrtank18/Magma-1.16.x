@@ -8,6 +8,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import net.minecraft.entity.MobEntity;
+import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.server.DamageSource;
 import net.minecraft.server.EntityArmorStand;
 import net.minecraft.server.EntityArrow;
@@ -38,6 +40,7 @@ import net.minecraft.server.EnumHand;
 import net.minecraft.server.GenericAttributes;
 import net.minecraft.server.MobEffect;
 import net.minecraft.server.MobEffectList;
+import net.minecraft.util.DamageSource;
 import org.apache.commons.lang.Validate;
 import org.bukkit.FluidCollisionMode;
 import org.bukkit.Location;
@@ -92,10 +95,10 @@ import org.bukkit.util.Vector;
 public class CraftLivingEntity extends CraftEntity implements LivingEntity {
     private CraftEntityEquipment equipment;
 
-    public CraftLivingEntity(final CraftServer server, final EntityLiving entity) {
+    public CraftLivingEntity(final CraftServer server, final net.minecraft.entity.LivingEntity entity) {
         super(server, entity);
 
-        if (entity instanceof EntityInsentient || entity instanceof EntityArmorStand) {
+        if (entity instanceof MobEntity || entity instanceof ArmorStandEntity) {
             equipment = new CraftEntityEquipment(this);
         }
     }
@@ -115,20 +118,20 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
         getHandle().setHealth((float) health);
 
         if (health == 0) {
-            getHandle().die(DamageSource.GENERIC);
+            getHandle().onDeath(DamageSource.GENERIC);
         }
     }
 
     @Override
     public double getAbsorptionAmount() {
-        return getHandle().getAbsorptionHearts();
+        return getHandle().getAbsorptionAmount();
     }
 
     @Override
     public void setAbsorptionAmount(double amount) {
         Preconditions.checkArgument(amount >= 0 && Double.isFinite(amount), "amount < 0 or non-finite");
 
-        getHandle().setAbsorptionHearts((float) amount);
+        getHandle().setAbsorptionAmount((float) amount);
     }
 
     @Override
@@ -372,7 +375,7 @@ public class CraftLivingEntity extends CraftEntity implements LivingEntity {
     @SuppressWarnings("unchecked")
     public <T extends Projectile> T launchProjectile(Class<? extends T> projectile, Vector velocity) {
         net.minecraft.server.World world = ((CraftWorld) getWorld()).getHandle();
-        net.minecraft.server.Entity launch = null;
+        net.minecraft.entity.Entity launch = null;
 
         if (Snowball.class.isAssignableFrom(projectile)) {
             launch = new EntitySnowball(world, getHandle());

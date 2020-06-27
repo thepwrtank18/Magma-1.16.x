@@ -16,7 +16,7 @@ import net.minecraft.server.ChatComponentText;
 import net.minecraft.server.Container;
 import net.minecraft.server.Containers;
 import net.minecraft.server.CraftingManager;
-import net.minecraft.server.Entity;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.EntityTypes;

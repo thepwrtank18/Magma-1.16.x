@@ -1,8 +1,8 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.server.BlockPosition;
-import net.minecraft.server.EntityFishingHook;
-import net.minecraft.server.MathHelper;
+import net.minecraft.entity.projectile.FishingBobberEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import org.apache.commons.lang.Validate;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
@@ -11,13 +11,13 @@ import org.bukkit.entity.FishHook;
 public class CraftFishHook extends CraftProjectile implements FishHook {
     private double biteChance = -1;
 
-    public CraftFishHook(CraftServer server, EntityFishingHook entity) {
+    public CraftFishHook(CraftServer server, FishingBobberEntity entity) {
         super(server, entity);
     }
 
     @Override
-    public EntityFishingHook getHandle() {
-        return (EntityFishingHook) entity;
+    public FishingBobberEntity getHandle() {
+        return (FishingBobberEntity) entity;
     }
 
     @Override
@@ -32,10 +32,10 @@ public class CraftFishHook extends CraftProjectile implements FishHook {
 
     @Override
     public double getBiteChance() {
-        EntityFishingHook hook = getHandle();
+        FishingBobberEntity hook = getHandle();
 
         if (this.biteChance == -1) {
-            if (hook.world.isRainingAt(new BlockPosition(MathHelper.floor(hook.locX()), MathHelper.floor(hook.locY()) + 1, MathHelper.floor(hook.locZ())))) {
+            if (hook.world.isRainingAt(new BlockPos(MathHelper.floor(hook.getPosX()), MathHelper.floor(hook.getPosY()) + 1, MathHelper.floor(hook.getPosZ())))) {
                 return 1 / 300.0;
             }
             return 1 / 500.0;

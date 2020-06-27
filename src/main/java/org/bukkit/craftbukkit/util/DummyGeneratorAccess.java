@@ -11,7 +11,7 @@ import net.minecraft.server.BlockPosition;
 import net.minecraft.server.ChunkStatus;
 import net.minecraft.server.DifficultyDamageScaler;
 import net.minecraft.server.DimensionManager;
-import net.minecraft.server.Entity;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.Fluid;
 import net.minecraft.server.FluidType;

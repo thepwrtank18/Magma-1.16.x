@@ -115,11 +115,11 @@ public class CraftChunk implements Chunk {
         for (int i = 0; i < 16; i++) {
 
             for (Object obj : chunk.entitySlices[i].toArray()) {
-                if (!(obj instanceof net.minecraft.server.Entity)) {
+                if (!(obj instanceof net.minecraft.entity.Entity)) {
                     continue;
                 }
 
-                entities[index++] = ((net.minecraft.server.Entity) obj).getBukkitEntity();
+                entities[index++] = ((net.minecraft.entity.Entity) obj).getBukkitEntity();
             }
         }
 

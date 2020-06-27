@@ -1,7 +1,7 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.server.EntityHanging;
-import net.minecraft.server.EnumDirection;
+import net.minecraft.entity.item.HangingEntity;
+import net.minecraft.util.Direction;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.block.CraftBlock;
@@ -9,7 +9,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Hanging;
 
 public class CraftHanging extends CraftEntity implements Hanging {
-    public CraftHanging(CraftServer server, EntityHanging entity) {
+    public CraftHanging(CraftServer server, HangingEntity entity) {
         super(server, entity);
     }
 
@@ -25,26 +25,26 @@ public class CraftHanging extends CraftEntity implements Hanging {
 
     @Override
     public boolean setFacingDirection(BlockFace face, boolean force) {
-        EntityHanging hanging = getHandle();
-        EnumDirection dir = hanging.getDirection();
+        HangingEntity hanging = getHandle();
+        Direction dir = hanging.getHorizontalFacing();
         switch (face) {
             case SOUTH:
             default:
-                getHandle().setDirection(EnumDirection.SOUTH);
+                getHandle().updateFacingWithBoundingBox(Direction.SOUTH);
                 break;
             case WEST:
-                getHandle().setDirection(EnumDirection.WEST);
+                getHandle().updateFacingWithBoundingBox(Direction.WEST);
                 break;
             case NORTH:
-                getHandle().setDirection(EnumDirection.NORTH);
+                getHandle().updateFacingWithBoundingBox(Direction.NORTH);
                 break;
             case EAST:
-                getHandle().setDirection(EnumDirection.EAST);
+                getHandle().updateFacingWithBoundingBox(Direction.EAST);
                 break;
         }
-        if (!force && !hanging.survives()) {
+        if (!force && !hanging.onValidSurface()) {
             // Revert since it doesn't fit
-            hanging.setDirection(dir);
+            hanging.updateFacingWithBoundingBox(dir);
             return false;
         }
         return true;
@@ -52,14 +52,14 @@ public class CraftHanging extends CraftEntity implements Hanging {
 
     @Override
     public BlockFace getFacing() {
-        EnumDirection direction = this.getHandle().getDirection();
+        Direction direction = this.getHandle().getHorizontalFacing();
         if (direction == null) return BlockFace.SELF;
         return CraftBlock.notchToBlockFace(direction);
     }
 
     @Override
-    public EntityHanging getHandle() {
-        return (EntityHanging) entity;
+    public HangingEntity getHandle() {
+        return (HangingEntity) entity;
     }
 
     @Override

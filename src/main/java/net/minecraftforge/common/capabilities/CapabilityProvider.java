@@ -34,7 +34,7 @@ public abstract class CapabilityProvider<B extends CapabilityProvider<B>> implem
 {
     private final @Nonnull Class<B> baseClass;
     private @Nullable CapabilityDispatcher capabilities;
-    private boolean valid = true;
+    public boolean valid = true; // private->public CraftBukkit
 
     protected CapabilityProvider(Class<B> baseClass)
     {

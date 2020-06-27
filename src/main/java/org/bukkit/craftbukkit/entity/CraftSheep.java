@@ -1,6 +1,6 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.server.EntitySheep;
+import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.server.EnumColor;
 import org.bukkit.DyeColor;
 import org.bukkit.craftbukkit.CraftServer;
@@ -8,7 +8,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Sheep;
 
 public class CraftSheep extends CraftAnimals implements Sheep {
-    public CraftSheep(CraftServer server, EntitySheep entity) {
+    public CraftSheep(CraftServer server, SheepEntity entity) {
         super(server, entity);
     }
 
@@ -24,7 +24,7 @@ public class CraftSheep extends CraftAnimals implements Sheep {
 
     @Override
     public boolean isSheared() {
-        return getHandle().isSheared();
+        return getHandle().getSheared();
     }
 
     @Override
@@ -33,8 +33,8 @@ public class CraftSheep extends CraftAnimals implements Sheep {
     }
 
     @Override
-    public EntitySheep getHandle() {
-        return (EntitySheep) entity;
+    public SheepEntity getHandle() {
+        return (SheepEntity) entity;
     }
 
     @Override
