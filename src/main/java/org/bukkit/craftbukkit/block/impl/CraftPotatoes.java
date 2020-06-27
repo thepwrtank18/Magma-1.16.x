@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.PotatoBlock;
+
 public final class CraftPotatoes extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Ageable {
 
     public CraftPotatoes() {
         super();
     }
 
-    public CraftPotatoes(net.minecraft.server.IBlockData state) {
+    public CraftPotatoes(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftAgeable
 
-    private static final net.minecraft.server.BlockStateInteger AGE = getInteger(net.minecraft.server.BlockPotatoes.class, "age");
+    private static final net.minecraft.state.IntegerProperty AGE = getInteger(PotatoBlock.class, "age");
 
     @Override
     public int getAge() {

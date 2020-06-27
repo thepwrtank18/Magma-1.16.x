@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.JigsawBlock;
+
 public final class CraftJigsaw extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.Jigsaw {
 
     public CraftJigsaw() {
         super();
     }
 
-    public CraftJigsaw(net.minecraft.server.IBlockData state) {
+    public CraftJigsaw(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.type.CraftJigsaw
 
-    private static final net.minecraft.server.BlockStateEnum<?> ORIENTATION = getEnum(net.minecraft.server.BlockJigsaw.class, "orientation");
+    private static final net.minecraft.state.EnumProperty<?> ORIENTATION = getEnum(JigsawBlock.class, "orientation");
 
     @Override
     public Orientation getOrientation() {

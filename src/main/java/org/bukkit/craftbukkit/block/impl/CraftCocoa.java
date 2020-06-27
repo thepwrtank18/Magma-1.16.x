@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.CocoaBlock;
+
 public final class CraftCocoa extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.Cocoa, org.bukkit.block.data.Ageable, org.bukkit.block.data.Directional {
 
     public CraftCocoa() {
         super();
     }
 
-    public CraftCocoa(net.minecraft.server.IBlockData state) {
+    public CraftCocoa(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftAgeable
 
-    private static final net.minecraft.server.BlockStateInteger AGE = getInteger(net.minecraft.server.BlockCocoa.class, "age");
+    private static final net.minecraft.state.IntegerProperty AGE = getInteger(CocoaBlock.class, "age");
 
     @Override
     public int getAge() {
@@ -34,7 +36,7 @@ public final class CraftCocoa extends org.bukkit.craftbukkit.block.data.CraftBlo
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockCocoa.class, "facing");
+    private static final net.minecraft.state.EnumProperty<?> FACING = getEnum(CocoaBlock.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {

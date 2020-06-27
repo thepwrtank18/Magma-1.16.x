@@ -1,11 +1,12 @@
 package org.bukkit.craftbukkit.block.data.type;
 
+import net.minecraft.state.IntegerProperty;
 import org.bukkit.block.data.type.RespawnAnchor;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public abstract class CraftRespawnAnchor extends CraftBlockData implements RespawnAnchor {
 
-    private static final net.minecraft.server.BlockStateInteger CHARGES = getInteger("charges");
+    private static final IntegerProperty CHARGES = getInteger("charges");
 
     @Override
     public int getCharges() {

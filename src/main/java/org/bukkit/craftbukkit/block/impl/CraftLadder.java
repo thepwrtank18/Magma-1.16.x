@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.LadderBlock;
+
 public final class CraftLadder extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.Ladder, org.bukkit.block.data.Directional, org.bukkit.block.data.Waterlogged {
 
     public CraftLadder() {
         super();
     }
 
-    public CraftLadder(net.minecraft.server.IBlockData state) {
+    public CraftLadder(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockLadder.class, "facing");
+    private static final net.minecraft.state.EnumProperty<?> FACING = getEnum(LadderBlock.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {
@@ -34,7 +36,7 @@ public final class CraftLadder extends org.bukkit.craftbukkit.block.data.CraftBl
 
     // org.bukkit.craftbukkit.block.data.CraftWaterlogged
 
-    private static final net.minecraft.server.BlockStateBoolean WATERLOGGED = getBoolean(net.minecraft.server.BlockLadder.class, "waterlogged");
+    private static final net.minecraft.state.BooleanProperty WATERLOGGED = getBoolean(LadderBlock.class, "waterlogged");
 
     @Override
     public boolean isWaterlogged() {

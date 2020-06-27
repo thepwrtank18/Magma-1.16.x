@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.WeightedPressurePlateBlock;
+
 public final class CraftPressurePlateWeighted extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.AnaloguePowerable {
 
     public CraftPressurePlateWeighted() {
         super();
     }
 
-    public CraftPressurePlateWeighted(net.minecraft.server.IBlockData state) {
+    public CraftPressurePlateWeighted(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftAnaloguePowerable
 
-    private static final net.minecraft.server.BlockStateInteger POWER = getInteger(net.minecraft.server.BlockPressurePlateWeighted.class, "power");
+    private static final net.minecraft.state.IntegerProperty POWER = getInteger(WeightedPressurePlateBlock.class, "power");
 
     @Override
     public int getPower() {

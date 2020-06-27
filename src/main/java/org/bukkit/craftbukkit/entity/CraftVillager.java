@@ -5,7 +5,7 @@ import java.util.Locale;
 import net.minecraft.server.BlockBed;
 import net.minecraft.server.BlockPosition;
 import net.minecraft.server.EntityVillager;
-import net.minecraft.server.IBlockData;
+import net.minecraft.block.BlockState;
 import net.minecraft.server.IRegistry;
 import net.minecraft.server.VillagerProfession;
 import org.apache.commons.lang.Validate;

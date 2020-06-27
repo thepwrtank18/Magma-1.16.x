@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.RotatedPillarBlock;
+
 public final class CraftRotatable extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Orientable {
 
     public CraftRotatable() {
         super();
     }
 
-    public CraftRotatable(net.minecraft.server.IBlockData state) {
+    public CraftRotatable(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftOrientable
 
-    private static final net.minecraft.server.BlockStateEnum<?> AXIS = getEnum(net.minecraft.server.BlockRotatable.class, "axis");
+    private static final net.minecraft.state.EnumProperty<?> AXIS = getEnum(RotatedPillarBlock.class, "axis");
 
     @Override
     public org.bukkit.Axis getAxis() {

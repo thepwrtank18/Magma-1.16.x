@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.SnowBlock;
+
 public final class CraftSnow extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.Snow {
 
     public CraftSnow() {
         super();
     }
 
-    public CraftSnow(net.minecraft.server.IBlockData state) {
+    public CraftSnow(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.type.CraftSnow
 
-    private static final net.minecraft.server.BlockStateInteger LAYERS = getInteger(net.minecraft.server.BlockSnow.class, "layers");
+    private static final net.minecraft.state.IntegerProperty LAYERS = getInteger(SnowBlock.class, "layers");
 
     @Override
     public int getLayers() {

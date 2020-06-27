@@ -21,7 +21,7 @@ import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.EntityTypes;
 import net.minecraft.server.EnumMainHand;
-import net.minecraft.server.IBlockData;
+import net.minecraft.block.BlockState;
 import net.minecraft.server.IChatBaseComponent;
 import net.minecraft.server.IMerchant;
 import net.minecraft.server.IRecipe;

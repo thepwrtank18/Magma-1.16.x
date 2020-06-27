@@ -1,17 +1,17 @@
 package org.bukkit.craftbukkit.block;
 
-import net.minecraft.server.TileEntityLightDetector;
+import net.minecraft.tileentity.DaylightDetectorTileEntity;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.DaylightDetector;
 
-public class CraftDaylightDetector extends CraftBlockEntityState<TileEntityLightDetector> implements DaylightDetector {
+public class CraftDaylightDetector extends CraftBlockEntityState<DaylightDetectorTileEntity> implements DaylightDetector {
 
     public CraftDaylightDetector(final Block block) {
-        super(block, TileEntityLightDetector.class);
+        super(block, DaylightDetectorTileEntity.class);
     }
 
-    public CraftDaylightDetector(final Material material, final TileEntityLightDetector te) {
+    public CraftDaylightDetector(final Material material, final DaylightDetectorTileEntity te) {
         super(material, te);
     }
 }

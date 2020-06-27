@@ -1471,7 +1471,7 @@ public class CraftWorld implements World {
                 entity = net.minecraft.entity.EntityType.LLAMA_SPIT.create(world);
                 entity.setLocationAndAngles(x, y, z, yaw, pitch);
             } else if (Firework.class.isAssignableFrom(clazz)) {
-                entity = new FireworkRocketEntity(world, x, y, z, net.minecraft.item.ItemStack.EMPTY;
+                entity = new FireworkRocketEntity(world, x, y, z, net.minecraft.item.ItemStack.EMPTY);
             }
         } else if (Minecart.class.isAssignableFrom(clazz)) {
             if (PoweredMinecart.class.isAssignableFrom(clazz)) {

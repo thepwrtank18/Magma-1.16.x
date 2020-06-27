@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.TrapDoorBlock;
+
 public final class CraftTrapdoor extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.TrapDoor, org.bukkit.block.data.Bisected, org.bukkit.block.data.Directional, org.bukkit.block.data.Openable, org.bukkit.block.data.Powerable, org.bukkit.block.data.Waterlogged {
 
     public CraftTrapdoor() {
         super();
     }
 
-    public CraftTrapdoor(net.minecraft.server.IBlockData state) {
+    public CraftTrapdoor(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftBisected
 
-    private static final net.minecraft.server.BlockStateEnum<?> HALF = getEnum(net.minecraft.server.BlockTrapdoor.class, "half");
+    private static final net.minecraft.state.EnumProperty<?> HALF = getEnum(TrapDoorBlock.class, "half");
 
     @Override
     public Half getHalf() {
@@ -29,7 +31,7 @@ public final class CraftTrapdoor extends org.bukkit.craftbukkit.block.data.Craft
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockTrapdoor.class, "facing");
+    private static final net.minecraft.state.EnumProperty<?> FACING = getEnum(TrapDoorBlock.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {
@@ -48,7 +50,7 @@ public final class CraftTrapdoor extends org.bukkit.craftbukkit.block.data.Craft
 
     // org.bukkit.craftbukkit.block.data.CraftOpenable
 
-    private static final net.minecraft.server.BlockStateBoolean OPEN = getBoolean(net.minecraft.server.BlockTrapdoor.class, "open");
+    private static final net.minecraft.state.BooleanProperty OPEN = getBoolean(TrapDoorBlock.class, "open");
 
     @Override
     public boolean isOpen() {
@@ -62,7 +64,7 @@ public final class CraftTrapdoor extends org.bukkit.craftbukkit.block.data.Craft
 
     // org.bukkit.craftbukkit.block.data.CraftPowerable
 
-    private static final net.minecraft.server.BlockStateBoolean POWERED = getBoolean(net.minecraft.server.BlockTrapdoor.class, "powered");
+    private static final net.minecraft.state.BooleanProperty POWERED = getBoolean(TrapDoorBlock.class, "powered");
 
     @Override
     public boolean isPowered() {
@@ -76,7 +78,7 @@ public final class CraftTrapdoor extends org.bukkit.craftbukkit.block.data.Craft
 
     // org.bukkit.craftbukkit.block.data.CraftWaterlogged
 
-    private static final net.minecraft.server.BlockStateBoolean WATERLOGGED = getBoolean(net.minecraft.server.BlockTrapdoor.class, "waterlogged");
+    private static final net.minecraft.state.BooleanProperty WATERLOGGED = getBoolean(TrapDoorBlock.class, "waterlogged");
 
     @Override
     public boolean isWaterlogged() {

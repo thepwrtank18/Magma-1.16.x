@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.DoublePlantBlock;
+
 public final class CraftTallPlant extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Bisected {
 
     public CraftTallPlant() {
         super();
     }
 
-    public CraftTallPlant(net.minecraft.server.IBlockData state) {
+    public CraftTallPlant(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftBisected
 
-    private static final net.minecraft.server.BlockStateEnum<?> HALF = getEnum(net.minecraft.server.BlockTallPlant.class, "half");
+    private static final net.minecraft.state.EnumProperty<?> HALF = getEnum(DoublePlantBlock.class, "half");
 
     @Override
     public Half getHalf() {

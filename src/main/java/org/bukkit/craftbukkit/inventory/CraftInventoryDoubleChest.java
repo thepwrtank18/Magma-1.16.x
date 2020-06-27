@@ -1,5 +1,6 @@
 package org.bukkit.craftbukkit.inventory;
 
+import net.minecraft.block.ChestBlock;
 import net.minecraft.server.BlockChest;
 import net.minecraft.server.ITileInventory;
 import net.minecraft.server.InventoryLargeChest;
@@ -14,7 +15,7 @@ public class CraftInventoryDoubleChest extends CraftInventory implements DoubleC
     private final CraftInventory left;
     private final CraftInventory right;
 
-    public CraftInventoryDoubleChest(BlockChest.DoubleInventory block) {
+    public CraftInventoryDoubleChest(ChestBlock.DoubleInventory block) {
         super(block.inventorylargechest);
         this.tile = block;
         this.left = new CraftInventory(block.inventorylargechest.left);

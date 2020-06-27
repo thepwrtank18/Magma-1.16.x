@@ -3,22 +3,24 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.RedstoneWireBlock;
+
 public final class CraftRedstoneWire extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.RedstoneWire, org.bukkit.block.data.AnaloguePowerable {
 
     public CraftRedstoneWire() {
         super();
     }
 
-    public CraftRedstoneWire(net.minecraft.server.IBlockData state) {
+    public CraftRedstoneWire(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.type.CraftRedstoneWire
 
-    private static final net.minecraft.server.BlockStateEnum<?> NORTH = getEnum(net.minecraft.server.BlockRedstoneWire.class, "north");
-    private static final net.minecraft.server.BlockStateEnum<?> EAST = getEnum(net.minecraft.server.BlockRedstoneWire.class, "east");
-    private static final net.minecraft.server.BlockStateEnum<?> SOUTH = getEnum(net.minecraft.server.BlockRedstoneWire.class, "south");
-    private static final net.minecraft.server.BlockStateEnum<?> WEST = getEnum(net.minecraft.server.BlockRedstoneWire.class, "west");
+    private static final net.minecraft.state.EnumProperty<?> NORTH = getEnum(RedstoneWireBlock.class, "north");
+    private static final net.minecraft.state.EnumProperty<?> EAST = getEnum(RedstoneWireBlock.class, "east");
+    private static final net.minecraft.state.EnumProperty<?> SOUTH = getEnum(RedstoneWireBlock.class, "south");
+    private static final net.minecraft.state.EnumProperty<?> WEST = getEnum(RedstoneWireBlock.class, "west");
 
     @Override
     public Connection getFace(org.bukkit.block.BlockFace face) {
@@ -63,7 +65,7 @@ public final class CraftRedstoneWire extends org.bukkit.craftbukkit.block.data.C
 
     // org.bukkit.craftbukkit.block.data.CraftAnaloguePowerable
 
-    private static final net.minecraft.server.BlockStateInteger POWER = getInteger(net.minecraft.server.BlockRedstoneWire.class, "power");
+    private static final net.minecraft.state.IntegerProperty POWER = getInteger(RedstoneWireBlock.class, "power");
 
     @Override
     public int getPower() {

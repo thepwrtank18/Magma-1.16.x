@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Set;
 import net.minecraft.server.BlockPosition;
 import net.minecraft.server.Fluid;
-import net.minecraft.server.IBlockData;
+import net.minecraft.block.BlockState;
 import net.minecraft.server.World;
 import org.bukkit.block.BlockState;
 import org.bukkit.craftbukkit.block.CraftBlockState;

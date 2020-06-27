@@ -47,7 +47,7 @@ import net.minecraft.server.EnumHand;
 import net.minecraft.server.EnumItemSlot;
 import net.minecraft.server.Explosion;
 import net.minecraft.server.IWorld;
-import net.minecraft.server.IBlockData;
+import net.minecraft.block.BlockState;
 import net.minecraft.server.IChatBaseComponent;
 import net.minecraft.server.IInventory;
 import net.minecraft.server.ItemActionContext;

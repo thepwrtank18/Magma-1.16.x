@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.FlowingFluidBlock;
+
 public final class CraftFluids extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Levelled {
 
     public CraftFluids() {
         super();
     }
 
-    public CraftFluids(net.minecraft.server.IBlockData state) {
+    public CraftFluids(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftLevelled
 
-    private static final net.minecraft.server.BlockStateInteger LEVEL = getInteger(net.minecraft.server.BlockFluids.class, "level");
+    private static final net.minecraft.state.IntegerProperty LEVEL = getInteger(FlowingFluidBlock.class, "level");
 
     @Override
     public int getLevel() {

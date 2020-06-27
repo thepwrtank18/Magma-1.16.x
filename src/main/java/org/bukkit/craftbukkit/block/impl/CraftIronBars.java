@@ -3,25 +3,27 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.PaneBlock;
+
 public final class CraftIronBars extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.Fence, org.bukkit.block.data.MultipleFacing, org.bukkit.block.data.Waterlogged {
 
     public CraftIronBars() {
         super();
     }
 
-    public CraftIronBars(net.minecraft.server.IBlockData state) {
+    public CraftIronBars(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftMultipleFacing
 
-    private static final net.minecraft.server.BlockStateBoolean[] FACES = new net.minecraft.server.BlockStateBoolean[]{
-        getBoolean(net.minecraft.server.BlockIronBars.class, "north", true), getBoolean(net.minecraft.server.BlockIronBars.class, "east", true), getBoolean(net.minecraft.server.BlockIronBars.class, "south", true), getBoolean(net.minecraft.server.BlockIronBars.class, "west", true), getBoolean(net.minecraft.server.BlockIronBars.class, "up", true), getBoolean(net.minecraft.server.BlockIronBars.class, "down", true)
+    private static final net.minecraft.state.BooleanProperty[] FACES = new net.minecraft.state.BooleanProperty[]{
+        getBoolean(PaneBlock.class, "north", true), getBoolean(PaneBlock.class, "east", true), getBoolean(PaneBlock.class, "south", true), getBoolean(PaneBlock.class, "west", true), getBoolean(PaneBlock.class, "up", true), getBoolean(PaneBlock.class, "down", true)
     };
 
     @Override
     public boolean hasFace(org.bukkit.block.BlockFace face) {
-        net.minecraft.server.BlockStateBoolean state = FACES[face.ordinal()];
+        net.minecraft.state.BooleanProperty state = FACES[face.ordinal()];
         if (state == null) {
             throw new IllegalArgumentException("Non-allowed face " + face + ". Check MultipleFacing.getAllowedFaces.");
         }
@@ -30,7 +32,7 @@ public final class CraftIronBars extends org.bukkit.craftbukkit.block.data.Craft
 
     @Override
     public void setFace(org.bukkit.block.BlockFace face, boolean has) {
-        net.minecraft.server.BlockStateBoolean state = FACES[face.ordinal()];
+        net.minecraft.state.BooleanProperty state = FACES[face.ordinal()];
         if (state == null) {
             throw new IllegalArgumentException("Non-allowed face " + face + ". Check MultipleFacing.getAllowedFaces.");
         }
@@ -65,7 +67,7 @@ public final class CraftIronBars extends org.bukkit.craftbukkit.block.data.Craft
 
     // org.bukkit.craftbukkit.block.data.CraftWaterlogged
 
-    private static final net.minecraft.server.BlockStateBoolean WATERLOGGED = getBoolean(net.minecraft.server.BlockIronBars.class, "waterlogged");
+    private static final net.minecraft.state.BooleanProperty WATERLOGGED = getBoolean(PaneBlock.class, "waterlogged");
 
     @Override
     public boolean isWaterlogged() {

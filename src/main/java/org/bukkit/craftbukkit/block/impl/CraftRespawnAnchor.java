@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.RespawnAnchorBlock;
+
 public final class CraftRespawnAnchor extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.RespawnAnchor {
 
     public CraftRespawnAnchor() {
         super();
     }
 
-    public CraftRespawnAnchor(net.minecraft.server.IBlockData state) {
+    public CraftRespawnAnchor(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.type.CraftRespawnAnchor
 
-    private static final net.minecraft.server.BlockStateInteger CHARGES = getInteger(net.minecraft.server.BlockRespawnAnchor.class, "charges");
+    private static final net.minecraft.state.IntegerProperty CHARGES = getInteger(RespawnAnchorBlock.class, "charges");
 
     @Override
     public int getCharges() {

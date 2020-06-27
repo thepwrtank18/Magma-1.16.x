@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.TwistingVinesBlock;
+
 public final class CraftTwistingVines extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Ageable {
 
     public CraftTwistingVines() {
         super();
     }
 
-    public CraftTwistingVines(net.minecraft.server.IBlockData state) {
+    public CraftTwistingVines(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftAgeable
 
-    private static final net.minecraft.server.BlockStateInteger AGE = getInteger(net.minecraft.server.BlockTwistingVines.class, "age");
+    private static final net.minecraft.state.IntegerProperty AGE = getInteger(TwistingVinesBlock.class, "age");
 
     @Override
     public int getAge() {

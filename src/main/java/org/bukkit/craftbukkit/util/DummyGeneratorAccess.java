@@ -17,7 +17,7 @@ import net.minecraft.server.Fluid;
 import net.minecraft.server.FluidType;
 import net.minecraft.server.GeneratorAccess;
 import net.minecraft.server.HeightMap;
-import net.minecraft.server.IBlockData;
+import net.minecraft.block.BlockState;
 import net.minecraft.server.IChunkAccess;
 import net.minecraft.server.IChunkProvider;
 import net.minecraft.server.LightEngine;

@@ -1,16 +1,16 @@
 package org.bukkit.craftbukkit.block;
 
-import net.minecraft.server.TileEntityFurnaceFurnace;
+import net.minecraft.tileentity.FurnaceTileEntity;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 public class CraftFurnaceFurnace extends CraftFurnace {
 
     public CraftFurnaceFurnace(Block block) {
-        super(block, TileEntityFurnaceFurnace.class);
+        super(block, FurnaceTileEntity.class);
     }
 
-    public CraftFurnaceFurnace(Material material, TileEntityFurnaceFurnace te) {
+    public CraftFurnaceFurnace(Material material, FurnaceTileEntity te) {
         super(material, te);
     }
 }

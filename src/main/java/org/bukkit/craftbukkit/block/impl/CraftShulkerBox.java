@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.ShulkerBoxBlock;
+
 public final class CraftShulkerBox extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Directional {
 
     public CraftShulkerBox() {
         super();
     }
 
-    public CraftShulkerBox(net.minecraft.server.IBlockData state) {
+    public CraftShulkerBox(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockShulkerBox.class, "facing");
+    private static final net.minecraft.state.EnumProperty<?> FACING = getEnum(ShulkerBoxBlock.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {

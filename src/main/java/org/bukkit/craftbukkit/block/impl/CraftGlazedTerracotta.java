@@ -3,19 +3,21 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.GlazedTerracottaBlock;
+
 public final class CraftGlazedTerracotta extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Directional {
 
     public CraftGlazedTerracotta() {
         super();
     }
 
-    public CraftGlazedTerracotta(net.minecraft.server.IBlockData state) {
+    public CraftGlazedTerracotta(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockGlazedTerracotta.class, "facing");
+    private static final net.minecraft.state.EnumProperty<?> FACING = getEnum(GlazedTerracottaBlock.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {

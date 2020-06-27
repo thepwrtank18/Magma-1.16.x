@@ -15,7 +15,7 @@ import net.minecraft.server.DataPaletteBlock;
 import net.minecraft.server.EnumSkyBlock;
 import net.minecraft.server.GameProfileSerializer;
 import net.minecraft.server.HeightMap;
-import net.minecraft.server.IBlockData;
+import net.minecraft.block.BlockState;
 import net.minecraft.server.LightEngine;
 import net.minecraft.server.NBTTagCompound;
 import net.minecraft.server.NibbleArray;

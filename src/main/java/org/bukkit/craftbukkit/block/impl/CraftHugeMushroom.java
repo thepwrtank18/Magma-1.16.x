@@ -3,25 +3,28 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
+import net.minecraft.block.HugeMushroomBlock;
+
 public final class CraftHugeMushroom extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.MultipleFacing {
 
     public CraftHugeMushroom() {
         super();
     }
 
-    public CraftHugeMushroom(net.minecraft.server.IBlockData state) {
+    public CraftHugeMushroom(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftMultipleFacing
 
-    private static final net.minecraft.server.BlockStateBoolean[] FACES = new net.minecraft.server.BlockStateBoolean[]{
-        getBoolean(net.minecraft.server.BlockHugeMushroom.class, "north", true), getBoolean(net.minecraft.server.BlockHugeMushroom.class, "east", true), getBoolean(net.minecraft.server.BlockHugeMushroom.class, "south", true), getBoolean(net.minecraft.server.BlockHugeMushroom.class, "west", true), getBoolean(net.minecraft.server.BlockHugeMushroom.class, "up", true), getBoolean(net.minecraft.server.BlockHugeMushroom.class, "down", true)
+    private static final net.minecraft.state.BooleanProperty[] FACES = new net.minecraft.state.BooleanProperty[]{
+        getBoolean(HugeMushroomBlock.class, "north", true), getBoolean(HugeMushroomBlock.class, "east", true), getBoolean(HugeMushroomBlock.class, "south", true), getBoolean(HugeMushroomBlock.class, "west", true), getBoolean(HugeMushroomBlock.class, "up", true), getBoolean(
+        HugeMushroomBlock.class, "down", true)
     };
 
     @Override
     public boolean hasFace(org.bukkit.block.BlockFace face) {
-        net.minecraft.server.BlockStateBoolean state = FACES[face.ordinal()];
+        net.minecraft.state.BooleanProperty state = FACES[face.ordinal()];
         if (state == null) {
             throw new IllegalArgumentException("Non-allowed face " + face + ". Check MultipleFacing.getAllowedFaces.");
         }
@@ -30,7 +33,7 @@ public final class CraftHugeMushroom extends org.bukkit.craftbukkit.block.data.C
 
     @Override
     public void setFace(org.bukkit.block.BlockFace face, boolean has) {
-        net.minecraft.server.BlockStateBoolean state = FACES[face.ordinal()];
+        net.minecraft.state.BooleanProperty state = FACES[face.ordinal()];
         if (state == null) {
             throw new IllegalArgumentException("Non-allowed face " + face + ". Check MultipleFacing.getAllowedFaces.");
         }
