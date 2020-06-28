@@ -52,45 +52,21 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.block.Block;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
+import net.minecraft.command.arguments.EntityArgument;
+import net.minecraft.command.impl.ReloadCommand;
+import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.FilledMapItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.loot.LootTableManager;
+import net.minecraft.nbt.INBT;
+import net.minecraft.nbt.NBTDynamicOps;
 import net.minecraft.potion.Effects;
-import net.minecraft.server.BiomeManager;
-import net.minecraft.server.BlockPosition;
-import net.minecraft.server.Convertable;
-import net.minecraft.server.DataConverterRegistry;
-import net.minecraft.server.DimensionManager;
-import net.minecraft.server.DynamicOpsNBT;
-import net.minecraft.server.Enchantments;
-import net.minecraft.server.EnumDifficulty;
-import net.minecraft.server.EnumGamemode;
-import net.minecraft.server.GameRules;
-import net.minecraft.server.GeneratorSettings;
-import net.minecraft.server.IRegistry;
-import net.minecraft.server.IRegistryCustom;
-import net.minecraft.server.ItemWorldMap;
-import net.minecraft.server.Items;
-import net.minecraft.server.MapIcon;
-import net.minecraft.server.MinecraftKey;
+import net.minecraft.server.IDynamicRegistries;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.MobSpawner;
-import net.minecraft.server.MobSpawnerCat;
-import net.minecraft.server.MobSpawnerPatrol;
-import net.minecraft.server.MobSpawnerPhantom;
-import net.minecraft.server.MobSpawnerTrader;
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.RegistryMaterials;
-import net.minecraft.server.RegistryReadOps;
-import net.minecraft.server.ResourceKey;
 import net.minecraft.server.ServerPropertiesProvider;
-import net.minecraft.server.VillageSiege;
-import net.minecraft.server.WorldDataServer;
-import net.minecraft.server.WorldDimension;
-import net.minecraft.server.WorldMap;
-import net.minecraft.server.WorldNBTStorage;
-import net.minecraft.server.WorldServer;
-import net.minecraft.server.WorldSettings;
 import net.minecraft.server.dedicated.DedicatedPlayerList;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.dedicated.PendingCommand;
@@ -98,10 +74,36 @@ import net.minecraft.server.dedicated.ServerProperties;
 import net.minecraft.server.management.PlayerList;
 import net.minecraft.server.management.UserListEntry;
 import net.minecraft.tags.NetworkTagCollection;
+import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.datafix.DataFixesManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.SimpleRegistry;
+import net.minecraft.util.registry.WorldSettingsImport;
+import net.minecraft.village.VillageSiege;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.Dimension;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.GameRules;
+import net.minecraft.world.GameType;
+import net.minecraft.world.WorldSettings;
+import net.minecraft.world.biome.BiomeManager;
+import net.minecraft.world.gen.settings.DimensionGeneratorSettings;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.server.TicketType;
+import net.minecraft.world.spawner.CatSpawner;
+import net.minecraft.world.spawner.ISpecialSpawner;
+import net.minecraft.world.spawner.PatrolSpawner;
+import net.minecraft.world.spawner.PhantomSpawner;
+import net.minecraft.world.spawner.WanderingTraderSpawner;
+import net.minecraft.world.storage.MapData;
+import net.minecraft.world.storage.MapDecoration;
+import net.minecraft.world.storage.PlayerData;
+import net.minecraft.world.storage.SaveFormat;
+import net.minecraft.world.storage.ServerWorldInfo;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.Validate;
 import org.bukkit.BanList;
 import org.bukkit.Bukkit;
@@ -179,7 +181,6 @@ import org.bukkit.event.player.PlayerChatTabCompleteEvent;
 import org.bukkit.event.server.BroadcastMessageEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.event.server.TabCompleteEvent;
-import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.event.world.WorldUnloadEvent;
 import org.bukkit.generator.ChunkGenerator;
@@ -215,6 +216,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitWorker;
 import org.bukkit.util.StringUtil;
 import org.bukkit.util.permissions.DefaultPermissions;
+import org.magmafoundation.magma.Magma;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.SafeConstructor;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
@@ -275,7 +277,7 @@ public final class CraftServer implements Server {
         Bukkit.setServer(this);
 
         // Register all the Enchantments and PotionTypes now so we can stop new registration immediately after
-        Enchantments.DAMAGE_ALL.getClass();
+        Enchantments.SHARPNESS.getClass();
         org.bukkit.enchantments.Enchantment.stopAcceptingRegistrations();
 
         Potion.setPotionBrewer(new CraftPotionBrewer());
@@ -420,14 +422,14 @@ public final class CraftServer implements Server {
         Commands dispatcher = console.vanillaCommandDispatcher;
 
         // Build a list of all Vanilla commands and create wrappers
-        for (CommandNode<CommandSource> cmd : dispatcher.a().getRoot().getChildren()) {
+        for (CommandNode<CommandSource> cmd : dispatcher.getDispatcher().getRoot().getChildren()) {
             commandMap.register("minecraft", new VanillaCommandWrapper(dispatcher, cmd));
         }
     }
 
     private void syncCommands() {
         // Clear existing commands
-        Commands dispatcher = console.commandManager = new Commands();
+        Commands dispatcher = console.vanillaCommandDispatcher;
 
         // Register all commands, vanilla ones will be using the old dispatcher references
         for (Map.Entry<String, Command> entry : commandMap.getKnownCommands().entrySet()) {
@@ -600,12 +602,13 @@ public final class CraftServer implements Server {
 
     @Override
     public String getWorldType() {
-        return this.getProperties().properties.getProperty("level-type");
+//        return this.getProperties().properties.getProperty("level-type"); // TODO: 28/06/2020 Find properties
+        throw new NotImplementedException("");
     }
 
     @Override
     public boolean getGenerateStructures() {
-        return this.getProperties().generatorSettings.shouldGenerateMapFeatures();
+        return this.getProperties().field_241082_U_.func_236222_c_();
     }
 
     @Override
@@ -924,6 +927,7 @@ public final class CraftServer implements Server {
 
     @Override
     public World createWorld(WorldCreator creator) {
+
         Preconditions.checkState(!console.worlds.isEmpty(), "Cannot create additional worlds on STARTUP");
         Validate.notNull(creator, "Creator may not be null");
 
@@ -944,35 +948,35 @@ public final class CraftServer implements Server {
             generator = getGenerator(name);
         }
 
-        ResourceKey<WorldDimension> actualDimension;
+        RegistryKey<net.minecraft.world.World> actualDimension;
         switch (creator.environment()) {
             case NORMAL:
-                actualDimension = WorldDimension.OVERWORLD;
+                actualDimension = net.minecraft.world.World.field_234918_g_;
                 break;
             case NETHER:
-                actualDimension = WorldDimension.THE_NETHER;
+                actualDimension = net.minecraft.world.World.field_234919_h_;
                 break;
             case THE_END:
-                actualDimension = WorldDimension.THE_END;
+                actualDimension = net.minecraft.world.World.field_234920_i_;
                 break;
             default:
                 throw new IllegalArgumentException("Illegal dimension");
         }
 
-        Convertable.ConversionSession worldSession;
+        SaveFormat.LevelSave worldSession;
         try {
-            worldSession = Convertable.a(getWorldContainer().toPath()).c(name, actualDimension);
+            worldSession = SaveFormat.func_237269_a_(getWorldContainer().toPath()).func_237274_c_(name, actualDimension);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        MinecraftServer.convertWorld(worldSession); // Run conversion now
+        MinecraftServer.func_240777_a_(worldSession); // Run conversion now
 
         boolean hardcore = creator.hardcore();
 
-        IRegistryCustom.Dimension iregistrycustom_dimension = IRegistryCustom.b();
+        IDynamicRegistries.Impl iregistrycustom_dimension = IDynamicRegistries.func_239770_b_();
 
-        RegistryReadOps<NBTBase> registryreadops = RegistryReadOps.a((DynamicOps) DynamicOpsNBT.a, console.dataPackResources.h(), (IRegistryCustom) iregistrycustom_dimension);
-        WorldDataServer worlddata = (WorldDataServer) worldSession.a((DynamicOps) registryreadops, console.datapackconfiguration);
+        WorldSettingsImport<INBT> registryreadops = WorldSettingsImport.func_240876_a_((DynamicOps) NBTDynamicOps.INSTANCE, console.getDataPackRegistries().func_240970_h_(), (IDynamicRegistries) iregistrycustom_dimension);
+        ServerWorldInfo worlddata = (ServerWorldInfo) worldSession.func_237284_a_((DynamicOps) registryreadops, console.datapackconfiguration);
 
         WorldSettings worldSettings;
         // See MinecraftServer.a(String, String, long, WorldType, JsonElement)
@@ -983,59 +987,57 @@ public final class CraftServer implements Server {
             properties.put("generate-structures", Objects.toString(creator.generateStructures()));
             properties.put("level-type", Objects.toString(creator.type().getName()));
 
-            GeneratorSettings generatorsettings = GeneratorSettings.a(properties);
-            worldSettings = new WorldSettings(name, EnumGamemode.getById(getDefaultGameMode().getValue()), hardcore, EnumDifficulty.EASY, false, new GameRules(), console.datapackconfiguration);
-            worlddata = new WorldDataServer(worldSettings, generatorsettings, Lifecycle.stable());
+            DimensionGeneratorSettings generatorsettings = DimensionGeneratorSettings.func_236219_a_(properties);
+            worldSettings = new WorldSettings(name, GameType.getByID(getDefaultGameMode().getValue()), hardcore, Difficulty.EASY, false, new GameRules(), console.);
+            worlddata = new ServerWorldInfo(worldSettings, generatorsettings, Lifecycle.stable());
         }
         worlddata.checkName(name);
-        worlddata.a(console.getServerModName(), console.getModded().isPresent());
+        worlddata.func_230412_a_(console.getServerModName(), console.func_230045_q_().isPresent());
 
         if (console.options.has("forceUpgrade")) {
-            net.minecraft.server.Main.convertWorld(worldSession, DataConverterRegistry.a(), console.options.has("eraseCache"), () -> {
+            net.minecraft.server.Main.func_240761_a_(worldSession, DataFixesManager.getDataFixer(), console.options.has("eraseCache"), () -> {
                 return true;
-            }, worlddata.getGeneratorSettings().e().c().stream().map((entry) -> {
-                return ResourceKey.a(IRegistry.ad, ((ResourceKey) entry.getKey()).a());
+            }, worlddata.func_230418_z_().func_236224_e_().func_239659_c_().stream().map((entry) -> {
+                return RegistryKey.func_240903_a_(Registry.field_239699_ae_, ((RegistryKey) entry.getKey()).func_240901_a_());
             }).collect(ImmutableSet.toImmutableSet()));
         }
 
-        long j = BiomeManager.a(creator.seed());
-        List<MobSpawner> list = ImmutableList.of(new MobSpawnerPhantom(), new MobSpawnerPatrol(), new MobSpawnerCat(), new VillageSiege(), new MobSpawnerTrader(worlddata));
-        RegistryMaterials<WorldDimension> registrymaterials = worlddata.getGeneratorSettings().e();
-        WorldDimension worlddimension = (WorldDimension) registrymaterials.a(actualDimension);
-        DimensionManager dimensionmanager;
-        net.minecraft.server.ChunkGenerator chunkgenerator;
+        long j = BiomeManager.func_235200_a_(creator.seed());
+        List<ISpecialSpawner> list = ImmutableList.of(new PhantomSpawner(), new PatrolSpawner(), new CatSpawner(), new VillageSiege(), new WanderingTraderSpawner(iserverworldinfo));
+        SimpleRegistry<Dimension> simpleregistry = worlddata.func_230418_z_().func_236224_e_();
+        Dimension worlddimension = simpleregistry.func_230516_a_(Dimension.field_236053_b_);
+        DimensionType dimensionmanager;
+        net.minecraft.world.gen.ChunkGenerator chunkgenerator;
 
         if (worlddimension == null) {
-            dimensionmanager = DimensionManager.a();
-            chunkgenerator = GeneratorSettings.a((new Random()).nextLong());
+            dimensionmanager = DimensionType.func_236019_a_();
+            chunkgenerator = DimensionGeneratorSettings.func_236211_a_((new Random()).nextLong());
         } else {
-            dimensionmanager = worlddimension.b();
-            chunkgenerator = worlddimension.c();
+            dimensionmanager = worlddimension.func_236063_b_();
+            chunkgenerator = worlddimension.func_236064_c_();
         }
 
-        ResourceKey<DimensionManager> typeKey = (ResourceKey) console.f.a().c(dimensionmanager).orElseThrow(() -> {
+        RegistryKey<DimensionType> typeKey = (RegistryKey) console.field_240767_f_.func_230520_a_().func_230519_c_(dimensionmanager).orElseThrow(() -> {
             return new IllegalStateException("Unregistered dimension type: " + dimensionmanager);
         });
-        ResourceKey<net.minecraft.server.World> worldKey = ResourceKey.a(IRegistry.ae, new MinecraftKey(name.toLowerCase(java.util.Locale.ENGLISH)));
+        RegistryKey<net.minecraft.world.World> worldKey = RegistryKey.func_240903_a_(Registry.field_239699_ae_, new ResourceLocation(name.toLowerCase(java.util.Locale.ENGLISH)));
 
-        WorldServer internal = (WorldServer) new WorldServer(console, console.executorService, worldSession, worlddata, worldKey, typeKey, dimensionmanager, getServer().worldLoadListenerFactory.create(11),
-                chunkgenerator, worlddata.getGeneratorSettings().isDebugWorld(), j, creator.environment() == Environment.NORMAL ? list : ImmutableList.of(), creator.environment() == Environment.NORMAL, creator.environment(), generator);
+        ServerWorld internal = (ServerWorld) new ServerWorld(console, console.backgroundExecutor, worldSession, worlddata, worldKey, typeKey, dimensionmanager, getServer().chunkStatusListenerFactory.create(11),
+                chunkgenerator, worlddata.func_230418_z_().func_236227_h_(), j, creator.environment() == Environment.NORMAL ? list : ImmutableList.of(), creator.environment() == Environment.NORMAL, creator.environment(), generator);
 
         if (!(worlds.containsKey(name.toLowerCase(java.util.Locale.ENGLISH)))) {
             return null;
         }
 
-        console.initWorld(internal, worlddata, worlddata, worlddata.getGeneratorSettings());
+        console.initWorld(internal, worlddata, worlddata, worlddata.func_230418_z_());
 
-        internal.setSpawnFlags(true, true);
-        console.worldServer.put(internal.getDimensionKey(), internal);
+        internal.setAllowedSpawnTypes(true , true);
+        console.worlds.put(internal.func_234923_W_(), internal);
 
-        pluginManager.callEvent(new WorldInitEvent(internal.getWorld()));
+        getServer().loadSpawn(internal.getChunkProvider().chunkManager.field_219266_t, internal);
 
-        getServer().loadSpawn(internal.getChunkProvider().playerChunkMap.worldLoadListener, internal);
-
-        pluginManager.callEvent(new WorldLoadEvent(internal.getWorld()));
-        return internal.getWorld();
+        pluginManager.callEvent(new WorldLoadEvent(internal.getWorldCB()));
+        return internal.getWorldCB();
     }
 
     @Override
@@ -1051,11 +1053,11 @@ public final class CraftServer implements Server {
 
         ServerWorld handle = ((CraftWorld) world).getHandle();
 
-        if (!(console.worldServer.containsKey(handle.getDimensionKey()))) {
+        if (!(console.worlds.containsKey(handle.func_234923_W_()))) {
             return false;
         }
 
-        if (handle.getDimensionKey() == net.minecraft.server.World.OVERWORLD) {
+        if (handle.func_234923_W_() == net.minecraft.world.World.field_234918_g_) {
             return false;
         }
 
@@ -1081,7 +1083,7 @@ public final class CraftServer implements Server {
         }
 
         worlds.remove(world.getName().toLowerCase(java.util.Locale.ENGLISH));
-        console.worldServer.remove(handle.getDimensionKey());
+        console.worlds.remove(handle.func_234923_W_());
         return true;
     }
 
@@ -1202,7 +1204,7 @@ public final class CraftServer implements Server {
 
     @Override
     public void resetRecipes() {
-        console.reload(); // Not ideal but hard to reload a subset of a resource pack
+        ReloadCommand.reload(console);
     }
 
     @Override
@@ -1320,7 +1322,7 @@ public final class CraftServer implements Server {
     @Override
     @Deprecated
     public CraftMapView getMap(int id) {
-        WorldMap worldmap = console.getWorldServer(net.minecraft.server.World.OVERWORLD).a("map_" + id);
+        MapData worldmap = console.getWorld(net.minecraft.world.World.field_234918_g_).getMapData("map_" + id);
         if (worldmap == null) {
             return null;
         }
@@ -1331,8 +1333,8 @@ public final class CraftServer implements Server {
     public CraftMapView createMap(World world) {
         Validate.notNull(world, "World cannot be null");
 
-        net.minecraft.server.ItemStack stack = new net.minecraft.server.ItemStack(Items.MAP, 1);
-        WorldMap worldmap = ItemWorldMap.getSavedMap(stack, ((CraftWorld) world).getHandle());
+        net.minecraft.item.ItemStack stack = new net.minecraft.item.ItemStack(Items.MAP, 1);
+        MapData worldmap = FilledMapItem.getMapData(stack, ((CraftWorld) world).getHandle());
         return worldmap.mapView;
     }
 
@@ -1347,15 +1349,15 @@ public final class CraftServer implements Server {
         Validate.notNull(structureType, "StructureType cannot be null");
         Validate.notNull(structureType.getMapIcon(), "Cannot create explorer maps for StructureType " + structureType.getName());
 
-        WorldServer worldServer = ((CraftWorld) world).getHandle();
+        ServerWorld worldServer = ((CraftWorld) world).getHandle();
         Location structureLocation = world.locateNearestStructure(location, structureType, radius, findUnexplored);
-        BlockPosition structurePosition = new BlockPosition(structureLocation.getBlockX(), structureLocation.getBlockY(), structureLocation.getBlockZ());
+        BlockPos structurePosition = new BlockPos(structureLocation.getBlockX(), structureLocation.getBlockY(), structureLocation.getBlockZ());
 
         // Create map with trackPlayer = true, unlimitedTracking = true
-        net.minecraft.server.ItemStack stack = ItemWorldMap.createFilledMapView(worldServer, structurePosition.getX(), structurePosition.getZ(), MapView.Scale.NORMAL.getValue(), true, true);
-        ItemWorldMap.applySepiaFilter(worldServer, stack);
+        net.minecraft.item.ItemStack stack = FilledMapItem.setupNewMap(worldServer, structurePosition.getX(), structurePosition.getZ(), MapView.Scale.NORMAL.getValue(), true, true);
+        FilledMapItem.func_219992_b(worldServer, stack);
         // "+" map ID taken from EntityVillager
-        ItemWorldMap.getSavedMap(stack, worldServer).decorateMap(stack, structurePosition, "+", MapIcon.Type.a(structureType.getMapIcon().getValue()));
+        FilledMapItem.getMapData(stack, worldServer).addTargetDecoration(stack, structurePosition, "+", MapDecoration.Type.byIcon(structureType.getMapIcon().getValue()));
 
         return CraftItemStack.asBukkitCopy(stack);
     }
@@ -1517,7 +1519,7 @@ public final class CraftServer implements Server {
 
     @Override
     public GameMode getDefaultGameMode() {
-        return GameMode.getByValue(console.getWorldServer(net.minecraft.server.World.OVERWORLD).worldDataServer.getGameType().getId());
+        return GameMode.getByValue(console.getWorld(net.minecraft.world.World.field_234918_g_).field_241103_E_.getGameType().getID());
     }
 
     @Override
@@ -1525,7 +1527,7 @@ public final class CraftServer implements Server {
         Validate.notNull(mode, "Mode cannot be null");
 
         for (World world : getWorlds()) {
-            ((CraftWorld) world).getHandle().worldDataServer.setGameType(EnumGamemode.getById(mode.getValue()));
+            ((CraftWorld) world).getHandle().field_241103_E_.func_230392_a_(GameType.getByID(mode.getValue()));
         }
     }
 
@@ -1553,7 +1555,7 @@ public final class CraftServer implements Server {
 
     @Override
     public OfflinePlayer[] getOfflinePlayers() {
-        WorldNBTStorage storage = console.worldNBTStorage;
+        PlayerData storage = console.field_240766_e_;
         String[] files = storage.getPlayerDir().list(new DatFileFilter());
         Set<OfflinePlayer> players = new HashSet<OfflinePlayer>();
 

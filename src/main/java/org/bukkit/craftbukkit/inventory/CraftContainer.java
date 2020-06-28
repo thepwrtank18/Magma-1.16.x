@@ -1,34 +1,33 @@
 package org.bukkit.craftbukkit.inventory;
 
-import net.minecraft.server.ChatComponentText;
-import net.minecraft.server.Container;
-import net.minecraft.server.ContainerAnvil;
-import net.minecraft.server.ContainerBeacon;
-import net.minecraft.server.ContainerBlastFurnace;
-import net.minecraft.server.ContainerBrewingStand;
-import net.minecraft.server.ContainerCartography;
-import net.minecraft.server.ContainerChest;
-import net.minecraft.server.ContainerDispenser;
-import net.minecraft.server.ContainerEnchantTable;
-import net.minecraft.server.ContainerFurnaceFurnace;
-import net.minecraft.server.ContainerGrindstone;
-import net.minecraft.server.ContainerHopper;
-import net.minecraft.server.ContainerLectern;
-import net.minecraft.server.ContainerLoom;
-import net.minecraft.server.ContainerMerchant;
-import net.minecraft.server.ContainerProperties;
-import net.minecraft.server.ContainerShulkerBox;
-import net.minecraft.server.ContainerSmithing;
-import net.minecraft.server.ContainerSmoker;
-import net.minecraft.server.ContainerStonecutter;
-import net.minecraft.server.ContainerWorkbench;
-import net.minecraft.server.Containers;
-import net.minecraft.server.EntityHuman;
-import net.minecraft.server.IInventory;
-import net.minecraft.server.ItemStack;
-import net.minecraft.server.PacketPlayOutOpenWindow;
-import net.minecraft.server.PlayerInventory;
-import net.minecraft.server.Slot;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.container.BeaconContainer;
+import net.minecraft.inventory.container.BlastFurnaceContainer;
+import net.minecraft.inventory.container.BrewingStandContainer;
+import net.minecraft.inventory.container.CartographyContainer;
+import net.minecraft.inventory.container.ChestContainer;
+import net.minecraft.inventory.container.Container;
+import net.minecraft.inventory.container.ContainerType;
+import net.minecraft.inventory.container.DispenserContainer;
+import net.minecraft.inventory.container.EnchantmentContainer;
+import net.minecraft.inventory.container.FurnaceContainer;
+import net.minecraft.inventory.container.GrindstoneContainer;
+import net.minecraft.inventory.container.HopperContainer;
+import net.minecraft.inventory.container.LecternContainer;
+import net.minecraft.inventory.container.LoomContainer;
+import net.minecraft.inventory.container.MerchantContainer;
+import net.minecraft.inventory.container.RepairContainer;
+import net.minecraft.inventory.container.ShulkerBoxContainer;
+import net.minecraft.inventory.container.Slot;
+import net.minecraft.inventory.container.SmokerContainer;
+import net.minecraft.inventory.container.StonecutterContainer;
+import net.minecraft.inventory.container.WorkbenchContainer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.network.play.server.SOpenWindowPacket;
+import net.minecraft.util.IntArray;
+import net.minecraft.util.text.StringTextComponent;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.inventory.InventoryType;
@@ -43,7 +42,7 @@ public class CraftContainer extends Container {
     private Container delegate;
     private final int cachedSize;
 
-    public CraftContainer(InventoryView view, EntityHuman player, int id) {
+    public CraftContainer(InventoryView view, PlayerEntity player, int id) {
         super(getNotchInventoryType(view.getTopInventory()), id);
         this.view = view;
         // TODO: Do we need to check that it really is a CraftInventory?
@@ -55,7 +54,7 @@ public class CraftContainer extends Container {
         setupSlots(top, bottom, player);
     }
 
-    public CraftContainer(final Inventory inventory, final EntityHuman player, int id) {
+    public CraftContainer(final Inventory inventory, final PlayerEntity player, int id) {
         this(new InventoryView() {
             @Override
             public Inventory getTopInventory() {
@@ -94,7 +93,7 @@ public class CraftContainer extends Container {
     }
 
     @Override
-    public boolean c(EntityHuman entityhuman) {
+    public boolean getCanCraft(PlayerEntity entityhuman) {
         if (cachedType == view.getType() && cachedSize == getSize() && cachedTitle.equals(view.getTitle())) {
             return true;
         }
@@ -106,22 +105,22 @@ public class CraftContainer extends Container {
         cachedTitle = view.getTitle();
         if (view.getPlayer() instanceof CraftPlayer) {
             CraftPlayer player = (CraftPlayer) view.getPlayer();
-            Containers<?> type = getNotchInventoryType(view.getTopInventory());
+            ContainerType<?> type = getNotchInventoryType(view.getTopInventory());
             IInventory top = ((CraftInventory) view.getTopInventory()).getInventory();
             PlayerInventory bottom = (PlayerInventory) ((CraftInventory) view.getBottomInventory()).getInventory();
-            this.items.clear();
-            this.slots.clear();
+            this.inventoryItemStacks.clear();
+            this.inventorySlots.clear();
             if (typeChanged) {
                 setupSlots(top, bottom, player.getHandle());
             }
             int size = getSize();
-            player.getHandle().playerConnection.sendPacket(new PacketPlayOutOpenWindow(this.windowId, type, new ChatComponentText(cachedTitle)));
+            player.getHandle().connection.sendPacket(new SOpenWindowPacket(this.windowId, type, new StringTextComponent(cachedTitle)));
             player.updateInventory();
         }
         return true;
     }
 
-    public static Containers getNotchInventoryType(Inventory inventory) {
+    public static ContainerType getNotchInventoryType(Inventory inventory) {
         switch (inventory.getType()) {
             case PLAYER:
             case CHEST:
@@ -129,68 +128,68 @@ public class CraftContainer extends Container {
             case BARREL:
                 switch (inventory.getSize()) {
                     case 9:
-                        return Containers.GENERIC_9X1;
+                        return ContainerType.GENERIC_9X1;
                     case 18:
-                        return Containers.GENERIC_9X2;
+                        return ContainerType.GENERIC_9X2;
                     case 27:
-                        return Containers.GENERIC_9X3;
+                        return ContainerType.GENERIC_9X3;
                     case 36:
                     case 41: // PLAYER
-                        return Containers.GENERIC_9X4;
+                        return ContainerType.GENERIC_9X4;
                     case 45:
-                        return Containers.GENERIC_9X5;
+                        return ContainerType.GENERIC_9X5;
                     case 54:
-                        return Containers.GENERIC_9X6;
+                        return ContainerType.GENERIC_9X6;
                     default:
                         throw new IllegalArgumentException("Unsupported custom inventory size " + inventory.getSize());
                 }
             case WORKBENCH:
-                return Containers.CRAFTING;
+                return ContainerType.CRAFTING;
             case FURNACE:
-                return Containers.FURNACE;
+                return ContainerType.FURNACE;
             case DISPENSER:
-                return Containers.GENERIC_3X3;
+                return ContainerType.GENERIC_3X3;
             case ENCHANTING:
-                return Containers.ENCHANTMENT;
+                return ContainerType.ENCHANTMENT;
             case BREWING:
-                return Containers.BREWING_STAND;
+                return ContainerType.BREWING_STAND;
             case BEACON:
-                return Containers.BEACON;
+                return ContainerType.BEACON;
             case ANVIL:
-                return Containers.ANVIL;
+                return ContainerType.ANVIL;
             case SMITHING:
-                return Containers.SMITHING;
+                return ContainerType.field_234650_u_;
             case HOPPER:
-                return Containers.HOPPER;
+                return ContainerType.HOPPER;
             case DROPPER:
-                return Containers.GENERIC_3X3;
+                return ContainerType.GENERIC_3X3;
             case SHULKER_BOX:
-                return Containers.SHULKER_BOX;
+                return ContainerType.SHULKER_BOX;
             case BLAST_FURNACE:
-                return Containers.BLAST_FURNACE;
+                return ContainerType.BLAST_FURNACE;
             case LECTERN:
-                return Containers.LECTERN;
+                return ContainerType.LECTERN;
             case SMOKER:
-                return Containers.SMOKER;
+                return ContainerType.SMOKER;
             case LOOM:
-                return Containers.LOOM;
+                return ContainerType.LOOM;
             case CARTOGRAPHY:
-                return Containers.CARTOGRAPHY_TABLE;
+                return ContainerType.field_226625_v_;
             case GRINDSTONE:
-                return Containers.GRINDSTONE;
+                return ContainerType.GRINDSTONE;
             case STONECUTTER:
-                return Containers.STONECUTTER;
+                return ContainerType.STONECUTTER;
             case CREATIVE:
             case CRAFTING:
             case MERCHANT:
                 throw new IllegalArgumentException("Can't open a " + inventory.getType() + " inventory!");
             default:
                 // TODO: If it reaches the default case, should we throw an error?
-                return Containers.GENERIC_9X3;
+                return ContainerType.GENERIC_9X3;
         }
     }
 
-    private void setupSlots(IInventory top, PlayerInventory bottom, EntityHuman entityhuman) {
+    private void setupSlots(IInventory top, PlayerInventory bottom, PlayerEntity entityhuman) {
         int windowId = -1;
         switch (cachedType) {
             case CREATIVE:
@@ -199,114 +198,114 @@ public class CraftContainer extends Container {
             case CHEST:
             case ENDER_CHEST:
             case BARREL:
-                delegate = new ContainerChest(Containers.GENERIC_9X3, windowId, bottom, top, top.getSize() / 9);
+                delegate = new ChestContainer(ContainerType.GENERIC_9X3, windowId, bottom, top, top.getSizeInventory() / 9);
                 break;
             case DISPENSER:
             case DROPPER:
-                delegate = new ContainerDispenser(windowId, bottom, top);
+                delegate = new DispenserContainer(windowId, bottom, top);
                 break;
             case FURNACE:
-                delegate = new ContainerFurnaceFurnace(windowId, bottom, top, new ContainerProperties(4));
+                delegate = new FurnaceContainer(windowId, bottom, top, new IntArray(4));
                 break;
             case CRAFTING: // TODO: This should be an error?
             case WORKBENCH:
                 setupWorkbench(top, bottom); // SPIGOT-3812 - manually set up slots so we can use the delegated inventory and not the automatically created one
                 break;
             case ENCHANTING:
-                delegate = new ContainerEnchantTable(windowId, bottom);
+                delegate = new EnchantmentContainer(windowId, bottom);
                 break;
             case BREWING:
-                delegate = new ContainerBrewingStand(windowId, bottom, top, new ContainerProperties(2));
+                delegate = new BrewingStandContainer(windowId, bottom, top, new IntArray(2));
                 break;
             case HOPPER:
-                delegate = new ContainerHopper(windowId, bottom, top);
+                delegate = new HopperContainer(windowId, bottom, top);
                 break;
             case ANVIL:
-                delegate = new ContainerAnvil(windowId, bottom);
+                delegate = new RepairContainer(windowId, bottom);
                 break;
             case SMITHING:
-                delegate = new ContainerSmithing(windowId, bottom);
+                delegate = new SmokerContainer(windowId, bottom);
                 break;
             case BEACON:
-                delegate = new ContainerBeacon(windowId, bottom);
+                delegate = new BeaconContainer(windowId, bottom);
                 break;
             case SHULKER_BOX:
-                delegate = new ContainerShulkerBox(windowId, bottom, top);
+                delegate = new ShulkerBoxContainer(windowId, bottom, top);
                 break;
             case BLAST_FURNACE:
-                delegate = new ContainerBlastFurnace(windowId, bottom, top, new ContainerProperties(4));
+                delegate = new BlastFurnaceContainer(windowId, bottom, top, new IntArray(4));
                 break;
             case LECTERN:
-                delegate = new ContainerLectern(windowId, top, new ContainerProperties(1), bottom);
+                delegate = new LecternContainer(windowId, top, new IntArray(1), bottom);
                 break;
             case SMOKER:
-                delegate = new ContainerSmoker(windowId, bottom, top, new ContainerProperties(4));
+                delegate = new SmokerContainer(windowId, bottom, top, new IntArray(4));
                 break;
             case LOOM:
-                delegate = new ContainerLoom(windowId, bottom);
+                delegate = new LoomContainer(windowId, bottom);
                 break;
             case CARTOGRAPHY:
-                delegate = new ContainerCartography(windowId, bottom);
+                delegate = new CartographyContainer(windowId, bottom);
                 break;
             case GRINDSTONE:
-                delegate = new ContainerGrindstone(windowId, bottom);
+                delegate = new GrindstoneContainer(windowId, bottom);
                 break;
             case STONECUTTER:
-                delegate = new ContainerStonecutter(windowId, bottom);
+                delegate = new StonecutterContainer(windowId, bottom);
                 break;
             case MERCHANT:
-                delegate = new ContainerMerchant(windowId, bottom);
+                delegate = new MerchantContainer(windowId, bottom);
                 break;
         }
 
         if (delegate != null) {
-            this.items = delegate.items;
-            this.slots = delegate.slots;
+            this.inventoryItemStacks = delegate.inventoryItemStacks;
+            this.inventorySlots = delegate.inventorySlots;
         }
 
         // SPIGOT-4598 - we should still delegate the shift click handler
         if (cachedType == InventoryType.WORKBENCH) {
-            delegate = new ContainerWorkbench(windowId, bottom);
+            delegate = new WorkbenchContainer(windowId, bottom);
         }
     }
 
     private void setupWorkbench(IInventory top, IInventory bottom) {
-        // This code copied from ContainerWorkbench
-        this.a(new Slot(top, 0, 124, 35));
+        // This code copied from WorkbenchContainer
+        this.addSlot(new Slot(top, 0, 124, 35));
 
         int row;
         int col;
 
         for (row = 0; row < 3; ++row) {
             for (col = 0; col < 3; ++col) {
-                this.a(new Slot(top, 1 + col + row * 3, 30 + col * 18, 17 + row * 18));
+                this.addSlot(new Slot(top, 1 + col + row * 3, 30 + col * 18, 17 + row * 18));
             }
         }
 
         for (row = 0; row < 3; ++row) {
             for (col = 0; col < 9; ++col) {
-                this.a(new Slot(bottom, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
+                this.addSlot(new Slot(bottom, col + row * 9 + 9, 8 + col * 18, 84 + row * 18));
             }
         }
 
         for (col = 0; col < 9; ++col) {
-            this.a(new Slot(bottom, col, 8 + col * 18, 142));
+            this.addSlot(new Slot(bottom, col, 8 + col * 18, 142));
         }
-        // End copy from ContainerWorkbench
+        // End copy from WorkbenchContainer
     }
 
     @Override
-    public ItemStack shiftClick(EntityHuman entityhuman, int i) {
-        return (delegate != null) ? delegate.shiftClick(entityhuman, i) : super.shiftClick(entityhuman, i);
+    public ItemStack transferStackInSlot(PlayerEntity entityhuman, int i) {
+        return (delegate != null) ? delegate.transferStackInSlot(entityhuman, i) : super.transferStackInSlot(entityhuman, i);
     }
 
     @Override
-    public boolean canUse(EntityHuman entity) {
+    public boolean canInteractWith(PlayerEntity entity) {
         return true;
     }
 
     @Override
-    public Containers<?> getType() {
+    public ContainerType<?> getType() {
         return getNotchInventoryType(view.getTopInventory());
     }
 }
