@@ -2,9 +2,6 @@ package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.passive.horse.CoatColors;
 import net.minecraft.entity.passive.horse.HorseEntity;
-import net.minecraft.server.EntityHorse;
-import net.minecraft.server.HorseColor;
-import net.minecraft.server.HorseStyle;
 import org.apache.commons.lang.Validate;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryHorse;

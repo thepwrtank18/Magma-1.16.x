@@ -2,7 +2,7 @@ package org.bukkit.craftbukkit.inventory;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
-import net.minecraft.server.NBTTagCompound;
+import net.minecraft.nbt.CompoundNBT;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
@@ -29,10 +29,10 @@ class CraftMetaTropicalFishBucket extends CraftMetaItem implements TropicalFishB
         this.variant = bucket.variant;
     }
 
-    CraftMetaTropicalFishBucket(NBTTagCompound tag) {
+    CraftMetaTropicalFishBucket(CompoundNBT tag) {
         super(tag);
 
-        if (tag.hasKeyOfType(VARIANT.NBT, CraftMagicNumbers.NBT.TAG_INT)) {
+        if (tag.contains(VARIANT.NBT, CraftMagicNumbers.NBT.TAG_INT)) {
             this.variant = tag.getInt(VARIANT.NBT);
         }
     }
@@ -47,11 +47,11 @@ class CraftMetaTropicalFishBucket extends CraftMetaItem implements TropicalFishB
     }
 
     @Override
-    void applyToItem(NBTTagCompound tag) {
+    void applyToItem(CompoundNBT tag) {
         super.applyToItem(tag);
 
         if (hasVariant()) {
-            tag.setInt(VARIANT.NBT, variant);
+            tag.putInt(VARIANT.NBT, variant);
         }
     }
 

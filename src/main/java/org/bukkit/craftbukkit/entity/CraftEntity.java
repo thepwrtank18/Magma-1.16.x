@@ -244,7 +244,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
                 // Monsters
                 else if (entity instanceof MonsterEntity) {
                     if (entity instanceof ZombieEntity) {
-                        if (entity instanceof ZombifiedPiglinEntity) { return new CraftPigZombie(server, (ZombiePigmanEntity) entity); }
+                        if (entity instanceof ZombifiedPiglinEntity) { return new CraftPigZombie(server, (ZombifiedPiglinEntity) entity); }
                         else if (entity instanceof HuskEntity) { return new CraftHusk(server, (HuskEntity) entity); }
                         else if (entity instanceof ZombieVillagerEntity) { return new CraftVillagerZombie(server, (ZombieVillagerEntity) entity); }
                         else if (entity instanceof DrownedEntity) { return new CraftDrowned(server, (DrownedEntity) entity); }
@@ -362,7 +362,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
             else if (entity instanceof HopperMinecartEntity) { return new CraftMinecartHopper(server, (HopperMinecartEntity) entity); }
             else if (entity instanceof SpawnerMinecartEntity) { return new CraftMinecartMobSpawner(server, (SpawnerMinecartEntity) entity); }
             else if (entity instanceof MinecartEntity) { return new CraftMinecartRideable(server, (MinecartEntity) entity); }
-            else if (entity instanceof CommandBlockMinecartEntity) { return new CraftMinecartCommand(server, (MinecartCommandBlockEntity) entity); }
+            else if (entity instanceof CommandBlockMinecartEntity) { return new CraftMinecartCommand(server, (CommandBlockMinecartEntity) entity); }
         } else if (entity instanceof HangingEntity) {
             if (entity instanceof PaintingEntity) { return new CraftPainting(server, (PaintingEntity) entity); }
             else if (entity instanceof ItemFrameEntity) { return new CraftItemFrame(server, (ItemFrameEntity) entity); }
@@ -788,7 +788,7 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
 
     @Override
     public String getName() {
-        return CraftChatMessage.fromComponent(getHandle().getDisplayName(), TextFormatting.WHITE);
+        return CraftChatMessage.fromComponent(getHandle().getDisplayName());
     }
 
     @Override

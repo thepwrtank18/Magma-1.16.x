@@ -64,6 +64,7 @@ import net.minecraft.loot.LootTableManager;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.NBTDynamicOps;
 import net.minecraft.potion.Effects;
+import net.minecraft.server.CustomServerBossInfo;
 import net.minecraft.server.IDynamicRegistries;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.ServerPropertiesProvider;
@@ -988,7 +989,7 @@ public final class CraftServer implements Server {
             properties.put("level-type", Objects.toString(creator.type().getName()));
 
             DimensionGeneratorSettings generatorsettings = DimensionGeneratorSettings.func_236219_a_(properties);
-            worldSettings = new WorldSettings(name, GameType.getByID(getDefaultGameMode().getValue()), hardcore, Difficulty.EASY, false, new GameRules(), console.);
+            worldSettings = new WorldSettings(name, GameType.getByID(getDefaultGameMode().getValue()), hardcore, Difficulty.EASY, false, new GameRules(), console.datapackconfiguration);
             worlddata = new ServerWorldInfo(worldSettings, generatorsettings, Lifecycle.stable());
         }
         worlddata.checkName(name);
@@ -1003,7 +1004,7 @@ public final class CraftServer implements Server {
         }
 
         long j = BiomeManager.func_235200_a_(creator.seed());
-        List<ISpecialSpawner> list = ImmutableList.of(new PhantomSpawner(), new PatrolSpawner(), new CatSpawner(), new VillageSiege(), new WanderingTraderSpawner(iserverworldinfo));
+        List<ISpecialSpawner> list = ImmutableList.of(new PhantomSpawner(), new PatrolSpawner(), new CatSpawner(), new VillageSiege(), new WanderingTraderSpawner(worlddata));
         SimpleRegistry<Dimension> simpleregistry = worlddata.func_230418_z_().func_236224_e_();
         Dimension worlddimension = simpleregistry.func_230516_a_(Dimension.field_236053_b_);
         DimensionType dimensionmanager;
@@ -1550,7 +1551,7 @@ public final class CraftServer implements Server {
 
     @Override
     public File getWorldContainer() {
-        return this.getServer().convertable.a(net.minecraft.server.World.OVERWORLD).getParentFile();
+        return this.getServer().anvilConverterForAnvilFile.func_237291_a_(net.minecraft.world.World.field_234918_g_).getParentFile();
     }
 
     @Override
@@ -1670,7 +1671,7 @@ public final class CraftServer implements Server {
         return warningState;
     }
 
-    public List<String> tabComplete(CommandSender sender, String message, ServerWorld world, Vec3d pos, boolean forceCommand) {
+    public List<String> tabComplete(CommandSender sender, String message, ServerWorld world, Vector3d pos, boolean forceCommand) {
         if (!(sender instanceof Player)) {
             return ImmutableList.of();
         }
