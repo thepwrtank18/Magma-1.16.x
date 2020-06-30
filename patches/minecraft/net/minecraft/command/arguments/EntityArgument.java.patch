@@ -8,15 +8,24 @@
  
  public class EntityArgument implements ArgumentType<EntitySelector> {
     private static final Collection<String> field_201310_f = Arrays.asList("Player", "0123", "@e", "@e[type=foo]", "dd12be42-52a9-4a91-a8a1-11c01849e498");
-@@ -132,7 +133,11 @@
+@@ -87,6 +88,12 @@
+    }
+ 
+    public EntitySelector parse(StringReader p_parse_1_) throws CommandSyntaxException {
++      // CraftBukkit start
++      return parse(p_parse_1_, false);
++   }
++
++   public EntitySelector parse(StringReader p_parse_1_, boolean overridePermissions) throws CommandSyntaxException {
++      // CraftBukkit end
+       int i = 0;
+       EntitySelectorParser entityselectorparser = new EntitySelectorParser(p_parse_1_);
+       EntitySelector entityselector = entityselectorparser.func_201345_m();
+@@ -132,7 +139,7 @@
        return field_201310_f;
     }
  
 -   public static class Serializer implements IArgumentSerializer<EntityArgument> {
-+    public EntitySelector parse(StringReader reader, boolean b) {
-+      throw new NotImplementedException("Sorry - Magma");
-+    }
-+
 +    public static class Serializer implements IArgumentSerializer<EntityArgument> {
        public void func_197072_a(EntityArgument p_197072_1_, PacketBuffer p_197072_2_) {
           byte b0 = 0;

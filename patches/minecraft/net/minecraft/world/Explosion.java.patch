@@ -1,6 +1,13 @@
 --- a/net/minecraft/world/Explosion.java
 +++ b/net/minecraft/world/Explosion.java
-@@ -57,6 +57,8 @@
+@@ -51,12 +51,14 @@
+    private final double field_77285_c;
+    private final double field_77282_d;
+    @Nullable
+-   private final Entity field_77283_e;
++   public final Entity field_77283_e; // private->public CraftBukkit
+    private final float field_77280_f;
+    private final DamageSource field_199593_j;
     private final IExplosionContext field_234893_k_;
     private final List<BlockPos> field_77281_g = Lists.newArrayList();
     private final Map<PlayerEntity, Vector3d> field_77288_k = Maps.newHashMap();

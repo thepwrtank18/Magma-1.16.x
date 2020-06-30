@@ -259,7 +259,7 @@
        boolean flag = this.field_70718_bc > 0;
        if (this.func_230282_cS_() && this.field_70170_p.func_82736_K().func_223586_b(GameRules.field_223602_e)) {
           this.func_213354_a(p_213345_1_, flag);
-@@ -1229,6 +1263,10 @@
+@@ -1229,15 +1263,32 @@
  
        this.func_213337_cE();
        this.func_226294_cV_();
@@ -270,7 +270,21 @@
     }
  
     protected void func_213337_cE() {
-@@ -1238,6 +1276,7 @@
+    }
+ 
++
++   // CraftBukkit start
++   public int getExpReward() {
++      if (!this.field_70170_p.field_72995_K && (this.func_70684_aJ() || this.field_70718_bc > 0 && this.func_146066_aG() && this.field_70170_p.func_82736_K().func_223586_b(GameRules.field_223602_e))) {
++         int i = this.func_70693_a(this.field_70717_bb);
++         return i;
++      } else {
++         return 0;
++      }
++   }
++   // CraftBukkit end
++
+    protected void func_226294_cV_() {
        if (!this.field_70170_p.field_72995_K && (this.func_70684_aJ() || this.field_70718_bc > 0 && this.func_146066_aG() && this.field_70170_p.func_82736_K().func_223586_b(GameRules.field_223602_e))) {
           int i = this.func_70693_a(this.field_70717_bb);
  
@@ -278,7 +292,7 @@
           while(i > 0) {
              int j = ExperienceOrbEntity.func_70527_a(i);
              i -= j;
-@@ -1258,7 +1297,8 @@
+@@ -1258,7 +1309,8 @@
        ResourceLocation resourcelocation = this.func_213346_cF();
        LootTable loottable = this.field_70170_p.func_73046_m().func_200249_aQ().func_186521_a(resourcelocation);
        LootContext.Builder lootcontext$builder = this.func_213363_a(p_213354_2_, p_213354_1_);
@@ -288,7 +302,7 @@
     }
  
     protected LootContext.Builder func_213363_a(boolean p_213363_1_, DamageSource p_213363_2_) {
-@@ -1271,6 +1311,12 @@
+@@ -1271,6 +1323,12 @@
     }
  
     public void func_233627_a_(float p_233627_1_, double p_233627_2_, double p_233627_4_) {
@@ -301,7 +315,7 @@
        p_233627_1_ = (float)((double)p_233627_1_ * (1.0D - this.func_233637_b_(Attributes.field_233820_c_)));
        if (!(p_233627_1_ <= 0.0F)) {
           this.field_70160_al = true;
-@@ -1320,16 +1366,7 @@
+@@ -1320,16 +1378,7 @@
        } else {
           BlockPos blockpos = this.func_233580_cy_();
           BlockState blockstate = this.func_213339_cH();
@@ -319,7 +333,7 @@
        }
     }
  
-@@ -1353,6 +1390,11 @@
+@@ -1353,6 +1402,11 @@
     }
  
     public boolean func_225503_b_(float p_225503_1_, float p_225503_2_) {
@@ -331,7 +345,7 @@
        boolean flag = super.func_225503_b_(p_225503_1_, p_225503_2_);
        int i = this.func_225508_e_(p_225503_1_, p_225503_2_);
        if (i > 0) {
-@@ -1376,9 +1418,10 @@
+@@ -1376,9 +1430,10 @@
           int i = MathHelper.func_76128_c(this.func_226277_ct_());
           int j = MathHelper.func_76128_c(this.func_226278_cu_() - (double)0.2F);
           int k = MathHelper.func_76128_c(this.func_226281_cx_());
@@ -345,7 +359,7 @@
              this.func_184185_a(soundtype.func_185842_g(), soundtype.func_185843_a() * 0.5F, soundtype.func_185847_b() * 0.75F);
           }
  
-@@ -1446,6 +1489,8 @@
+@@ -1446,6 +1501,8 @@
  
     protected void func_70665_d(DamageSource p_70665_1_, float p_70665_2_) {
        if (!this.func_180431_b(p_70665_1_)) {
@@ -354,7 +368,7 @@
           p_70665_2_ = this.func_70655_b(p_70665_1_, p_70665_2_);
           p_70665_2_ = this.func_70672_c(p_70665_1_, p_70665_2_);
           float f2 = Math.max(p_70665_2_ - this.func_110139_bj(), 0.0F);
-@@ -1455,10 +1500,11 @@
+@@ -1455,10 +1512,11 @@
              ((ServerPlayerEntity)p_70665_1_.func_76346_g()).func_195067_a(Stats.field_212735_F, Math.round(f * 10.0F));
           }
  
@@ -367,7 +381,7 @@
              this.func_110149_m(this.func_110139_bj() - f2);
           }
        }
-@@ -1512,6 +1558,8 @@
+@@ -1512,6 +1570,8 @@
     }
  
     public void func_226292_a_(Hand p_226292_1_, boolean p_226292_2_) {
@@ -376,7 +390,7 @@
        if (!this.field_82175_bq || this.field_110158_av >= this.func_82166_i() / 2 || this.field_110158_av < 0) {
           this.field_110158_av = -1;
           this.field_82175_bq = true;
-@@ -1846,15 +1894,16 @@
+@@ -1846,15 +1906,16 @@
        }
  
        this.field_70160_al = true;
@@ -395,7 +409,7 @@
     }
  
     protected float func_189749_co() {
-@@ -1868,16 +1917,20 @@
+@@ -1868,16 +1929,20 @@
     public void func_213352_e(Vector3d p_213352_1_) {
        if (this.func_70613_aW() || this.func_184186_bw()) {
           double d0 = 0.08D;
@@ -418,7 +432,7 @@
              float f6 = 0.02F;
              float f7 = (float)EnchantmentHelper.func_185294_d(this);
              if (f7 > 3.0F) {
-@@ -1897,6 +1950,7 @@
+@@ -1897,6 +1962,7 @@
                 f5 = 0.96F;
              }
  
@@ -426,7 +440,7 @@
              this.func_213309_a(f6, p_213352_1_);
              this.func_213315_a(MoverType.SELF, this.func_213322_ci());
              Vector3d vector3d6 = this.func_213322_ci();
-@@ -2075,6 +2129,7 @@
+@@ -2075,6 +2141,7 @@
     }
  
     public void func_70071_h_() {
@@ -434,7 +448,7 @@
        super.func_70071_h_();
        this.func_184608_ct();
        this.func_205014_p();
-@@ -2230,6 +2285,8 @@
+@@ -2230,6 +2297,8 @@
  
           ItemStack itemstack1 = this.func_184582_a(equipmentslottype);
           if (!ItemStack.func_77989_b(itemstack1, itemstack)) {
@@ -443,7 +457,7 @@
              if (map == null) {
                 map = Maps.newEnumMap(EquipmentSlotType.class);
              }
-@@ -2658,8 +2715,16 @@
+@@ -2658,8 +2727,16 @@
  
     private void func_184608_ct() {
        if (this.func_184587_cr()) {
@@ -462,7 +476,7 @@
              this.field_184627_bm.func_222121_b(this.field_70170_p, this, this.func_184605_cv());
              if (this.func_226299_p_()) {
                 this.func_226293_b_(this.field_184627_bm, 5);
-@@ -2707,8 +2772,10 @@
+@@ -2707,8 +2784,10 @@
     public void func_184598_c(Hand p_184598_1_) {
        ItemStack itemstack = this.func_184586_b(p_184598_1_);
        if (!itemstack.func_190926_b() && !this.func_184587_cr()) {
@@ -474,7 +488,7 @@
           if (!this.field_70170_p.field_72995_K) {
              this.func_204802_c(1, true);
              this.func_204802_c(2, p_184598_1_ == Hand.OFF_HAND);
-@@ -2768,6 +2835,9 @@
+@@ -2768,6 +2847,9 @@
           vector3d1 = vector3d1.func_178789_a(-this.field_70125_A * ((float)Math.PI / 180F));
           vector3d1 = vector3d1.func_178785_b(-this.field_70177_z * ((float)Math.PI / 180F));
           vector3d1 = vector3d1.func_72441_c(this.func_226277_ct_(), this.func_226280_cw_(), this.func_226281_cx_());
@@ -484,7 +498,7 @@
           this.field_70170_p.func_195594_a(new ItemParticleData(ParticleTypes.field_197591_B, p_195062_1_), vector3d1.field_72450_a, vector3d1.field_72448_b, vector3d1.field_72449_c, vector3d.field_72450_a, vector3d.field_72448_b + 0.05D, vector3d.field_72449_c);
        }
  
-@@ -2779,7 +2849,9 @@
+@@ -2779,7 +2861,9 @@
        } else {
           if (!this.field_184627_bm.func_190926_b() && this.func_184587_cr()) {
              this.func_226293_b_(this.field_184627_bm, 16);
@@ -495,7 +509,7 @@
              this.func_184602_cy();
           }
  
-@@ -2800,7 +2872,11 @@
+@@ -2800,7 +2884,11 @@
  
     public void func_184597_cx() {
        if (!this.field_184627_bm.func_190926_b()) {
@@ -507,7 +521,7 @@
           if (this.field_184627_bm.func_222122_m()) {
              this.func_184608_ct();
           }
-@@ -2966,14 +3042,14 @@
+@@ -2966,14 +3054,14 @@
  
     private boolean func_213359_p() {
        return this.func_213374_dv().map((p_241350_1_) -> {
@@ -524,7 +538,7 @@
              this.field_70170_p.func_180501_a(p_241348_1_, blockstate.func_206870_a(BedBlock.field_176471_b, Boolean.valueOf(false)), 3);
              Vector3d vector3d1 = BedBlock.func_220172_a(this.func_200600_R(), this.field_70170_p, p_241348_1_, 0).orElseGet(() -> {
                 BlockPos blockpos = p_241348_1_.func_177984_a();
-@@ -2993,7 +3069,9 @@
+@@ -2993,7 +3081,9 @@
     @OnlyIn(Dist.CLIENT)
     public Direction func_213376_dz() {
        BlockPos blockpos = this.func_213374_dv().orElse((BlockPos)null);
@@ -535,7 +549,7 @@
     }
  
     public boolean func_70094_T() {
-@@ -3062,4 +3140,65 @@
+@@ -3062,4 +3152,65 @@
     public void func_213334_d(Hand p_213334_1_) {
        this.func_213361_c(p_213334_1_ == Hand.MAIN_HAND ? EquipmentSlotType.MAINHAND : EquipmentSlotType.OFFHAND);
     }
