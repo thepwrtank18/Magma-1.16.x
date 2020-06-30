@@ -15,3 +15,16 @@
              return this.field_197062_b.execute(stringreader, p_197059_1_);
           } catch (CommandException commandexception) {
              p_197059_1_.func_197021_a(commandexception.func_197003_a());
+@@ -331,7 +339,11 @@
+       }
+    }
+ 
+-   public static enum EnvironmentType {
++   // CraftBukkit
++    public void handleCommand(CommandSource icommandlistener, String toDispatcher, String toDispatcher1) {
++    }
++
++    public static enum EnvironmentType {
+       ALL(true, true),
+       DEDICATED(false, true),
+       INTEGRATED(true, false);

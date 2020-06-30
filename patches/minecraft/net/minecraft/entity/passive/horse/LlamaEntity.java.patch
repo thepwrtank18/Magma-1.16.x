@@ -1,5 +1,14 @@
 --- a/net/minecraft/entity/passive/horse/LlamaEntity.java
 +++ b/net/minecraft/entity/passive/horse/LlamaEntity.java
+@@ -72,7 +72,7 @@
+       return false;
+    }
+ 
+-   private void func_190706_p(int p_190706_1_) {
++   public void func_190706_p(int p_190706_1_) { // private->public CraftBukkit
+       this.field_70180_af.func_187227_b(field_190720_bG, Math.max(1, Math.min(5, p_190706_1_)));
+    }
+ 
 @@ -179,7 +179,7 @@
           i = 90;
           j = 6;

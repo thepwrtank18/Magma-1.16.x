@@ -1,6 +1,50 @@
 --- a/net/minecraft/entity/MobEntity.java
 +++ b/net/minecraft/entity/MobEntity.java
-@@ -197,6 +197,7 @@
+@@ -72,6 +72,7 @@
+ import net.minecraft.world.server.ServerWorld;
+ import net.minecraftforge.api.distmarker.Dist;
+ import net.minecraftforge.api.distmarker.OnlyIn;
++import org.bukkit.event.entity.EntityTargetEvent;
+ 
+ public abstract class MobEntity extends LivingEntity {
+    private static final DataParameter<Byte> field_184654_a = EntityDataManager.func_187226_a(MobEntity.class, DataSerializers.field_187191_a);
+@@ -82,19 +83,19 @@
+    protected JumpController field_70767_i;
+    private final BodyController field_70762_j;
+    protected PathNavigator field_70699_by;
+-   public final GoalSelector field_70714_bg;
+-   public final GoalSelector field_70715_bh;
++   public GoalSelector field_70714_bg;
++   public GoalSelector field_70715_bh;
+    private LivingEntity field_70696_bz;
+    private final EntitySenses field_70723_bA;
+    private final NonNullList<ItemStack> field_184656_bv = NonNullList.func_191197_a(2, ItemStack.field_190927_a);
+-   protected final float[] field_82174_bp = new float[2];
++   public final float[] field_82174_bp = new float[2]; // protected->public CraftBukkit
+    private final NonNullList<ItemStack> field_184657_bw = NonNullList.func_191197_a(4, ItemStack.field_190927_a);
+-   protected final float[] field_184655_bs = new float[4];
++   public final float[] field_184655_bs = new float[4]; // protected->public CraftBukkit
+    private boolean field_82172_bs;
+-   private boolean field_82179_bU;
++   public boolean field_82179_bU; // private->public CraftBukkit
+    private final Map<PathNodeType, Float> field_184658_bz = Maps.newEnumMap(PathNodeType.class);
+-   private ResourceLocation field_184659_bA;
+-   private long field_184653_bB;
++   public ResourceLocation field_184659_bA; // private->public CraftBukkit
++   public long field_184653_bB; // private->public CraftBukkit
+    @Nullable
+    private Entity field_110168_bw;
+    private int field_213400_bI;
+@@ -103,6 +104,8 @@
+    private BlockPos field_213401_bK = BlockPos.field_177992_a;
+    private float field_213402_bL = -1.0F;
+ 
++   public boolean aware = true; // CraftBukkit
++
+    protected MobEntity(EntityType<? extends MobEntity> p_i48576_1_, World p_i48576_2_) {
+       super(p_i48576_1_, p_i48576_2_);
+       this.field_70714_bg = new GoalSelector(p_i48576_2_.func_234924_Y_());
+@@ -197,6 +200,7 @@
  
     public void func_70624_b(@Nullable LivingEntity p_70624_1_) {
        this.field_70696_bz = p_70624_1_;
@@ -8,7 +52,16 @@
     }
  
     public boolean func_213358_a(EntityType<?> p_213358_1_) {
-@@ -485,7 +486,7 @@
+@@ -461,7 +465,7 @@
+       return this.field_184659_bA == null ? this.func_184647_J() : this.field_184659_bA;
+    }
+ 
+-   protected ResourceLocation func_184647_J() {
++   public ResourceLocation func_184647_J() { // protected->public CraftBukkit
+       return super.func_213346_cF();
+    }
+ 
+@@ -485,7 +489,7 @@
     public void func_70636_d() {
        super.func_70636_d();
        this.field_70170_p.func_217381_Z().func_76320_a("looting");
@@ -17,7 +70,7 @@
           for(ItemEntity itementity : this.field_70170_p.func_217357_a(ItemEntity.class, this.func_174813_aQ().func_72314_b(1.0D, 0.0D, 1.0D))) {
              if (!itementity.field_70128_L && !itementity.func_92059_d().func_190926_b() && !itementity.func_174874_s() && this.func_230293_i_(itementity.func_92059_d())) {
                 this.func_175445_a(itementity);
-@@ -638,6 +639,14 @@
+@@ -638,6 +642,14 @@
           this.func_70106_y();
        } else if (!this.func_104002_bU() && !this.func_213392_I()) {
           Entity entity = this.field_70170_p.func_217362_a(this, -1.0D);
@@ -32,7 +85,7 @@
           if (entity != null) {
              double d0 = entity.func_70068_e(this);
              int i = this.func_200600_R().func_220339_d().func_233671_f_();
-@@ -877,6 +886,8 @@
+@@ -877,6 +889,8 @@
     }
  
     public static EquipmentSlotType func_184640_d(ItemStack p_184640_0_) {
@@ -41,7 +94,7 @@
        Item item = p_184640_0_.func_77973_b();
        if (item != Blocks.field_196625_cS.func_199767_j() && (!(item instanceof BlockItem) || !(((BlockItem)item).func_179223_d() instanceof AbstractSkullBlock))) {
           if (item instanceof ArmorItem) {
-@@ -884,7 +895,7 @@
+@@ -884,7 +898,7 @@
           } else if (item == Items.field_185160_cR) {
              return EquipmentSlotType.CHEST;
           } else {
@@ -50,3 +103,13 @@
           }
        } else {
           return EquipmentSlotType.HEAD;
+@@ -1385,4 +1399,9 @@
+       super.func_241204_bJ_();
+       this.func_110160_i(true, false);
+    }
++
++   // CraftBukkit
++   public boolean setAttackTarget(LivingEntity entitylivingbaseIn, EntityTargetEvent.TargetReason reason, final boolean fireEvent) {
++      return false;
++   }
+ }

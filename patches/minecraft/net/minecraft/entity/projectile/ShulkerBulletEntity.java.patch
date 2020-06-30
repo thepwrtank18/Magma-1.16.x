@@ -1,6 +1,42 @@
 --- a/net/minecraft/entity/projectile/ShulkerBulletEntity.java
 +++ b/net/minecraft/entity/projectile/ShulkerBulletEntity.java
-@@ -214,7 +214,7 @@
+@@ -56,7 +56,7 @@
+ 
+    public ShulkerBulletEntity(World p_i46772_1_, LivingEntity p_i46772_2_, Entity p_i46772_3_, Direction.Axis p_i46772_4_) {
+       this(EntityType.field_200739_ae, p_i46772_1_);
+-      this.func_212361_a(p_i46772_2_);
++      this.setShooter(p_i46772_2_);
+       BlockPos blockpos = p_i46772_2_.func_233580_cy_();
+       double d0 = (double)blockpos.func_177958_n() + 0.5D;
+       double d1 = (double)blockpos.func_177956_o() + 0.5D;
+@@ -71,6 +71,26 @@
+       return SoundCategory.HOSTILE;
+    }
+ 
++   // CraftBukkit start
++   public LivingEntity getShooter() {
++      return null; // TODO: 27/06/2020 Add Patch
++   }
++
++   public void setShooter(final LivingEntity e) {
++
++   }
++
++   public Entity getTarget() {
++      return this.field_184571_b;
++   }
++
++   public void setTarget(final Entity e) {
++      this.field_184571_b = e;
++      this.field_184573_c = Direction.UP;
++      this.func_184569_a(Direction.Axis.X);
++   }
++   // CraftBukkit end
++
+    protected void func_213281_b(CompoundNBT p_213281_1_) {
+       super.func_213281_b(p_213281_1_);
+       if (this.field_184571_b != null) {
+@@ -214,7 +234,7 @@
           }
  
           RayTraceResult raytraceresult = ProjectileHelper.func_234618_a_(this, this::func_230298_a_, RayTraceContext.BlockMode.COLLIDER);

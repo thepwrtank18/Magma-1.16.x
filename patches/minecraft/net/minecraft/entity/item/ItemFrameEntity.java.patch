@@ -1,6 +1,28 @@
 --- a/net/minecraft/entity/item/ItemFrameEntity.java
 +++ b/net/minecraft/entity/item/ItemFrameEntity.java
-@@ -216,7 +216,7 @@
+@@ -61,7 +61,7 @@
+       this.func_184212_Q().func_187214_a(field_184526_d, 0);
+    }
+ 
+-   protected void func_174859_a(Direction p_174859_1_) {
++   public void func_174859_a(Direction p_174859_1_) { // protected->public CraftBukkit
+       Validate.notNull(p_174859_1_);
+       this.field_174860_b = p_174859_1_;
+       if (p_174859_1_.func_176740_k().func_176722_c()) {
+@@ -77,6 +77,12 @@
+       this.func_174856_o();
+    }
+ 
++   // CraftBukkit - start
++   public static AxisAlignedBB calculateBoundingBox(@Nullable Entity entity, BlockPos blockPosition, Direction direction, int width, int height) {
++      return null;
++   }
++   // CraftBukkit - end
++
+    protected void func_174856_o() {
+       if (this.field_174860_b != null) {
+          double d0 = 0.46875D;
+@@ -216,7 +222,7 @@
     }
  
     private void func_110131_b(ItemStack p_110131_1_) {
@@ -9,3 +31,12 @@
           MapData mapdata = FilledMapItem.func_195950_a(p_110131_1_, this.field_70170_p);
           mapdata.func_212441_a(this.field_174861_a, this.func_145782_y());
           mapdata.func_76186_a(true);
+@@ -357,4 +363,8 @@
+    public IPacket<?> func_213297_N() {
+       return new SSpawnObjectPacket(this, this.func_200600_R(), this.field_174860_b.func_176745_a(), this.func_174857_n());
+    }
++
++   // CraftBukkit - start
++   public void setItem(ItemStack stack, boolean p_174864_2_, boolean playSound) {
++   }
+ }

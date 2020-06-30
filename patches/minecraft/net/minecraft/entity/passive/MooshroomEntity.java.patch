@@ -18,6 +18,15 @@
           this.func_230263_a_(SoundCategory.PLAYERS);
           if (!this.field_70170_p.field_72995_K) {
              itemstack.func_222118_a(1, p_230254_1_, (p_213442_1_) -> {
+@@ -208,7 +208,7 @@
+       return Optional.empty();
+    }
+ 
+-   private void func_213446_a(MooshroomEntity.Type p_213446_1_) {
++   public void func_213446_a(MooshroomEntity.Type p_213446_1_) { // private->public CraftBukkit
+       this.field_70180_af.func_187227_b(field_213449_bz, p_213446_1_.field_221098_c);
+    }
+ 
 @@ -235,6 +235,45 @@
        return mooshroomentity$type2;
     }

@@ -1,6 +1,29 @@
 --- a/net/minecraft/inventory/container/RepairContainer.java
 +++ b/net/minecraft/inventory/container/RepairContainer.java
-@@ -63,6 +63,8 @@
+@@ -19,13 +19,20 @@
+ import org.apache.commons.lang3.StringUtils;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
++import org.bukkit.craftbukkit.inventory.CraftInventoryView;
++import org.bukkit.inventory.InventoryView;
+ 
+ public class RepairContainer extends AbstractRepairContainer {
+    private static final Logger field_148326_f = LogManager.getLogger();
+    public int field_82856_l;
+-   private String field_82857_m;
+-   private final IntReferenceHolder field_82854_e = IntReferenceHolder.func_221492_a();
++   public String field_82857_m; // private->public CraftBukkit
++   public final IntReferenceHolder field_82854_e = IntReferenceHolder.func_221492_a(); // private->public CraftBukkit
+ 
++   // CraftBukkit start
++   public int maximumRepairCost = 40;
++   private CraftInventoryView bukkitEntity;
++   // CraftBukkit end
++
+    public RepairContainer(int p_i50101_1_, PlayerInventory p_i50101_2_) {
+       this(p_i50101_1_, p_i50101_2_, IWorldPosCallable.field_221489_a);
+    }
+@@ -63,6 +70,8 @@
  
        this.field_82854_e.func_221494_a(0);
        this.field_234644_e_.func_221486_a((p_234633_1_, p_234633_2_) -> {
@@ -9,7 +32,7 @@
           BlockState blockstate = p_234633_1_.func_180495_p(p_234633_2_);
           if (!p_230301_1_.field_71075_bZ.field_75098_d && blockstate.func_235714_a_(BlockTags.field_200572_k) && p_230301_1_.func_70681_au().nextFloat() < 0.12F) {
              BlockState blockstate1 = AnvilBlock.func_196433_f(blockstate);
-@@ -96,8 +98,11 @@
+@@ -96,8 +105,11 @@
           Map<Enchantment, Integer> map = EnchantmentHelper.func_82781_a(itemstack1);
           j = j + itemstack.func_82838_A() + (itemstack2.func_190926_b() ? 0 : itemstack2.func_82838_A());
           this.field_82856_l = 0;
@@ -22,7 +45,7 @@
              if (itemstack1.func_77984_f() && itemstack1.func_77973_b().func_82789_a(itemstack, itemstack2)) {
                 int l2 = Math.min(itemstack1.func_77952_i(), itemstack1.func_77958_k() / 4);
                 if (l2 <= 0) {
-@@ -214,6 +219,7 @@
+@@ -214,6 +226,7 @@
              i += k;
              itemstack1.func_200302_a(new StringTextComponent(this.field_82857_m));
           }
@@ -30,12 +53,17 @@
  
           this.field_82854_e.func_221494_a(j + i);
           if (i <= 0) {
-@@ -269,4 +275,8 @@
+@@ -269,4 +282,13 @@
     public int func_216976_f() {
        return this.field_82854_e.func_221495_b();
     }
 +
 +   public void setMaximumCost(int value) {
 +      this.field_82854_e.func_221494_a(value);
++   }
++
++   @Override
++   public InventoryView getBukkitView() {
++      return null;
 +   }
  }

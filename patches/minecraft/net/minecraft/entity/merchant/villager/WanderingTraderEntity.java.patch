@@ -1,0 +1,22 @@
+--- a/net/minecraft/entity/merchant/villager/WanderingTraderEntity.java
++++ b/net/minecraft/entity/merchant/villager/WanderingTraderEntity.java
+@@ -43,6 +43,7 @@
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraft.util.math.vector.Vector3d;
+ import net.minecraft.world.World;
++import org.bukkit.craftbukkit.inventory.CraftMerchant;
+ 
+ public class WanderingTraderEntity extends AbstractVillagerEntity {
+    @Nullable
+@@ -185,6 +186,11 @@
+       return SoundEvents.field_219724_nc;
+    }
+ 
++   @Override
++   public CraftMerchant getCraftMerchant() {
++      return null;
++   }
++
+    public void func_213728_s(int p_213728_1_) {
+       this.field_213737_bB = p_213728_1_;
+    }

@@ -1,11 +1,36 @@
 --- a/net/minecraft/entity/monster/CreeperEntity.java
 +++ b/net/minecraft/entity/monster/CreeperEntity.java
-@@ -215,7 +215,7 @@
+@@ -49,8 +49,8 @@
+    private static final DataParameter<Boolean> field_184715_c = EntityDataManager.func_187226_a(CreeperEntity.class, DataSerializers.field_187198_h);
+    private int field_70834_e;
+    private int field_70833_d;
+-   private int field_82225_f = 30;
+-   private int field_82226_g = 3;
++   public int field_82225_f = 30; // private->public CraftBukkit
++   public int field_82226_g = 3; // private->public CraftBukkit
+    private int field_175494_bm;
  
-    private void func_146077_cc() {
+    public CreeperEntity(EntityType<? extends CreeperEntity> p_i50213_1_, World p_i50213_2_) {
+@@ -213,9 +213,9 @@
+       }
+    }
+ 
+-   private void func_146077_cc() {
++   public void func_146077_cc() { // private->public CraftBukkit
        if (!this.field_70170_p.field_72995_K) {
 -         Explosion.Mode explosion$mode = this.field_70170_p.func_82736_K().func_223586_b(GameRules.field_223599_b) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
 +         Explosion.Mode explosion$mode = net.minecraftforge.event.ForgeEventFactory.getMobGriefingEvent(this.field_70170_p, this) ? Explosion.Mode.DESTROY : Explosion.Mode.NONE;
           float f = this.func_225509_J__() ? 2.0F : 1.0F;
           this.field_70729_aU = true;
           this.field_70170_p.func_217385_a(this, this.func_226277_ct_(), this.func_226278_cu_(), this.func_226281_cx_(), (float)this.field_82226_g * f, explosion$mode);
+@@ -259,4 +259,10 @@
+    public void func_175493_co() {
+       ++this.field_175494_bm;
+    }
++
++   // CraftBukkit
++   public void setPowered(boolean powered) {
++
++   }
++
+ }

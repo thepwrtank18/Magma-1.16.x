@@ -1,0 +1,20 @@
+--- a/net/minecraft/inventory/container/SmithingTableContainer.java
++++ b/net/minecraft/inventory/container/SmithingTableContainer.java
+@@ -11,6 +11,7 @@
+ import net.minecraft.item.crafting.SmithingRecipe;
+ import net.minecraft.util.IWorldPosCallable;
+ import net.minecraft.world.World;
++import org.bukkit.inventory.InventoryView;
+ 
+ public class SmithingTableContainer extends AbstractRepairContainer {
+    private final World field_234651_g_;
+@@ -68,4 +69,9 @@
+          return p_241444_1_.func_241456_a_(p_241210_1_);
+       });
+    }
++
++   @Override
++   public InventoryView getBukkitView() {
++      return null;
++   }
+ }

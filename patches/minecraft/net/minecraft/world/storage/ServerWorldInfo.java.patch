@@ -1,0 +1,31 @@
+--- a/net/minecraft/world/storage/ServerWorldInfo.java
++++ b/net/minecraft/world/storage/ServerWorldInfo.java
+@@ -34,6 +34,7 @@
+ import net.minecraft.world.WorldSettings;
+ import net.minecraft.world.border.WorldBorder;
+ import net.minecraft.world.gen.settings.DimensionGeneratorSettings;
++import net.minecraft.world.server.ServerWorld;
+ import net.minecraftforge.api.distmarker.Dist;
+ import net.minecraftforge.api.distmarker.OnlyIn;
+ import org.apache.logging.log4j.LogManager;
+@@ -74,6 +75,7 @@
+    private final Set<String> field_237338_B_;
+    private boolean field_237339_C_;
+    private final TimerCallbackManager<MinecraftServer> field_237340_D_;
++   public ServerWorld world; // CraftBukkit
+ 
+    private ServerWorldInfo(@Nullable DataFixer p_i232159_1_, int p_i232159_2_, @Nullable CompoundNBT p_i232159_3_, boolean p_i232159_4_, int p_i232159_5_, int p_i232159_6_, int p_i232159_7_, long p_i232159_8_, long p_i232159_10_, int p_i232159_12_, int p_i232159_13_, int p_i232159_14_, boolean p_i232159_15_, int p_i232159_16_, boolean p_i232159_17_, boolean p_i232159_18_, boolean p_i232159_19_, WorldBorder.Serializer p_i232159_20_, int p_i232159_21_, int p_i232159_22_, @Nullable UUID p_i232159_23_, LinkedHashSet<String> p_i232159_24_, TimerCallbackManager<MinecraftServer> p_i232159_25_, @Nullable CompoundNBT p_i232159_26_, CompoundNBT p_i232159_27_, WorldSettings p_i232159_28_, DimensionGeneratorSettings p_i232159_29_, Lifecycle p_i232159_30_) {
+       this.field_237350_j_ = p_i232159_1_;
+@@ -437,4 +439,12 @@
+    public WorldSettings func_230408_H_() {
+       return this.field_237342_b_.func_234959_h_();
+    }
++
++   // CraftBukkit start - Check if the name stored in NBT is the correct one
++   public void checkName(String name) {
++      if (!this.field_237342_b_.field_234943_a_.equals(name)) {
++         this.field_237342_b_.field_234943_a_ = name;
++      }
++   }
++   // CraftBukkit end
+ }

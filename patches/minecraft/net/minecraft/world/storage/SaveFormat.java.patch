@@ -25,7 +25,20 @@
           } catch (Exception exception) {
              field_215785_a.error("Exception reading {}", p_237261_2_, exception);
              return null;
-@@ -301,7 +310,7 @@
+@@ -245,6 +254,12 @@
+       return new SaveFormat.LevelSave(p_237274_1_);
+    }
+ 
++   // CraftBukkit
++   public SaveFormat.LevelSave func_237274_c_(String p_237274_1_, RegistryKey<World> dimensionType) throws IOException {
++      return new SaveFormat.LevelSave(p_237274_1_);
++   }
++
++
+    public class LevelSave implements AutoCloseable {
+       private final SessionLockManager field_237278_b_;
+       private final Path field_237279_c_;
+@@ -301,7 +316,7 @@
        @Nullable
        public IServerConfiguration func_237284_a_(DynamicOps<INBT> p_237284_1_, DatapackCodec p_237284_2_) {
           this.func_237301_i_();
@@ -34,7 +47,7 @@
        }
  
        @Nullable
-@@ -322,6 +331,8 @@
+@@ -322,6 +337,8 @@
           CompoundNBT compoundnbt1 = new CompoundNBT();
           compoundnbt1.func_218657_a("Data", compoundnbt);
  
@@ -43,7 +56,7 @@
           try {
              File file2 = File.createTempFile("level", ".dat", file1);
              CompressedStreamTools.func_74799_a(compoundnbt1, new FileOutputStream(file2));
-@@ -339,6 +350,10 @@
+@@ -339,6 +356,10 @@
           return this.field_237279_c_.resolve("icon.png").toFile();
        }
  

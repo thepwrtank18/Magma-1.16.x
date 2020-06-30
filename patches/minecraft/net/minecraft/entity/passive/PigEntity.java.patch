@@ -1,0 +1,24 @@
+--- a/net/minecraft/entity/passive/PigEntity.java
++++ b/net/minecraft/entity/passive/PigEntity.java
+@@ -97,6 +97,21 @@
+       super.func_184206_a(p_184206_1_);
+    }
+ 
++   // CraftBukkit - start
++   public boolean getSaddled() {
++      return this.field_70180_af.func_187225_a(field_184763_bv);
++   }
++
++   public void setSaddled(boolean saddled) {
++      if (saddled) {
++         this.field_70180_af.func_187227_b(field_184763_bv, true);
++      } else {
++         this.field_70180_af.func_187227_b(field_184763_bv, false);
++      }
++
++   }
++   // CraftBukkit - end
++
+    protected void func_70088_a() {
+       super.func_70088_a();
+       this.field_70180_af.func_187214_a(field_184763_bv, false);

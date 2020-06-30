@@ -1,0 +1,40 @@
+--- a/net/minecraft/world/server/ServerChunkProvider.java
++++ b/net/minecraft/world/server/ServerChunkProvider.java
+@@ -57,8 +57,8 @@
+    public final ChunkManager field_217237_a;
+    private final DimensionSavedDataManager field_217244_j;
+    private long field_217245_k;
+-   private boolean field_217246_l = true;
+-   private boolean field_217247_m = true;
++   public boolean field_217246_l = true; // private->public CraftBukkit
++   public boolean field_217247_m = true; // private->public CraftBukkit
+    private final long[] field_222875_n = new long[4];
+    private final ChunkStatus[] field_222876_o = new ChunkStatus[4];
+    private final IChunk[] field_222877_p = new IChunk[4];
+@@ -308,11 +308,25 @@
+    }
+ 
+    public void close() throws IOException {
+-      this.func_217210_a(true);
++      // CraftBukkit start
++      this.close(true);
++   }
++
++   public void close(final boolean save) throws IOException {
++      if (save) {
++         this.func_217210_a(true);
++      }
++      // CraftBukkit end
+       this.field_217242_h.close();
+       this.field_217237_a.close();
+    }
+ 
++   // CraftBukkit start - modelled on below
++   public void purgeUnload() {
++      // TODO: 26/06/2020 Add Patch
++   }
++   // CraftBukkit end
++
+    public void func_217207_a(BooleanSupplier p_217207_1_) {
+       this.field_73251_h.func_217381_Z().func_76320_a("purge");
+       this.field_217240_d.func_219340_a();

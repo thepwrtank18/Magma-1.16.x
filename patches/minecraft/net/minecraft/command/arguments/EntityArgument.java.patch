@@ -1,0 +1,23 @@
+--- a/net/minecraft/command/arguments/EntityArgument.java
++++ b/net/minecraft/command/arguments/EntityArgument.java
+@@ -19,6 +19,7 @@
+ import net.minecraft.entity.player.ServerPlayerEntity;
+ import net.minecraft.network.PacketBuffer;
+ import net.minecraft.util.text.TranslationTextComponent;
++import org.apache.commons.lang.NotImplementedException;
+ 
+ public class EntityArgument implements ArgumentType<EntitySelector> {
+    private static final Collection<String> field_201310_f = Arrays.asList("Player", "0123", "@e", "@e[type=foo]", "dd12be42-52a9-4a91-a8a1-11c01849e498");
+@@ -132,7 +133,11 @@
+       return field_201310_f;
+    }
+ 
+-   public static class Serializer implements IArgumentSerializer<EntityArgument> {
++    public EntitySelector parse(StringReader reader, boolean b) {
++      throw new NotImplementedException("Sorry - Magma");
++    }
++
++    public static class Serializer implements IArgumentSerializer<EntityArgument> {
+       public void func_197072_a(EntityArgument p_197072_1_, PacketBuffer p_197072_2_) {
+          byte b0 = 0;
+          if (p_197072_1_.field_197103_f) {

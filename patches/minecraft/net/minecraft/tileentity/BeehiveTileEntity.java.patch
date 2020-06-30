@@ -1,0 +1,23 @@
+--- a/net/minecraft/tileentity/BeehiveTileEntity.java
++++ b/net/minecraft/tileentity/BeehiveTileEntity.java
+@@ -26,7 +26,8 @@
+ public class BeehiveTileEntity extends TileEntity implements ITickableTileEntity {
+    private final List<BeehiveTileEntity.Bee> field_226958_a_ = Lists.newArrayList();
+    @Nullable
+-   private BlockPos field_226959_b_ = null;
++   public BlockPos field_226959_b_ = null; // private->public CraftBukkit
++   public int maxBees = 3; // CraftBukkit
+ 
+    public BeehiveTileEntity() {
+       super(TileEntityType.field_226985_G_);
+@@ -89,6 +90,10 @@
+       return list;
+    }
+ 
++   public List<Entity> releaseBees(BlockState p_226965_1_, BeehiveTileEntity.State p_226965_2_, boolean force) {
++      return null; // TODO: 27/06/2020 Add Patch
++   }
++
+    public void func_226961_a_(Entity p_226961_1_, boolean p_226961_2_) {
+       this.func_226962_a_(p_226961_1_, p_226961_2_, 0);
+    }

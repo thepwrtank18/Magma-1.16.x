@@ -1,6 +1,16 @@
 --- a/net/minecraft/entity/effect/LightningBoltEntity.java
 +++ b/net/minecraft/entity/effect/LightningBoltEntity.java
-@@ -82,6 +82,7 @@
+@@ -26,7 +26,8 @@
+    private int field_70262_b;
+    public long field_70264_a;
+    private int field_70263_c;
+-   private boolean field_184529_d;
++   public boolean isEffect; // CraftBukkit
++   public boolean field_184529_d; // CraftBukkit private->public
+    @Nullable
+    private ServerPlayerEntity field_204810_e;
+ 
+@@ -82,6 +83,7 @@
              List<Entity> list = this.field_70170_p.func_175674_a(this, new AxisAlignedBB(this.func_226277_ct_() - 3.0D, this.func_226278_cu_() - 3.0D, this.func_226281_cx_() - 3.0D, this.func_226277_ct_() + 3.0D, this.func_226278_cu_() + 6.0D + 3.0D, this.func_226281_cx_() + 3.0D), Entity::func_70089_S);
  
              for(Entity entity : list) {

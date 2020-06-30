@@ -1,0 +1,11 @@
+--- a/net/minecraft/entity/projectile/PotionEntity.java
++++ b/net/minecraft/entity/projectile/PotionEntity.java
+@@ -51,7 +51,7 @@
+       super(EntityType.field_200754_at, p_i50151_2_, p_i50151_4_, p_i50151_6_, p_i50151_1_);
+    }
+ 
+-   protected Item func_213885_i() {
++   public Item func_213885_i() {
+       return Items.field_185155_bH;
+    }
+ 

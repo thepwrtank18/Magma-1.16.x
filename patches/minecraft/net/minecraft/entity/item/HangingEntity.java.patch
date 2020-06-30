@@ -1,6 +1,37 @@
 --- a/net/minecraft/entity/item/HangingEntity.java
 +++ b/net/minecraft/entity/item/HangingEntity.java
-@@ -119,6 +119,8 @@
+@@ -27,7 +27,7 @@
+       return p_210144_0_ instanceof HangingEntity;
+    };
+    private int field_70520_f;
+-   protected BlockPos field_174861_a;
++   public BlockPos field_174861_a; // protected->public CraftBukkit
+    protected Direction field_174860_b = Direction.SOUTH;
+ 
+    protected HangingEntity(EntityType<? extends HangingEntity> p_i48561_1_, World p_i48561_2_) {
+@@ -42,7 +42,7 @@
+    protected void func_70088_a() {
+    }
+ 
+-   protected void func_174859_a(Direction p_174859_1_) {
++   public void func_174859_a(Direction p_174859_1_) { // protected->public CraftBukkit
+       Validate.notNull(p_174859_1_);
+       Validate.isTrue(p_174859_1_.func_176740_k().func_176722_c());
+       this.field_174860_b = p_174859_1_;
+@@ -51,6 +51,12 @@
+       this.func_174856_o();
+    }
+ 
++   // CraftBukkit - start
++   public static AxisAlignedBB calculateBoundingBox(@Nullable Entity entity, BlockPos blockPosition, Direction direction, int width, int height) {
++      return null;
++   }
++   // CraftBukkit - end
++
+    protected void func_174856_o() {
+       if (this.field_174860_b != null) {
+          double d0 = (double)this.field_174861_a.func_177958_n() + 0.5D;
+@@ -119,6 +125,8 @@
                 int j1 = (j - 1) / -2;
                 blockpos$mutable.func_189533_g(blockpos).func_189534_c(direction, k + i1).func_189534_c(Direction.UP, l + j1);
                 BlockState blockstate = this.field_70170_p.func_180495_p(blockpos$mutable);
