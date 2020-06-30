@@ -1,7 +1,16 @@
 package org.bukkit.craftbukkit.event;
 
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.inventory.container.Container;
+import org.apache.commons.lang.NotImplementedException;
+
 public class CraftEventFactory {
-// // TODO: 29/06/2020 Add All Event's
+
+    // CraftBukkit -
+    public static Container callInventoryOpenEvent(ServerPlayerEntity player, Container container) {
+        throw new NotImplementedException();
+    }
+    // // TODO: 29/06/2020 Add All Event's
 //    public static final DamageSource MELTING = CraftDamageSource.copyOf(DamageSource.BURN);
 //    public static final DamageSource POISON = CraftDamageSource.copyOf(DamageSource.MAGIC);
 //    public static org.bukkit.block.Block blockDamage; // For use in EntityDamageByBlockEvent

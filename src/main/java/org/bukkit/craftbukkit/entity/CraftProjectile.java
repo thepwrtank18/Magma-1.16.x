@@ -1,6 +1,8 @@
 package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.projectile.FishingBobberEntity;
+import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.entity.projectile.ThrowableEntity;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Projectile;
@@ -27,8 +29,8 @@ public abstract class CraftProjectile extends AbstractProjectile implements Proj
     }
 
     @Override
-    public ThrowableEntity getHandle() {
-        return (ThrowableEntity) entity;
+    public ProjectileEntity getHandle() {
+        return (ProjectileEntity) entity;
     }
 
     @Override

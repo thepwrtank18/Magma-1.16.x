@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Set;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import org.apache.commons.lang.Validate;
@@ -12,6 +13,7 @@ import org.bukkit.craftbukkit.util.CraftNBTTagConfigSerializer;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 public final class CraftPersistentDataContainer implements PersistentDataContainer {
 
@@ -68,6 +70,11 @@ public final class CraftPersistentDataContainer implements PersistentDataContain
     public <T, Z> Z getOrDefault(NamespacedKey key, PersistentDataType<T, Z> type, Z defaultValue) {
         Z z = get(key, type);
         return z != null ? z : defaultValue;
+    }
+
+    @Override
+    public @NotNull Set<NamespacedKey> getKeys() {
+        return null;
     }
 
     @Override

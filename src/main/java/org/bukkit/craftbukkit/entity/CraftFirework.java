@@ -2,6 +2,7 @@ package org.bukkit.craftbukkit.entity;
 
 import java.util.Random;
 import net.minecraft.entity.projectile.FireworkRocketEntity;
+import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import org.bukkit.Material;

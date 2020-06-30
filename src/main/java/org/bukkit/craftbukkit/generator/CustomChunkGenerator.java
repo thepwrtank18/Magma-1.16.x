@@ -1,36 +1,20 @@
 package org.bukkit.craftbukkit.generator;
 
-import com.google.common.base.Preconditions;
-import com.mojang.serialization.Codec;
-import java.util.List;
-import java.util.Random;
-import net.minecraft.server.BiomeBase;
-import net.minecraft.server.BiomeManager;
-import net.minecraft.server.BiomeStorage;
-import net.minecraft.server.Block;
-import net.minecraft.server.BlockPosition;
-import net.minecraft.server.ChunkSection;
-import net.minecraft.server.DefinedStructureManager;
-import net.minecraft.server.EnumCreatureType;
-import net.minecraft.server.HeightMap;
-import net.minecraft.server.IBlockAccess;
-import net.minecraft.server.IChunkAccess;
-import net.minecraft.server.ITileEntity;
-import net.minecraft.server.IWorld;
-import net.minecraft.server.ProtoChunk;
-import net.minecraft.server.RegionLimitedWorldAccess;
-import net.minecraft.server.StructureManager;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.WorldChunkManager;
-import net.minecraft.server.WorldGenStage;
-import net.minecraft.server.WorldServer;
-import org.bukkit.block.Biome;
-import org.bukkit.craftbukkit.block.CraftBlock;
-import org.bukkit.generator.ChunkGenerator;
-import org.bukkit.generator.ChunkGenerator.BiomeGrid;
-import org.bukkit.generator.ChunkGenerator.ChunkData;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceContext;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.World;
+import net.minecraft.world.chunk.ChunkPrimer;
 
 public class CustomChunkGenerator extends InternalChunkGenerator {
+
+    // TODO: 29/06/2020 Come back
+
+    public CustomChunkGenerator(World worldchunkmanager, ChunkPrimer structuresettings) {
+        super(worldchunkmanager, structuresettings);
+    }
+
+    /*
     private final net.minecraft.server.ChunkGenerator delegate;
     private final ChunkGenerator generator;
     private final WorldServer world;
@@ -213,4 +197,6 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
     protected Codec<? extends net.minecraft.server.ChunkGenerator> a() {
         throw new UnsupportedOperationException("Cannot serialize CustomChunkGenerator");
     }
+
+     */
 }

@@ -1,5 +1,6 @@
 package org.bukkit.craftbukkit.entity;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -7,12 +8,29 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FishHook;
+import org.bukkit.projectiles.ProjectileSource;
 
-public class CraftFishHook extends CraftProjectile implements FishHook {
+public class CraftFishHook extends AbstractProjectile implements FishHook {
     private double biteChance = -1;
 
     public CraftFishHook(CraftServer server, FishingBobberEntity entity) {
         super(server, entity);
+    }
+
+    @Override
+    public ProjectileSource getShooter() {
+        if (getHandle().projectileSource != null) {
+//            return getHandle().projectileSource.getBukkitEntity();
+        }
+
+        return null;
+    }
+
+    @Override
+    public void setShooter(ProjectileSource shooter) {
+        if (shooter instanceof CraftHumanEntity) {
+            getHandle().setShooter((PlayerEntity) ((CraftHumanEntity) shooter).entity);
+        }
     }
 
     @Override

@@ -104,6 +104,26 @@ public class CraftItemFrame extends CraftHanging implements ItemFrame {
         getHandle().setItemRotation(toInteger(rotation));
     }
 
+    @Override
+    public boolean isVisible() {
+        return false;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+
+    }
+
+    @Override
+    public boolean isFixed() {
+        return false;
+    }
+
+    @Override
+    public void setFixed(boolean visible) {
+
+    }
+
     static int toInteger(Rotation rotation) {
         // Translate Bukkit API rotation to NMS integer
         switch (rotation) {

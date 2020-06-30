@@ -1438,7 +1438,7 @@ public class CraftWorld implements World {
                 }
                 entity.setLocationAndAngles(x, y, z, 0, 0);
             } else if (ThrownExpBottle.class.isAssignableFrom(clazz)) {
-                entity = net.minecraft.entity.EntityType.EXPERIENCE_BOTTLE.a(world);
+                entity = net.minecraft.entity.EntityType.EXPERIENCE_BOTTLE.create(world);
                 entity.setLocationAndAngles(x, y, z, 0, 0);
             } else if (EnderPearl.class.isAssignableFrom(clazz)) {
                 entity = net.minecraft.entity.EntityType.ENDER_PEARL.create(world);
@@ -2118,7 +2118,7 @@ public class CraftWorld implements World {
     @Override
     public <T> T getGameRuleDefault(GameRule<T> rule) {
         Validate.notNull(rule, "GameRule cannot be null");
-        return convert(rule, getGameRuleDefinitions().get(rule.getName()).getValue());
+        return convert(rule, getGameRuleDefinitions().get(rule.getName()).createValue());
     }
 
     @Override

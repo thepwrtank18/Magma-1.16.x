@@ -1,7 +1,7 @@
 package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.server.EnumColor;
+import org.apache.commons.lang.NotImplementedException;
 import org.bukkit.DyeColor;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
@@ -14,15 +14,16 @@ public class CraftWolf extends CraftTameableAnimal implements Wolf {
 
     @Override
     public boolean isAngry() {
-        return getHandle().isAngry();
+//        return getHandle().isAngry(); // TODO: 29/06/2020 Come Back
+        throw new NotImplementedException("TODO");
     }
 
     @Override
     public void setAngry(boolean angry) {
         if (angry) {
-            getHandle().anger();
-        } else {
-            getHandle().pacify();
+//            getHandle().anger();
+//        } else {
+//            getHandle().pacify();
         }
     }
 
@@ -38,11 +39,12 @@ public class CraftWolf extends CraftTameableAnimal implements Wolf {
 
     @Override
     public DyeColor getCollarColor() {
-        return DyeColor.getByWoolData((byte) getHandle().getCollarColor().getColorIndex());
+//        return DyeColor.getByWoolData((byte) getHandle().getCollarColor().getColorIndex());
+        throw new NotImplementedException("TODO");
     }
 
     @Override
     public void setCollarColor(DyeColor color) {
-        getHandle().setCollarColor(EnumColor.fromColorIndex(color.getWoolData()));
+//        getHandle().setCollarColor(EnumColor.fromColorIndex(color.getWoolData()));
     }
 }

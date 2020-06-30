@@ -1023,22 +1023,23 @@ public final class CraftServer implements Server {
         });
         RegistryKey<net.minecraft.world.World> worldKey = RegistryKey.func_240903_a_(Registry.field_239699_ae_, new ResourceLocation(name.toLowerCase(java.util.Locale.ENGLISH)));
 
-        ServerWorld internal = (ServerWorld) new ServerWorld(console, console.backgroundExecutor, worldSession, worlddata, worldKey, typeKey, dimensionmanager, getServer().chunkStatusListenerFactory.create(11),
-                chunkgenerator, worlddata.func_230418_z_().func_236227_h_(), j, creator.environment() == Environment.NORMAL ? list : ImmutableList.of(), creator.environment() == Environment.NORMAL, creator.environment(), generator);
-
-        if (!(worlds.containsKey(name.toLowerCase(java.util.Locale.ENGLISH)))) {
-            return null;
-        }
-
-        console.initWorld(internal, worlddata, worlddata, worlddata.func_230418_z_());
-
-        internal.setAllowedSpawnTypes(true , true);
-        console.worlds.put(internal.func_234923_W_(), internal);
-
-        getServer().loadSpawn(internal.getChunkProvider().chunkManager.field_219266_t, internal);
-
-        pluginManager.callEvent(new WorldLoadEvent(internal.getWorldCB()));
-        return internal.getWorldCB();
+//        ServerWorld internal = (ServerWorld) new ServerWorld(console, console.backgroundExecutor, worldSession, worlddata, worldKey, typeKey, dimensionmanager, getServer().chunkStatusListenerFactory.create(11),
+//                chunkgenerator, worlddata.func_230418_z_().func_236227_h_(), j, creator.environment() == Environment.NORMAL ? list : ImmutableList.of(), creator.environment() == Environment.NORMAL, creator.environment(), generator);
+//
+//        if (!(worlds.containsKey(name.toLowerCase(java.util.Locale.ENGLISH)))) {
+//            return null;
+//        }
+//
+//        console.initWorld(internal, worlddata, worlddata, worlddata.func_230418_z_());
+//
+//        internal.setAllowedSpawnTypes(true , true);
+//        console.worlds.put(internal.func_234923_W_(), internal);
+//
+//        getServer().loadSpawn(internal.getChunkProvider().chunkManager.field_219266_t, internal);
+//
+//        pluginManager.callEvent(new WorldLoadEvent(internal.getWorldCB()));
+//        return internal.getWorldCB();
+        throw new NotImplementedException("Come Back");
     }
 
     @Override
