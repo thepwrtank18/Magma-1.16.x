@@ -276,7 +276,7 @@
        explosion.func_77278_a();
        explosion.func_77279_a(false);
        if (p_230546_12_ == Explosion.Mode.NONE) {
-@@ -1331,4 +1383,28 @@
+@@ -1331,4 +1383,25 @@
           p_241121_0_.func_175656_a(p_241122_1_, Blocks.field_150343_Z.func_176223_P());
        });
     }
@@ -294,9 +294,6 @@
 +   // CraftBukkit - start
 +   public void addLightningBolt(LightningBoltEntity entity){
 +      // TODO: 26/06/2020 Patch
-+   }
-+
-+   public void addEntity(Entity entity, SpawnReason custom) {
 +   }
 +
 +   public void sendParticles(Object o, IParticleData toNMS, double x, double y, double z, int count, double offsetX, double offsetY, double offsetZ, double extra, boolean force) {
