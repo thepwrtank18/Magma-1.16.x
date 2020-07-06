@@ -1,0 +1,10 @@
+--- a/net/minecraft/entity/ai/brain/BrainUtil.java
++++ b/net/minecraft/entity/ai/brain/BrainUtil.java
+@@ -75,6 +75,7 @@
+    }
+ 
+    public static void func_233865_a_(LivingEntity p_233865_0_, ItemStack p_233865_1_, Vector3d p_233865_2_) {
++      if (p_233865_1_.func_190926_b()) return; // CraftBukkit - SPIGOT-4940: no empty loot
+       double d0 = p_233865_0_.func_226280_cw_() - (double)0.3F;
+       ItemEntity itementity = new ItemEntity(p_233865_0_.field_70170_p, p_233865_0_.func_226277_ct_(), d0, p_233865_0_.func_226281_cx_(), p_233865_1_);
+       float f = 0.3F;

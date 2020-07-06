@@ -1,0 +1,64 @@
+--- a/net/minecraft/block/BedBlock.java
++++ b/net/minecraft/block/BedBlock.java
+@@ -9,6 +9,7 @@
+ import net.minecraft.entity.LivingEntity;
+ import net.minecraft.entity.merchant.villager.VillagerEntity;
+ import net.minecraft.entity.player.PlayerEntity;
++import net.minecraft.entity.player.PlayerEntity.SleepResult;
+ import net.minecraft.item.BlockItemUseContext;
+ import net.minecraft.item.DyeColor;
+ import net.minecraft.item.ItemStack;
+@@ -82,7 +83,8 @@
+             }
+          }
+ 
+-         if (!func_235330_a_(p_225533_2_)) {
++         // CraftBukkit - moved world and biome check into PlayerEntity
++         if (false && !func_235330_a_(p_225533_2_)) {
+             p_225533_2_.func_217377_a(p_225533_3_, false);
+             BlockPos blockpos = p_225533_3_.func_177972_a(p_225533_1_.func_177229_b(field_185512_D).func_176734_d());
+             if (p_225533_2_.func_180495_p(blockpos).func_203425_a(this)) {
+@@ -98,7 +100,16 @@
+ 
+             return ActionResultType.SUCCESS;
+          } else {
++            // CraftBukkit start
++            BlockState finaliblockdata = p_225533_1_;
++            BlockPos finalblockposition = p_225533_3_;
++            // CraftBukkit end
+             p_225533_4_.func_213819_a(p_225533_3_).ifLeft((p_220173_1_) -> {
++               // CraftBukkit start - handling bed explosion from below here
++               if (p_220173_1_ == SleepResult.NOT_POSSIBLE_HERE) {
++                  this.explodeBed(finaliblockdata, p_225533_2_, finalblockposition);
++               } else
++                  // CraftBukkit end
+                if (p_220173_1_ != null) {
+                   p_225533_4_.func_146105_b(p_220173_1_.func_221259_a(), true);
+                }
+@@ -109,8 +120,25 @@
+       }
+    }
+ 
++   // CraftBukkit start
++   private ActionResultType explodeBed(BlockState iblockdata, World world, BlockPos blockposition) {
++      {
++         {
++            world.func_217377_a(blockposition, false);
++            BlockPos blockposition1 = blockposition.func_177972_a(iblockdata.func_177229_b(field_185512_D).func_176734_d());
++            if (world.func_180495_p(blockposition1).func_177230_c() == this) {
++               world.func_217377_a(blockposition1, false);
++            }
++            world.func_230546_a_((Entity)null, DamageSource.func_233546_a_(), (IExplosionContext)null, (double)blockposition.func_177958_n() + 0.5D, (double)blockposition.func_177956_o() + 0.5D, (double)blockposition.func_177952_p() + 0.5D, 5.0F, true, Explosion.Mode.DESTROY);
++            return ActionResultType.SUCCESS;
++         }
++      }
++   }
++   // CraftBukkit end
++
+    public static boolean func_235330_a_(World p_235330_0_) {
+-      return p_235330_0_.func_230315_m_().func_241510_j_();
++      // CraftBukkit - moved world and biome check into PlayerEntity
++      return true || p_235330_0_.func_230315_m_().func_241510_j_();
+    }
+ 
+    private boolean func_226861_a_(World p_226861_1_, BlockPos p_226861_2_) {

@@ -1,0 +1,11 @@
+--- a/net/minecraft/util/Direction.java
++++ b/net/minecraft/util/Direction.java
+@@ -34,7 +34,7 @@
+    EAST(5, 4, 3, "east", Direction.AxisDirection.POSITIVE, Direction.Axis.X, new Vector3i(1, 0, 0));
+ 
+    private final int field_176748_g;
+-   private final int field_176759_h;
++   public final int field_176759_h; // private->public
+    private final int field_176760_i;
+    private final String field_176757_j;
+    private final Direction.Axis field_176758_k;
