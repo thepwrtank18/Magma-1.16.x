@@ -1,11 +1,31 @@
 --- a/net/minecraft/world/Teleporter.java
 +++ b/net/minecraft/world/Teleporter.java
-@@ -23,7 +23,7 @@
+@@ -10,6 +10,7 @@
+ import net.minecraft.block.Blocks;
+ import net.minecraft.block.NetherPortalBlock;
+ import net.minecraft.block.pattern.BlockPattern;
++import net.minecraft.block.pattern.BlockPattern.PortalInfo;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.player.PlayerEntity;
+ import net.minecraft.util.Direction;
+@@ -22,8 +23,9 @@
+ import net.minecraft.village.PointOfInterestType;
  import net.minecraft.world.server.ServerWorld;
  import net.minecraft.world.server.TicketType;
++import org.apache.commons.lang.NotImplementedException;
  
 -public class Teleporter {
 +public class Teleporter implements net.minecraftforge.common.util.ITeleporter {
     protected final ServerWorld field_85192_a;
     protected final Random field_77187_a;
  
+@@ -225,4 +227,9 @@
+ 
+       return true;
+    }
++
++   // CraftBukkit
++   public PortalInfo placeInExistingPortal(BlockPos blockpos, Vector3d vector3d, Direction teleportDirection, double x, double y, boolean b, int searchRadius) {
++      throw new NotImplementedException("todo: Magma come back");
++   }
+ }
