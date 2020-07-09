@@ -1,0 +1,37 @@
+--- a/net/minecraft/entity/monster/ZombifiedPiglinEntity.java
++++ b/net/minecraft/entity/monster/ZombifiedPiglinEntity.java
+@@ -4,6 +4,7 @@
+ import java.util.UUID;
+ import javax.annotation.Nullable;
+ import net.minecraft.block.Blocks;
++import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityType;
+ import net.minecraft.entity.IAngerable;
+ import net.minecraft.entity.LivingEntity;
+@@ -133,7 +134,7 @@
+       }).filter((p_241406_1_) -> {
+          return !p_241406_1_.func_184191_r(this.func_70638_az());
+       }).forEach((p_241405_1_) -> {
+-         p_241405_1_.func_70624_b(this.func_70638_az());
++         p_241405_1_.setAttackTarget(this.func_70638_az(), org.bukkit.event.entity.EntityTargetEvent.TargetReason.TARGET_ATTACKED_NEARBY_ENTITY, true); // CraftBukkit
+       });
+    }
+ 
+@@ -155,7 +156,16 @@
+    }
+ 
+    public void func_230258_H__() {
+-      this.func_230260_a__(field_234346_bv_.func_233018_a_(this.field_70146_Z));
++      // CraftBukkit start
++      Entity entity = ((ServerWorld) this.field_70170_p).func_217461_a(func_230257_G__());
++      org.bukkit.event.entity.PigZombieAngerEvent event = new org.bukkit.event.entity.PigZombieAngerEvent((org.bukkit.entity.PigZombie) this.getBukkitEntity(), (entity == null) ? null : entity.getBukkitEntity(), field_234346_bv_.func_233018_a_(this.field_70146_Z));
++      this.field_70170_p.getServerCB().getPluginManager().callEvent(event);
++      if (event.isCancelled()) {
++         this.func_230259_a_(null);
++         return;
++      }
++      this.func_230260_a__(event.getNewAnger());
++      // CraftBukkit end
+    }
+ 
+    public static boolean func_234351_b_(EntityType<ZombifiedPiglinEntity> p_234351_0_, IWorld p_234351_1_, SpawnReason p_234351_2_, BlockPos p_234351_3_, Random p_234351_4_) {
