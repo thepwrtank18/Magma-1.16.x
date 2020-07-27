@@ -17,7 +17,7 @@
     private boolean field_191509_at;
  
     public ArrowEntity(EntityType<? extends ArrowEntity> p_i50172_1_, World p_i50172_2_) {
-@@ -122,11 +123,25 @@
+@@ -122,11 +123,30 @@
        }
     }
  
@@ -28,6 +28,11 @@
 +
 +   public String getTypeCB() {
 +      return Registry.field_212621_j.func_177774_c(this.field_184560_g).toString();
++   }
++
++   public void setType(final String string) {
++      this.field_184560_g = Registry.field_212621_j.func_82594_a(new ResourceLocation(string));
++      this.func_184212_Q().func_187227_b(ArrowEntity.field_184559_f, PotionUtils.func_185181_a(PotionUtils.func_185186_a(this.field_184560_g, this.field_184561_h)));
 +   }
 +
 +   public boolean isTipped() {
@@ -44,14 +49,3 @@
        this.field_191509_at = true;
        this.field_70180_af.func_187227_b(field_184559_f, p_191507_1_);
     }
-@@ -219,4 +234,10 @@
-       }
- 
-    }
-+
-+   // CraftBukkit start
-+   public void setType(final String string){
-+      // TODO: 26/06/2020 Add implementation patch
-+   }
-+   // CraftBukkit end
- }

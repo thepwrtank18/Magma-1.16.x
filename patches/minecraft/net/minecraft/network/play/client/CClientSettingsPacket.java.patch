@@ -1,0 +1,13 @@
+--- a/net/minecraft/network/play/client/CClientSettingsPacket.java
++++ b/net/minecraft/network/play/client/CClientSettingsPacket.java
+@@ -10,8 +10,8 @@
+ import net.minecraftforge.api.distmarker.OnlyIn;
+ 
+ public class CClientSettingsPacket implements IPacket<IServerPlayNetHandler> {
+-   private String field_149530_a;
+-   private int field_149528_b;
++   public String field_149530_a; // CraftBukkit private->public
++   public int field_149528_b; // CraftBukkit private->public
+    private ChatVisibility field_149529_c;
+    private boolean field_149526_d;
+    private int field_179711_e;

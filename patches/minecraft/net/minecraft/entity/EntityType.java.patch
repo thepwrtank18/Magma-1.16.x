@@ -1,6 +1,6 @@
 --- a/net/minecraft/entity/EntityType.java
 +++ b/net/minecraft/entity/EntityType.java
-@@ -136,12 +136,14 @@
+@@ -136,14 +136,16 @@
  import net.minecraft.util.text.TranslationTextComponent;
  import net.minecraft.world.IWorldReader;
  import net.minecraft.world.World;
@@ -14,8 +14,11 @@
 -public class EntityType<T extends Entity> {
 +public class EntityType<T extends Entity> extends net.minecraftforge.registries.ForgeRegistryEntry<EntityType<?>> {
     private static final Logger field_200731_aJ = LogManager.getLogger();
-    public static final EntityType<AreaEffectCloudEntity> field_200788_b = func_200712_a("area_effect_cloud", EntityType.Builder.<AreaEffectCloudEntity>func_220322_a(AreaEffectCloudEntity::new, EntityClassification.MISC).func_220320_c().func_220321_a(6.0F, 0.5F).func_233606_a_(10).func_233608_b_(Integer.MAX_VALUE));
+-   public static final EntityType<AreaEffectCloudEntity> field_200788_b = func_200712_a("area_effect_cloud", EntityType.Builder.<AreaEffectCloudEntity>func_220322_a(AreaEffectCloudEntity::new, EntityClassification.MISC).func_220320_c().func_220321_a(6.0F, 0.5F).func_233606_a_(10).func_233608_b_(Integer.MAX_VALUE));
++   public static final EntityType<AreaEffectCloudEntity> field_200788_b = func_200712_a("area_effect_cloud", EntityType.Builder.<AreaEffectCloudEntity>func_220322_a(AreaEffectCloudEntity::new, EntityClassification.MISC).func_220320_c().func_220321_a(6.0F, 0.5F).func_233606_a_(10).func_233608_b_(10));  // CraftBukkit - SPIGOT-3729: track area effect clouds
     public static final EntityType<ArmorStandEntity> field_200789_c = func_200712_a("armor_stand", EntityType.Builder.<ArmorStandEntity>func_220322_a(ArmorStandEntity::new, EntityClassification.MISC).func_220321_a(0.5F, 1.975F).func_233606_a_(10));
+    public static final EntityType<ArrowEntity> field_200790_d = func_200712_a("arrow", EntityType.Builder.<ArrowEntity>func_220322_a(ArrowEntity::new, EntityClassification.MISC).func_220321_a(0.5F, 0.5F).func_233606_a_(4).func_233608_b_(20));
+    public static final EntityType<BatEntity> field_200791_e = func_200712_a("bat", EntityType.Builder.<BatEntity>func_220322_a(BatEntity::new, EntityClassification.AMBIENT).func_220321_a(0.5F, 0.9F).func_233606_a_(5));
 @@ -267,6 +269,12 @@
     private ResourceLocation field_220358_bg;
     private final EntitySize field_220359_bi;
@@ -72,6 +75,15 @@
     public T func_220349_b(World p_220349_1_, @Nullable CompoundNBT p_220349_2_, @Nullable ITextComponent p_220349_3_, @Nullable PlayerEntity p_220349_4_, BlockPos p_220349_5_, SpawnReason p_220349_6_, boolean p_220349_7_, boolean p_220349_8_) {
        T t = this.func_200721_a(p_220349_1_);
        if (t == null) {
+@@ -331,7 +352,7 @@
+             t.func_200203_b(p_220349_3_);
+          }
+ 
+-         func_208048_a(p_220349_1_, p_220349_4_, t, p_220349_2_);
++         try { func_208048_a(p_220349_1_, p_220349_4_, t, p_220349_2_); } catch (Throwable throwable) { field_200731_aJ.warn("Error loading spawn egg NBT", throwable); } // CraftBukkit - SPIGOT-5665
+          return t;
+       }
+    }
 @@ -498,14 +519,23 @@
     }
  

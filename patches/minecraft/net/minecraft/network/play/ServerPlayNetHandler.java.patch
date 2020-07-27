@@ -1,6 +1,6 @@
 --- a/net/minecraft/network/play/ServerPlayNetHandler.java
 +++ b/net/minecraft/network/play/ServerPlayNetHandler.java
-@@ -140,8 +140,10 @@
+@@ -140,8 +140,11 @@
  import net.minecraft.world.IWorldReader;
  import net.minecraft.world.World;
  import net.minecraft.world.server.ServerWorld;
@@ -8,10 +8,11 @@
  import org.apache.logging.log4j.LogManager;
  import org.apache.logging.log4j.Logger;
 +import org.bukkit.Location;
++import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
  
  public class ServerPlayNetHandler implements IServerPlayNetHandler {
     private static final Logger field_147370_c = LogManager.getLogger();
-@@ -347,9 +349,11 @@
+@@ -347,9 +350,11 @@
              }
  
              entity.func_70080_a(d3, d4, d5, f, f1);
@@ -23,7 +24,7 @@
                 this.field_147371_a.func_179290_a(new SMoveVehiclePacket(entity));
                 return;
              }
-@@ -366,7 +370,7 @@
+@@ -366,7 +371,7 @@
     }
  
     private boolean func_241162_a_(Entity p_241162_1_) {
@@ -32,7 +33,50 @@
     }
  
     public void func_184339_a(CConfirmTeleportPacket p_184339_1_) {
-@@ -887,7 +891,9 @@
+@@ -808,24 +813,33 @@
+       });
+    }
+ 
++   // CraftBukkit start - Delegate to teleport(Location)
++   public void setPlayerLocation(double x, double y, double z, float yaw, float pitch, TeleportCause cause) {
++      this.setPlayerLocation(x, y, z, yaw, pitch, Collections.emptySet(), cause);
++   }
++
+    public void func_147364_a(double p_147364_1_, double p_147364_3_, double p_147364_5_, float p_147364_7_, float p_147364_8_) {
+-      this.func_175089_a(p_147364_1_, p_147364_3_, p_147364_5_, p_147364_7_, p_147364_8_, Collections.emptySet());
++      this.setPlayerLocation(p_147364_1_, p_147364_3_, p_147364_5_, p_147364_7_, p_147364_8_, Collections.emptySet(), TeleportCause.UNKNOWN);
+    }
+ 
+    public void func_175089_a(double p_175089_1_, double p_175089_3_, double p_175089_5_, float p_175089_7_, float p_175089_8_, Set<SPlayerPositionLookPacket.Flags> p_175089_9_) {
+-      double d0 = p_175089_9_.contains(SPlayerPositionLookPacket.Flags.X) ? this.field_147369_b.func_226277_ct_() : 0.0D;
+-      double d1 = p_175089_9_.contains(SPlayerPositionLookPacket.Flags.Y) ? this.field_147369_b.func_226278_cu_() : 0.0D;
+-      double d2 = p_175089_9_.contains(SPlayerPositionLookPacket.Flags.Z) ? this.field_147369_b.func_226281_cx_() : 0.0D;
+-      float f = p_175089_9_.contains(SPlayerPositionLookPacket.Flags.Y_ROT) ? this.field_147369_b.field_70177_z : 0.0F;
+-      float f1 = p_175089_9_.contains(SPlayerPositionLookPacket.Flags.X_ROT) ? this.field_147369_b.field_70125_A : 0.0F;
+-      this.field_184362_y = new Vector3d(p_175089_1_, p_175089_3_, p_175089_5_);
++      this.setPlayerLocation(p_175089_1_, p_175089_3_, p_175089_5_, p_175089_7_, p_175089_8_, p_175089_9_, TeleportCause.UNKNOWN);
++   }
++
++   public void setPlayerLocation(double x, double y, double z, float yaw, float pitch, Set<SPlayerPositionLookPacket.Flags> relativeSet, TeleportCause cause) {
++      double d0 = relativeSet.contains(SPlayerPositionLookPacket.Flags.X) ? this.field_147369_b.func_226277_ct_() : 0.0D;
++      double d1 = relativeSet.contains(SPlayerPositionLookPacket.Flags.Y) ? this.field_147369_b.func_226278_cu_() : 0.0D;
++      double d2 = relativeSet.contains(SPlayerPositionLookPacket.Flags.Z) ? this.field_147369_b.func_226281_cx_() : 0.0D;
++      float f = relativeSet.contains(SPlayerPositionLookPacket.Flags.Y_ROT) ? this.field_147369_b.field_70177_z : 0.0F;
++      float f1 = relativeSet.contains(SPlayerPositionLookPacket.Flags.X_ROT) ? this.field_147369_b.field_70125_A : 0.0F;
++      this.field_184362_y = new Vector3d(x, y, z);
+       if (++this.field_184363_z == Integer.MAX_VALUE) {
+          this.field_184363_z = 0;
+       }
+ 
+       this.field_184343_A = this.field_147368_e;
+-      this.field_147369_b.func_70080_a(p_175089_1_, p_175089_3_, p_175089_5_, p_175089_7_, p_175089_8_);
+-      this.field_147369_b.field_71135_a.func_147359_a(new SPlayerPositionLookPacket(p_175089_1_ - d0, p_175089_3_ - d1, p_175089_5_ - d2, p_175089_7_ - f, p_175089_8_ - f1, p_175089_9_, this.field_184363_z));
++      this.field_147369_b.func_70080_a(x, y, z, yaw, pitch);
++      this.field_147369_b.field_71135_a.func_147359_a(new SPlayerPositionLookPacket(x - d0, y - d1, z - d2, yaw - f, pitch - f1, relativeSet, this.field_184363_z));
+    }
+ 
+    public void func_147345_a(CPlayerDiggingPacket p_147345_1_) {
+@@ -887,7 +901,9 @@
        Direction direction = blockraytraceresult.func_216354_b();
        this.field_147369_b.func_143004_u();
        if (blockpos.func_177956_o() < this.field_147367_d.func_71207_Z()) {
@@ -43,7 +87,7 @@
              ActionResultType actionresulttype = this.field_147369_b.field_71134_c.func_219441_a(this.field_147369_b, serverworld, itemstack, hand, blockraytraceresult);
              if (direction == Direction.UP && !actionresulttype.func_226246_a_() && blockpos.func_177956_o() >= this.field_147367_d.func_71207_Z() - 1 && func_241166_a_(this.field_147369_b, itemstack)) {
                 ITextComponent itextcomponent = (new TranslationTextComponent("build.tooHigh", this.field_147367_d.func_71207_Z())).func_240699_a_(TextFormatting.RED);
-@@ -1020,7 +1026,9 @@
+@@ -1020,7 +1036,9 @@
           if (s.startsWith("/")) {
              this.func_147361_d(s);
           } else {
@@ -54,7 +98,7 @@
              this.field_147367_d.func_184103_al().func_232641_a_(itextcomponent, ChatType.CHAT, this.field_147369_b.func_110124_au());
           }
  
-@@ -1109,6 +1117,7 @@
+@@ -1109,6 +1127,7 @@
              if (p_147340_1_.func_149565_c() == CUseEntityPacket.Action.INTERACT) {
                 optional = Optional.of(this.field_147369_b.func_190775_a(entity, hand));
              } else if (p_147340_1_.func_149565_c() == CUseEntityPacket.Action.INTERACT_AT) {
@@ -62,7 +106,7 @@
                 optional = Optional.of(entity.func_184199_a(this.field_147369_b, p_147340_1_.func_179712_b(), hand));
              } else if (p_147340_1_.func_149565_c() == CUseEntityPacket.Action.ATTACK) {
                 if (entity instanceof ItemEntity || entity instanceof ExperienceOrbEntity || entity instanceof AbstractArrowEntity || entity == this.field_147369_b) {
-@@ -1320,6 +1329,8 @@
+@@ -1320,6 +1339,8 @@
     }
  
     public void func_147349_a(CCustomPayloadPacket p_147349_1_) {
@@ -71,7 +115,7 @@
     }
  
     public void func_217263_a(CSetDifficultyPacket p_217263_1_) {
-@@ -1335,4 +1346,18 @@
+@@ -1335,4 +1356,18 @@
           this.field_147367_d.func_213209_d(p_217261_1_.func_218776_b());
        }
     }
