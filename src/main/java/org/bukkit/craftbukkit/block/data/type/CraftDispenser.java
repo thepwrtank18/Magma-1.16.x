@@ -5,7 +5,7 @@ import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public abstract class CraftDispenser extends CraftBlockData implements Dispenser {
 
-    private static final net.minecraft.server.BlockStateBoolean TRIGGERED = getBoolean("triggered");
+    private static final net.minecraft.state.BooleanProperty TRIGGERED = getBoolean("triggered");
 
     @Override
     public boolean isTriggered() {

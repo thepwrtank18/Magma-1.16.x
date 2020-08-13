@@ -1,10 +1,7 @@
 package org.bukkit.craftbukkit.block;
 
-import net.minecraft.server.BlockShulkerBox;
-import net.minecraft.server.SoundCategory;
-import net.minecraft.server.SoundEffects;
-import net.minecraft.server.TileEntityShulkerBox;
-import net.minecraft.server.World;
+import net.minecraft.block.ShulkerBoxBlock;
+import net.minecraft.tileentity.ShulkerBoxTileEntity;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,13 +10,13 @@ import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.bukkit.inventory.Inventory;
 
-public class CraftShulkerBox extends CraftLootable<TileEntityShulkerBox> implements ShulkerBox {
+public class CraftShulkerBox extends CraftLootable<ShulkerBoxTileEntity> implements ShulkerBox {
 
     public CraftShulkerBox(final Block block) {
-        super(block, TileEntityShulkerBox.class);
+        super(block, ShulkerBoxTileEntity.class);
     }
 
-    public CraftShulkerBox(final Material material, final TileEntityShulkerBox te) {
+    public CraftShulkerBox(final Material material, final ShulkerBoxTileEntity te) {
         super(material, te);
     }
 
@@ -39,9 +36,9 @@ public class CraftShulkerBox extends CraftLootable<TileEntityShulkerBox> impleme
 
     @Override
     public DyeColor getColor() {
-        net.minecraft.server.Block block = CraftMagicNumbers.getBlock(this.getType());
+        net.minecraft.block.Block block = CraftMagicNumbers.getBlock(this.getType());
 
-        return DyeColor.getByWoolData((byte) ((BlockShulkerBox) block).color.getColorIndex());
+        return DyeColor.getByWoolData((byte) ((ShulkerBoxBlock) block).color.getColorValue());
     }
 
     @Override

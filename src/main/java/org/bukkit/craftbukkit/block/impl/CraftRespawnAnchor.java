@@ -9,13 +9,13 @@ public final class CraftRespawnAnchor extends org.bukkit.craftbukkit.block.data.
         super();
     }
 
-    public CraftRespawnAnchor(net.minecraft.server.IBlockData state) {
+    public CraftRespawnAnchor(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.type.CraftRespawnAnchor
 
-    private static final net.minecraft.server.BlockStateInteger CHARGES = getInteger(net.minecraft.server.BlockRespawnAnchor.class, "charges");
+    private static final net.minecraft.state.IntegerProperty CHARGES = getInteger(net.minecraft.block.RespawnAnchorBlock.class, "charges");
 
     @Override
     public int getCharges() {

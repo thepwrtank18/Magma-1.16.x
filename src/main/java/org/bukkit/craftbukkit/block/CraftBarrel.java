@@ -1,21 +1,19 @@
 package org.bukkit.craftbukkit.block;
 
-import net.minecraft.server.IBlockData;
-import net.minecraft.server.SoundEffects;
-import net.minecraft.server.TileEntityBarrel;
+import net.minecraft.tileentity.BarrelTileEntity;
 import org.bukkit.Material;
 import org.bukkit.block.Barrel;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.inventory.Inventory;
 
-public class CraftBarrel extends CraftLootable<TileEntityBarrel> implements Barrel {
+public class CraftBarrel extends CraftLootable<BarrelTileEntity> implements Barrel {
 
     public CraftBarrel(Block block) {
-        super(block, TileEntityBarrel.class);
+        super(block, BarrelTileEntity.class);
     }
 
-    public CraftBarrel(Material material, TileEntityBarrel te) {
+    public CraftBarrel(Material material, BarrelTileEntity te) {
         super(material, te);
     }
 

@@ -9,13 +9,13 @@ public final class CraftTwistingVines extends org.bukkit.craftbukkit.block.data.
         super();
     }
 
-    public CraftTwistingVines(net.minecraft.server.IBlockData state) {
+    public CraftTwistingVines(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftAgeable
 
-    private static final net.minecraft.server.BlockStateInteger AGE = getInteger(net.minecraft.server.BlockTwistingVines.class, "age");
+    private static final net.minecraft.state.IntegerProperty AGE = getInteger(net.minecraft.block.TwistingVinesBlock.class, "age");
 
     @Override
     public int getAge() {

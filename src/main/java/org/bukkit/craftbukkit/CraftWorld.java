@@ -25,7 +25,7 @@ import net.minecraft.server.ArraySetSorted;
 import net.minecraft.server.AxisAlignedBB;
 import net.minecraft.server.BiomeBase;
 import net.minecraft.server.BiomeDecoratorGroups;
-import net.minecraft.server.BlockChorusFlower;
+import net.minecraft.block.ChorusFlowerBlock;
 import net.minecraft.server.BlockDiodeAbstract;
 import net.minecraft.server.BlockPosition;
 import net.minecraft.server.Blocks;
@@ -70,7 +70,7 @@ import net.minecraft.server.EnumMobSpawn;
 import net.minecraft.server.Explosion;
 import net.minecraft.server.GameRules;
 import net.minecraft.server.GroupDataEntity;
-import net.minecraft.server.IBlockData;
+import net.minecraft.block.BlockState;
 import net.minecraft.server.IChunkAccess;
 import net.minecraft.server.IRegistry;
 import net.minecraft.server.MinecraftKey;
@@ -739,10 +739,10 @@ public class CraftWorld implements World {
         if (grownTree) { // Copy block data to delegate
             for (BlockState blockstate : world.capturedBlockStates.values()) {
                 BlockPosition position = ((CraftBlockState) blockstate).getPosition();
-                net.minecraft.server.IBlockData oldBlock = world.getType(position);
+                net.minecraft.block.BlockState oldBlock = world.getType(position);
                 int flag = ((CraftBlockState) blockstate).getFlag();
                 delegate.setBlockData(blockstate.getX(), blockstate.getY(), blockstate.getZ(), blockstate.getBlockData());
-                net.minecraft.server.IBlockData newBlock = world.getType(position);
+                net.minecraft.block.BlockState newBlock = world.getType(position);
                 world.notifyAndUpdatePhysics(position, null, oldBlock, newBlock, newBlock, flag, 512);
             }
             world.capturedBlockStates.clear();

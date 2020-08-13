@@ -9,13 +9,13 @@ public final class CraftCoralFan extends org.bukkit.craftbukkit.block.data.Craft
         super();
     }
 
-    public CraftCoralFan(net.minecraft.server.IBlockData state) {
+    public CraftCoralFan(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftWaterlogged
 
-    private static final net.minecraft.server.BlockStateBoolean WATERLOGGED = getBoolean(net.minecraft.server.BlockCoralFan.class, "waterlogged");
+    private static final net.minecraft.state.BooleanProperty WATERLOGGED = getBoolean(net.minecraft.block.CoralFinBlock.class, "waterlogged");
 
     @Override
     public boolean isWaterlogged() {

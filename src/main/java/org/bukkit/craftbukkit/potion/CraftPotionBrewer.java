@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import net.minecraft.server.MobEffect;
-import net.minecraft.server.PotionRegistry;
+import net.minecraft.potion.EffectInstance;
+import net.minecraft.potion.Potion;
 import org.bukkit.potion.PotionBrewer;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
@@ -22,10 +22,10 @@ public class CraftPotionBrewer implements PotionBrewer {
         if (cache.containsKey(damage))
             return cache.get(damage);
 
-        List<MobEffect> mcEffects = PotionRegistry.a(CraftPotionUtil.fromBukkit(new PotionData(damage, extended, upgraded))).a();
+        List<EffectInstance> mcEffects = Potion.getPotionTypeForName(CraftPotionUtil.fromBukkit(new PotionData(damage, extended, upgraded))).getEffects();
 
         ImmutableList.Builder<PotionEffect> builder = new ImmutableList.Builder<PotionEffect>();
-        for (MobEffect effect : mcEffects) {
+        for (EffectInstance effect : mcEffects) {
             builder.add(CraftPotionUtil.toBukkit(effect));
         }
 

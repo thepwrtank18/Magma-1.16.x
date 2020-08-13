@@ -3,8 +3,8 @@ package org.bukkit.craftbukkit.potion;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
-import net.minecraft.server.MobEffect;
-import net.minecraft.server.MobEffectList;
+import net.minecraft.potion.Effect;
+import net.minecraft.potion.EffectInstance;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -13,54 +13,54 @@ import org.bukkit.potion.PotionType;
 public class CraftPotionUtil {
 
     private static final BiMap<PotionType, String> regular = ImmutableBiMap.<PotionType, String>builder()
-            .put(PotionType.UNCRAFTABLE, "empty")
-            .put(PotionType.WATER, "water")
-            .put(PotionType.MUNDANE, "mundane")
-            .put(PotionType.THICK, "thick")
-            .put(PotionType.AWKWARD, "awkward")
-            .put(PotionType.NIGHT_VISION, "night_vision")
-            .put(PotionType.INVISIBILITY, "invisibility")
-            .put(PotionType.JUMP, "leaping")
-            .put(PotionType.FIRE_RESISTANCE, "fire_resistance")
-            .put(PotionType.SPEED, "swiftness")
-            .put(PotionType.SLOWNESS, "slowness")
-            .put(PotionType.WATER_BREATHING, "water_breathing")
-            .put(PotionType.INSTANT_HEAL, "healing")
-            .put(PotionType.INSTANT_DAMAGE, "harming")
-            .put(PotionType.POISON, "poison")
-            .put(PotionType.REGEN, "regeneration")
-            .put(PotionType.STRENGTH, "strength")
-            .put(PotionType.WEAKNESS, "weakness")
-            .put(PotionType.LUCK, "luck")
-            .put(PotionType.TURTLE_MASTER, "turtle_master")
-            .put(PotionType.SLOW_FALLING, "slow_falling")
-            .build();
+        .put(PotionType.UNCRAFTABLE, "empty")
+        .put(PotionType.WATER, "water")
+        .put(PotionType.MUNDANE, "mundane")
+        .put(PotionType.THICK, "thick")
+        .put(PotionType.AWKWARD, "awkward")
+        .put(PotionType.NIGHT_VISION, "night_vision")
+        .put(PotionType.INVISIBILITY, "invisibility")
+        .put(PotionType.JUMP, "leaping")
+        .put(PotionType.FIRE_RESISTANCE, "fire_resistance")
+        .put(PotionType.SPEED, "swiftness")
+        .put(PotionType.SLOWNESS, "slowness")
+        .put(PotionType.WATER_BREATHING, "water_breathing")
+        .put(PotionType.INSTANT_HEAL, "healing")
+        .put(PotionType.INSTANT_DAMAGE, "harming")
+        .put(PotionType.POISON, "poison")
+        .put(PotionType.REGEN, "regeneration")
+        .put(PotionType.STRENGTH, "strength")
+        .put(PotionType.WEAKNESS, "weakness")
+        .put(PotionType.LUCK, "luck")
+        .put(PotionType.TURTLE_MASTER, "turtle_master")
+        .put(PotionType.SLOW_FALLING, "slow_falling")
+        .build();
     private static final BiMap<PotionType, String> upgradeable = ImmutableBiMap.<PotionType, String>builder()
-            .put(PotionType.JUMP, "strong_leaping")
-            .put(PotionType.SPEED, "strong_swiftness")
-            .put(PotionType.INSTANT_HEAL, "strong_healing")
-            .put(PotionType.INSTANT_DAMAGE, "strong_harming")
-            .put(PotionType.POISON, "strong_poison")
-            .put(PotionType.REGEN, "strong_regeneration")
-            .put(PotionType.STRENGTH, "strong_strength")
-            .put(PotionType.SLOWNESS, "strong_slowness")
-            .put(PotionType.TURTLE_MASTER, "strong_turtle_master")
-            .build();
+        .put(PotionType.JUMP, "strong_leaping")
+        .put(PotionType.SPEED, "strong_swiftness")
+        .put(PotionType.INSTANT_HEAL, "strong_healing")
+        .put(PotionType.INSTANT_DAMAGE, "strong_harming")
+        .put(PotionType.POISON, "strong_poison")
+        .put(PotionType.REGEN, "strong_regeneration")
+        .put(PotionType.STRENGTH, "strong_strength")
+        .put(PotionType.SLOWNESS, "strong_slowness")
+        .put(PotionType.TURTLE_MASTER, "strong_turtle_master")
+        .build();
     private static final BiMap<PotionType, String> extendable = ImmutableBiMap.<PotionType, String>builder()
-            .put(PotionType.NIGHT_VISION, "long_night_vision")
-            .put(PotionType.INVISIBILITY, "long_invisibility")
-            .put(PotionType.JUMP, "long_leaping")
-            .put(PotionType.FIRE_RESISTANCE, "long_fire_resistance")
-            .put(PotionType.SPEED, "long_swiftness")
-            .put(PotionType.SLOWNESS, "long_slowness")
-            .put(PotionType.WATER_BREATHING, "long_water_breathing")
-            .put(PotionType.POISON, "long_poison")
-            .put(PotionType.REGEN, "long_regeneration")
-            .put(PotionType.STRENGTH, "long_strength")
-            .put(PotionType.WEAKNESS, "long_weakness")
-            .put(PotionType.TURTLE_MASTER, "long_turtle_master")
-            .put(PotionType.SLOW_FALLING, "long_slow_falling")
-            .build();
+        .put(PotionType.NIGHT_VISION, "long_night_vision")
+        .put(PotionType.INVISIBILITY, "long_invisibility")
+        .put(PotionType.JUMP, "long_leaping")
+        .put(PotionType.FIRE_RESISTANCE, "long_fire_resistance")
+        .put(PotionType.SPEED, "long_swiftness")
+        .put(PotionType.SLOWNESS, "long_slowness")
+        .put(PotionType.WATER_BREATHING, "long_water_breathing")
+        .put(PotionType.POISON, "long_poison")
+        .put(PotionType.REGEN, "long_regeneration")
+        .put(PotionType.STRENGTH, "long_strength")
+        .put(PotionType.WEAKNESS, "long_weakness")
+        .put(PotionType.TURTLE_MASTER, "long_turtle_master")
+        .put(PotionType.SLOW_FALLING, "long_slow_falling")
+        .build();
 
     public static String fromBukkit(PotionData data) {
         String type;
@@ -99,22 +99,22 @@ public class CraftPotionUtil {
         return new PotionData(PotionType.UNCRAFTABLE, false, false);
     }
 
-    public static MobEffect fromBukkit(PotionEffect effect) {
-        MobEffectList type = MobEffectList.fromId(effect.getType().getId());
-        return new MobEffect(type, effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles());
+    public static EffectInstance fromBukkit(PotionEffect effect) {
+        Effect type = Effect.get(effect.getType().getId());
+        return new EffectInstance(type, effect.getDuration(), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles());
     }
 
-    public static PotionEffect toBukkit(MobEffect effect) {
-        PotionEffectType type = PotionEffectType.getById(MobEffectList.getId(effect.getMobEffect()));
+    public static PotionEffect toBukkit(EffectInstance effect) {
+        PotionEffectType type = PotionEffectType.getById(Effect.getId(effect.getPotion()));
         int amp = effect.getAmplifier();
         int duration = effect.getDuration();
         boolean ambient = effect.isAmbient();
-        boolean particles = effect.isShowParticles();
+        boolean particles = effect.doesShowParticles();
         return new PotionEffect(type, duration, amp, ambient, particles);
     }
 
-    public static boolean equals(MobEffectList mobEffect, PotionEffectType type) {
-        PotionEffectType typeV = PotionEffectType.getById(MobEffectList.getId(mobEffect));
+    public static boolean equals(Effect mobEffect, PotionEffectType type) {
+        PotionEffectType typeV = PotionEffectType.getById(Effect.getId(mobEffect));
         return typeV.equals(type);
     }
 }

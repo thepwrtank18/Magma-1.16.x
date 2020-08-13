@@ -1,7 +1,8 @@
 package org.bukkit.craftbukkit.tag;
 
-import net.minecraft.server.MinecraftKey;
-import net.minecraft.server.Tags;
+import net.minecraft.tags.ITag;
+import net.minecraft.tags.TagCollectionReader;
+import net.minecraft.util.ResourceLocation;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
@@ -9,20 +10,21 @@ import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 
 public abstract class CraftTag<N, B extends Keyed> implements Tag<B> {
 
-    private final net.minecraft.server.Tags<N> registry;
-    private final MinecraftKey tag;
+    private final TagCollectionReader<N> registry;
+    private final ResourceLocation tag;
     //
-    private net.minecraft.server.Tag<N> handle;
+    private ITag<N> handle;
 
-    public CraftTag(Tags<N> registry, MinecraftKey tag) {
+    public CraftTag(TagCollectionReader<N> registry, ResourceLocation tag) {
         this.registry = registry;
         this.tag = tag;
     }
 
-    protected net.minecraft.server.Tag<N> getHandle() {
-        if (handle == null) {
-            handle = registry.b(tag);
-        }
+    protected ITag<N> getHandle() {
+        // TODO: 13/08/2020 Magma Comeback
+//        if (handle == null) {
+//            handle = registry.(tag);
+//        }
 
         return handle;
     }

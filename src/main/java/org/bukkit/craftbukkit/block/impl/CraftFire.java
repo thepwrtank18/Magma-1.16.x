@@ -9,13 +9,13 @@ public final class CraftFire extends org.bukkit.craftbukkit.block.data.CraftBloc
         super();
     }
 
-    public CraftFire(net.minecraft.server.IBlockData state) {
+    public CraftFire(net.minecraft.block.BlockState state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftAgeable
 
-    private static final net.minecraft.server.BlockStateInteger AGE = getInteger(net.minecraft.server.BlockFire.class, "age");
+    private static final net.minecraft.state.IntegerProperty AGE = getInteger(net.minecraft.block.FireBlock.class, "age");
 
     @Override
     public int getAge() {
@@ -34,13 +34,13 @@ public final class CraftFire extends org.bukkit.craftbukkit.block.data.CraftBloc
 
     // org.bukkit.craftbukkit.block.data.CraftMultipleFacing
 
-    private static final net.minecraft.server.BlockStateBoolean[] FACES = new net.minecraft.server.BlockStateBoolean[]{
-        getBoolean(net.minecraft.server.BlockFire.class, "north", true), getBoolean(net.minecraft.server.BlockFire.class, "east", true), getBoolean(net.minecraft.server.BlockFire.class, "south", true), getBoolean(net.minecraft.server.BlockFire.class, "west", true), getBoolean(net.minecraft.server.BlockFire.class, "up", true), getBoolean(net.minecraft.server.BlockFire.class, "down", true)
+    private static final net.minecraft.state.BooleanProperty[] FACES = new net.minecraft.state.BooleanProperty[]{
+        getBoolean(net.minecraft.block.FireBlock.class, "north", true), getBoolean(net.minecraft.block.FireBlock.class, "east", true), getBoolean(net.minecraft.block.FireBlock.class, "south", true), getBoolean(net.minecraft.block.FireBlock.class, "west", true), getBoolean(net.minecraft.block.FireBlock.class, "up", true), getBoolean(net.minecraft.block.FireBlock.class, "down", true)
     };
 
     @Override
     public boolean hasFace(org.bukkit.block.BlockFace face) {
-        net.minecraft.server.BlockStateBoolean state = FACES[face.ordinal()];
+        net.minecraft.state.BooleanProperty state = FACES[face.ordinal()];
         if (state == null) {
             throw new IllegalArgumentException("Non-allowed face " + face + ". Check MultipleFacing.getAllowedFaces.");
         }
@@ -49,7 +49,7 @@ public final class CraftFire extends org.bukkit.craftbukkit.block.data.CraftBloc
 
     @Override
     public void setFace(org.bukkit.block.BlockFace face, boolean has) {
-        net.minecraft.server.BlockStateBoolean state = FACES[face.ordinal()];
+        net.minecraft.state.BooleanProperty state = FACES[face.ordinal()];
         if (state == null) {
             throw new IllegalArgumentException("Non-allowed face " + face + ". Check MultipleFacing.getAllowedFaces.");
         }

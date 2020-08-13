@@ -8,7 +8,7 @@ import net.minecraft.server.BiomeStorage;
 import net.minecraft.server.BlockPosition;
 import net.minecraft.server.DataPaletteBlock;
 import net.minecraft.server.HeightMap;
-import net.minecraft.server.IBlockData;
+import net.minecraft.block.BlockState;
 import net.minecraft.server.IRegistry;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.Material;
