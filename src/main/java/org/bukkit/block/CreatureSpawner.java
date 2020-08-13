@@ -28,7 +28,7 @@ public interface CreatureSpawner extends TileState {
      *
      * @param creatureType The creature type's name.
      * @deprecated magic value, use
-     * {@link #setSpawnedType(EntityType)}.
+     * {@link #setSpawnedType(org.bukkit.entity.EntityType)}.
      */
     @Deprecated
     public void setCreatureTypeByName(@NotNull String creatureType);

@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.PistonHeadBlock;
-
 public final class CraftPistonExtension extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.PistonHead, org.bukkit.block.data.type.TechnicalPiston, org.bukkit.block.data.Directional {
 
     public CraftPistonExtension() {
         super();
     }
 
-    public CraftPistonExtension(net.minecraft.block.BlockState state) {
+    public CraftPistonExtension(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.type.CraftPistonHead
 
-    private static final net.minecraft.state.BooleanProperty SHORT = getBoolean(PistonHeadBlock.class, "short");
+    private static final net.minecraft.server.BlockStateBoolean SHORT = getBoolean(net.minecraft.server.BlockPistonExtension.class, "short");
 
     @Override
     public boolean isShort() {
@@ -31,7 +29,7 @@ public final class CraftPistonExtension extends org.bukkit.craftbukkit.block.dat
 
     // org.bukkit.craftbukkit.block.data.type.CraftTechnicalPiston
 
-    private static final net.minecraft.state.EnumProperty<?> TYPE = getEnum(PistonHeadBlock.class, "type");
+    private static final net.minecraft.server.BlockStateEnum<?> TYPE = getEnum(net.minecraft.server.BlockPistonExtension.class, "type");
 
     @Override
     public Type getType() {
@@ -45,7 +43,7 @@ public final class CraftPistonExtension extends org.bukkit.craftbukkit.block.dat
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final net.minecraft.state.EnumProperty<?> FACING = getEnum(PistonHeadBlock.class, "facing");
+    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockPistonExtension.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {

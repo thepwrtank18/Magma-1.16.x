@@ -1,12 +1,11 @@
 package org.bukkit.craftbukkit.block.data.type;
 
-import net.minecraft.state.BooleanProperty;
 import org.bukkit.block.data.type.PistonHead;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public abstract class CraftPistonHead extends CraftBlockData implements PistonHead {
 
-    private static final BooleanProperty SHORT = getBoolean("short");
+    private static final net.minecraft.server.BlockStateBoolean SHORT = getBoolean("short");
 
     @Override
     public boolean isShort() {

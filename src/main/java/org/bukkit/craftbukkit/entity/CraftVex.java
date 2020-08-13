@@ -1,19 +1,19 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.monster.VexEntity;
+import net.minecraft.server.EntityVex;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Vex;
 
 public class CraftVex extends CraftMonster implements Vex {
 
-    public CraftVex(CraftServer server, VexEntity entity) {
+    public CraftVex(CraftServer server, EntityVex entity) {
         super(server, entity);
     }
 
     @Override
-    public VexEntity getHandle() {
-        return (VexEntity) super.getHandle();
+    public EntityVex getHandle() {
+        return (EntityVex) super.getHandle();
     }
 
     @Override

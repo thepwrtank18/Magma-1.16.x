@@ -1,17 +1,17 @@
 package org.bukkit.craftbukkit.block;
 
-import net.minecraft.tileentity.EnderChestTileEntity;
+import net.minecraft.server.TileEntityEnderChest;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.EnderChest;
 
-public class CraftEnderChest extends CraftBlockEntityState<EnderChestTileEntity> implements EnderChest {
+public class CraftEnderChest extends CraftBlockEntityState<TileEntityEnderChest> implements EnderChest {
 
     public CraftEnderChest(final Block block) {
-        super(block, EnderChestTileEntity.class);
+        super(block, TileEntityEnderChest.class);
     }
 
-    public CraftEnderChest(final Material material, final EnderChestTileEntity te) {
+    public CraftEnderChest(final Material material, final TileEntityEnderChest te) {
         super(material, te);
     }
 }

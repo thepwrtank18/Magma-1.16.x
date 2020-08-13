@@ -1,9 +1,9 @@
 package org.bukkit.craftbukkit;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.server.IRegistry;
+import net.minecraft.server.MinecraftKey;
+import net.minecraft.server.SoundEffect;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Sound;
 
@@ -635,6 +635,7 @@ public enum CraftSound {
     ENTITY_PARROT_IMITATE_MAGMA_CUBE("entity.parrot.imitate.magma_cube"),
     ENTITY_PARROT_IMITATE_PHANTOM("entity.parrot.imitate.phantom"),
     ENTITY_PARROT_IMITATE_PIGLIN("entity.parrot.imitate.piglin"),
+    ENTITY_PARROT_IMITATE_PIGLIN_BRUTE("entity.parrot.imitate.piglin_brute"),
     ENTITY_PARROT_IMITATE_PILLAGER("entity.parrot.imitate.pillager"),
     ENTITY_PARROT_IMITATE_RAVAGER("entity.parrot.imitate.ravager"),
     ENTITY_PARROT_IMITATE_SHULKER("entity.parrot.imitate.shulker"),
@@ -661,6 +662,12 @@ public enum CraftSound {
     ENTITY_PIGLIN_ADMIRING_ITEM("entity.piglin.admiring_item"),
     ENTITY_PIGLIN_AMBIENT("entity.piglin.ambient"),
     ENTITY_PIGLIN_ANGRY("entity.piglin.angry"),
+    ENTITY_PIGLIN_BRUTE_AMBIENT("entity.piglin_brute.ambient"),
+    ENTITY_PIGLIN_BRUTE_ANGRY("entity.piglin_brute.angry"),
+    ENTITY_PIGLIN_BRUTE_CONVERTED_TO_ZOMBIFIED("entity.piglin_brute.converted_to_zombified"),
+    ENTITY_PIGLIN_BRUTE_DEATH("entity.piglin_brute.death"),
+    ENTITY_PIGLIN_BRUTE_HURT("entity.piglin_brute.hurt"),
+    ENTITY_PIGLIN_BRUTE_STEP("entity.piglin_brute.step"),
     ENTITY_PIGLIN_CELEBRATE("entity.piglin.celebrate"),
     ENTITY_PIGLIN_CONVERTED_TO_ZOMBIFIED("entity.piglin.converted_to_zombified"),
     ENTITY_PIGLIN_DEATH("entity.piglin.death"),
@@ -1006,8 +1013,8 @@ public enum CraftSound {
         return CraftSound.valueOf(sound.name()).minecraftKey;
     }
 
-    public static SoundEvent getSoundEffect(String s) {
-        SoundEvent effect = Registry.SOUND_EVENT.getOrDefault(new ResourceLocation(s));
+    public static SoundEffect getSoundEffect(String s) {
+        SoundEffect effect = IRegistry.SOUND_EVENT.get(new MinecraftKey(s));
         Preconditions.checkArgument(effect != null, "Sound effect %s does not exist", s);
 
         return effect;

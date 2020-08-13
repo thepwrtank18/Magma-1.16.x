@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.StonecutterBlock;
-
 public final class CraftStonecutter extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Directional {
 
     public CraftStonecutter() {
         super();
     }
 
-    public CraftStonecutter(net.minecraft.block.BlockState state) {
+    public CraftStonecutter(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final net.minecraft.state.EnumProperty<?> FACING = getEnum(StonecutterBlock.class, "facing");
+    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockStonecutter.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {

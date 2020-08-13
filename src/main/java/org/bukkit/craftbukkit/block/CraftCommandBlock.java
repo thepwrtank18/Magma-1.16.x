@@ -1,30 +1,30 @@
 package org.bukkit.craftbukkit.block;
 
-import net.minecraft.tileentity.CommandBlockTileEntity;
+import net.minecraft.server.TileEntityCommand;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
 
-public class CraftCommandBlock extends CraftBlockEntityState<CommandBlockTileEntity> implements CommandBlock {
+public class CraftCommandBlock extends CraftBlockEntityState<TileEntityCommand> implements CommandBlock {
 
     private String command;
     private String name;
 
     public CraftCommandBlock(Block block) {
-        super(block, CommandBlockTileEntity.class);
+        super(block, TileEntityCommand.class);
     }
 
-    public CraftCommandBlock(final Material material, final CommandBlockTileEntity te) {
+    public CraftCommandBlock(final Material material, final TileEntityCommand te) {
         super(material, te);
     }
 
     @Override
-    public void load(CommandBlockTileEntity commandBlock) {
+    public void load(TileEntityCommand commandBlock) {
         super.load(commandBlock);
 
-        command = commandBlock.getCommandBlockLogic().getCommand();
-        name = CraftChatMessage.fromComponent(commandBlock.getCommandBlockLogic().getName());
+        command = commandBlock.getCommandBlock().getCommand();
+        name = CraftChatMessage.fromComponent(commandBlock.getCommandBlock().getName());
     }
 
     @Override
@@ -48,10 +48,10 @@ public class CraftCommandBlock extends CraftBlockEntityState<CommandBlockTileEnt
     }
 
     @Override
-    public void applyTo(CommandBlockTileEntity commandBlock) {
+    public void applyTo(TileEntityCommand commandBlock) {
         super.applyTo(commandBlock);
 
-        commandBlock.getCommandBlockLogic().setCommand(command);
-        commandBlock.getCommandBlockLogic().setName(CraftChatMessage.fromStringOrNull(name));
+        commandBlock.getCommandBlock().setCommand(command);
+        commandBlock.getCommandBlock().setName(CraftChatMessage.fromStringOrNull(name));
     }
 }

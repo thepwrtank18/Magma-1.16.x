@@ -1,19 +1,5 @@
 --- a/net/minecraft/tileentity/AbstractFurnaceTileEntity.java
 +++ b/net/minecraft/tileentity/AbstractFurnaceTileEntity.java
-@@ -42,10 +42,10 @@
-    private static final int[] field_214016_h = new int[]{2, 1};
-    private static final int[] field_214017_i = new int[]{1};
-    protected NonNullList<ItemStack> field_214012_a = NonNullList.func_191197_a(3, ItemStack.field_190927_a);
--   private int field_214018_j;
-+   public int field_214018_j; // private->public CraftBukkit
-    private int field_214019_k;
--   private int field_214020_l;
--   private int field_214021_m;
-+   public int field_214020_l; // private->public CraftBukkit
-+   public int field_214021_m; // private->public CraftBukkit
-    protected final IIntArray field_214013_b = new IIntArray() {
-       public int func_221476_a(int p_221476_1_) {
-          switch(p_221476_1_) {
 @@ -91,6 +91,7 @@
        this.field_214014_c = p_i49964_2_;
     }
@@ -22,28 +8,7 @@
     public static Map<Item, Integer> func_214001_f() {
        Map<Item, Integer> map = Maps.newLinkedHashMap();
        func_213996_a(map, Items.field_151129_at, 20000);
-@@ -104,18 +105,8 @@
-       func_213992_a(map, ItemTags.field_202899_i, 150);
-       func_213992_a(map, ItemTags.field_212188_k, 300);
-       func_213992_a(map, ItemTags.field_202900_j, 300);
--      func_213996_a(map, Blocks.field_180407_aO, 300);
--      func_213996_a(map, Blocks.field_180404_aQ, 300);
--      func_213996_a(map, Blocks.field_180408_aP, 300);
--      func_213996_a(map, Blocks.field_180403_aR, 300);
--      func_213996_a(map, Blocks.field_180406_aS, 300);
--      func_213996_a(map, Blocks.field_180405_aT, 300);
--      func_213996_a(map, Blocks.field_180390_bo, 300);
--      func_213996_a(map, Blocks.field_180392_bq, 300);
--      func_213996_a(map, Blocks.field_180391_bp, 300);
--      func_213996_a(map, Blocks.field_180386_br, 300);
--      func_213996_a(map, Blocks.field_180385_bs, 300);
--      func_213996_a(map, Blocks.field_180387_bt, 300);
-+      func_213992_a(map, net.minecraftforge.common.Tags.Items.FENCES_WOODEN, 300);
-+      func_213992_a(map, net.minecraftforge.common.Tags.Items.FENCE_GATES_WOODEN, 300);
-       func_213996_a(map, Blocks.field_196586_al, 300);
-       func_213996_a(map, Blocks.field_150342_X, 300);
-       func_213996_a(map, Blocks.field_222428_lQ, 300);
-@@ -184,13 +175,13 @@
+@@ -184,13 +185,13 @@
        return this.field_214018_j > 0;
     }
  
@@ -61,7 +26,7 @@
        this.field_214019_k = this.func_213997_a(this.field_214012_a.get(1));
        CompoundNBT compoundnbt = p_230337_2_.func_74775_l("RecipesUsed");
  
-@@ -202,9 +193,9 @@
+@@ -202,9 +203,9 @@
  
     public CompoundNBT func_189515_b(CompoundNBT p_189515_1_) {
        super.func_189515_b(p_189515_1_);
@@ -74,7 +39,7 @@
        ItemStackHelper.func_191282_a(p_189515_1_, this.field_214012_a);
        CompoundNBT compoundnbt = new CompoundNBT();
        this.field_214022_n.forEach((p_235643_1_, p_235643_2_) -> {
-@@ -230,12 +221,14 @@
+@@ -230,12 +231,14 @@
                 this.field_214019_k = this.field_214018_j;
                 if (this.func_214006_r()) {
                    flag1 = true;
@@ -91,7 +56,7 @@
                       }
                    }
                 }
-@@ -279,10 +272,10 @@
+@@ -279,10 +282,10 @@
                 return true;
              } else if (!itemstack1.func_77969_a(itemstack)) {
                 return false;
@@ -104,7 +69,7 @@
              }
           }
        } else {
-@@ -298,7 +291,7 @@
+@@ -298,7 +301,7 @@
           if (itemstack2.func_190926_b()) {
              this.field_214012_a.set(2, itemstack1.func_77946_l());
           } else if (itemstack2.func_77973_b() == itemstack1.func_77973_b()) {
@@ -113,7 +78,7 @@
           }
  
           if (!this.field_145850_b.field_72995_K) {
-@@ -318,7 +311,7 @@
+@@ -318,7 +321,7 @@
           return 0;
        } else {
           Item item = p_213997_1_.func_77973_b();
@@ -122,7 +87,7 @@
        }
     }
  
-@@ -327,7 +320,7 @@
+@@ -327,7 +330,7 @@
     }
  
     public static boolean func_213991_b(ItemStack p_213991_0_) {
@@ -131,7 +96,7 @@
     }
  
     public int[] func_180463_a(Direction p_180463_1_) {
-@@ -474,4 +467,27 @@
+@@ -474,4 +477,27 @@
        }
  
     }

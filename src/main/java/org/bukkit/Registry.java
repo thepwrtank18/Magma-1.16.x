@@ -29,7 +29,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
     /**
      * Server advancements.
      *
-     * @see Bukkit#getAdvancement(NamespacedKey)
+     * @see Bukkit#getAdvancement(org.bukkit.NamespacedKey)
      * @see Bukkit#advancementIterator()
      */
     Registry<Advancement> ADVANCEMENT = new Registry<Advancement>() {
@@ -67,7 +67,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
     /**
      * Custom boss bars.
      *
-     * @see Bukkit#getBossBar(NamespacedKey)
+     * @see Bukkit#getBossBar(org.bukkit.NamespacedKey)
      * @see Bukkit#getBossBars()
      */
     Registry<KeyedBossBar> BOSS_BARS = new Registry<KeyedBossBar>() {
@@ -87,7 +87,7 @@ public interface Registry<T extends Keyed> extends Iterable<T> {
     /**
      * Server enchantments.
      *
-     * @see Enchantment#getByKey(NamespacedKey)
+     * @see Enchantment#getByKey(org.bukkit.NamespacedKey)
      */
     Registry<Enchantment> ENCHANTMENT = new Registry<Enchantment>() {
 

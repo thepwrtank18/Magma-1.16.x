@@ -1,11 +1,11 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.item.HangingEntity;
-import net.minecraft.entity.item.ItemFrameEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Direction;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.BlockPosition;
+import net.minecraft.server.EntityHanging;
+import net.minecraft.server.EntityItemFrame;
+import net.minecraft.server.EnumDirection;
+import net.minecraft.server.ItemStack;
+import net.minecraft.server.WorldServer;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Rotation;
 import org.bukkit.block.BlockFace;
@@ -17,19 +17,19 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ItemFrame;
 
 public class CraftItemFrame extends CraftHanging implements ItemFrame {
-    public CraftItemFrame(CraftServer server, ItemFrameEntity entity) {
+    public CraftItemFrame(CraftServer server, EntityItemFrame entity) {
         super(server, entity);
     }
 
     @Override
     public boolean setFacingDirection(BlockFace face, boolean force) {
-        HangingEntity hanging = getHandle();
-        Direction oldDir = hanging.getHorizontalFacing();
-        Direction newDir = CraftBlock.blockFaceToNotch(face);
+        EntityHanging hanging = getHandle();
+        EnumDirection oldDir = hanging.getDirection();
+        EnumDirection newDir = CraftBlock.blockFaceToNotch(face);
 
-        getHandle().updateFacingWithBoundingBox(newDir);
-        if (!force && !hanging.onValidSurface()) {
-            hanging.updateFacingWithBoundingBox(oldDir);
+        getHandle().setDirection(newDir);
+        if (!force && !hanging.survives()) {
+            hanging.setDirection(oldDir);
             return false;
         }
 
@@ -39,17 +39,17 @@ public class CraftItemFrame extends CraftHanging implements ItemFrame {
     }
 
     private void update() {
-        ItemFrameEntity old = this.getHandle();
+        EntityItemFrame old = this.getHandle();
 
-        ServerWorld world = ((CraftWorld) getWorld()).getHandle();
-        BlockPos position = old.getHangingPosition();
-        Direction direction = old.getHorizontalFacing();
-        ItemStack item = old.getDisplayedItem() != null ? old.getDisplayedItem().copy() : null;
+        WorldServer world = ((CraftWorld) getWorld()).getHandle();
+        BlockPosition position = old.getBlockPosition();
+        EnumDirection direction = old.getDirection();
+        ItemStack item = old.getItem() != null ? old.getItem().cloneItemStack() : null;
 
-        old.remove();
+        old.die();
 
-        ItemFrameEntity frame = new ItemFrameEntity(world,position,direction);
-        frame.setDisplayedItem(item);
+        EntityItemFrame frame = new EntityItemFrame(world, position, direction);
+        frame.setItem(item);
         world.addEntity(frame);
         this.entity = frame;
     }
@@ -66,7 +66,7 @@ public class CraftItemFrame extends CraftHanging implements ItemFrame {
 
     @Override
     public org.bukkit.inventory.ItemStack getItem() {
-        return CraftItemStack.asBukkitCopy(getHandle().getDisplayedItem());
+        return CraftItemStack.asBukkitCopy(getHandle().getItem());
     }
 
     @Override
@@ -101,27 +101,7 @@ public class CraftItemFrame extends CraftHanging implements ItemFrame {
     @Override
     public void setRotation(Rotation rotation) {
         Validate.notNull(rotation, "Rotation cannot be null");
-        getHandle().setItemRotation(toInteger(rotation));
-    }
-
-    @Override
-    public boolean isVisible() {
-        return false;
-    }
-
-    @Override
-    public void setVisible(boolean visible) {
-
-    }
-
-    @Override
-    public boolean isFixed() {
-        return false;
-    }
-
-    @Override
-    public void setFixed(boolean visible) {
-
+        getHandle().setRotation(toInteger(rotation));
     }
 
     static int toInteger(Rotation rotation) {
@@ -149,8 +129,28 @@ public class CraftItemFrame extends CraftHanging implements ItemFrame {
     }
 
     @Override
-    public ItemFrameEntity getHandle() {
-        return (ItemFrameEntity) entity;
+    public boolean isVisible() {
+        return !getHandle().isInvisible();
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        getHandle().setInvisible(!visible);
+    }
+
+    @Override
+    public boolean isFixed() {
+        return getHandle().fixed;
+    }
+
+    @Override
+    public void setFixed(boolean fixed) {
+        getHandle().fixed = fixed;
+    }
+
+    @Override
+    public EntityItemFrame getHandle() {
+        return (EntityItemFrame) entity;
     }
 
     @Override

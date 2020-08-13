@@ -357,7 +357,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
      * Adds the specified enchantments to this item stack.
      * <p>
      * This method is the same as calling {@link
-     * #addEnchantment(Enchantment, int)} for each
+     * #addEnchantment(org.bukkit.enchantments.Enchantment, int)} for each
      * element of the map.
      *
      * @param enchantments Enchantments to add
@@ -401,7 +401,7 @@ public class ItemStack implements Cloneable, ConfigurationSerializable {
      * Adds the specified enchantments to this item stack in an unsafe manner.
      * <p>
      * This method is the same as calling {@link
-     * #addUnsafeEnchantment(Enchantment, int)} for
+     * #addUnsafeEnchantment(org.bukkit.enchantments.Enchantment, int)} for
      * each element of the map.
      *
      * @param enchantments Enchantments to add

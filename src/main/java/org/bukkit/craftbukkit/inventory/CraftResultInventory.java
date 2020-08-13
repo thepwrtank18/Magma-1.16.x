@@ -1,6 +1,6 @@
 package org.bukkit.craftbukkit.inventory;
 
-import net.minecraft.inventory.IInventory;
+import net.minecraft.server.IInventory;
 import org.bukkit.inventory.ItemStack;
 
 public class CraftResultInventory extends CraftInventory {
@@ -22,26 +22,26 @@ public class CraftResultInventory extends CraftInventory {
 
     @Override
     public ItemStack getItem(int slot) {
-        if (slot < getIngredientsInventory().getSizeInventory()) {
-            net.minecraft.item.ItemStack item = getIngredientsInventory().getStackInSlot(slot);
+        if (slot < getIngredientsInventory().getSize()) {
+            net.minecraft.server.ItemStack item = getIngredientsInventory().getItem(slot);
             return item.isEmpty() ? null : CraftItemStack.asCraftMirror(item);
         } else {
-            net.minecraft.item.ItemStack item = getResultInventory().getStackInSlot(slot - getIngredientsInventory().getSizeInventory());
+            net.minecraft.server.ItemStack item = getResultInventory().getItem(slot - getIngredientsInventory().getSize());
             return item.isEmpty() ? null : CraftItemStack.asCraftMirror(item);
         }
     }
 
     @Override
     public void setItem(int index, ItemStack item) {
-        if (index < getIngredientsInventory().getSizeInventory()) {
-            getIngredientsInventory().setInventorySlotContents(index, CraftItemStack.asNMSCopy(item));
+        if (index < getIngredientsInventory().getSize()) {
+            getIngredientsInventory().setItem(index, CraftItemStack.asNMSCopy(item));
         } else {
-            getResultInventory().setInventorySlotContents((index - getIngredientsInventory().getSizeInventory()), CraftItemStack.asNMSCopy(item));
+            getResultInventory().setItem((index - getIngredientsInventory().getSize()), CraftItemStack.asNMSCopy(item));
         }
     }
 
     @Override
     public int getSize() {
-        return getResultInventory().getSizeInventory() + getIngredientsInventory().getSizeInventory();
+        return getResultInventory().getSize() + getIngredientsInventory().getSize();
     }
 }

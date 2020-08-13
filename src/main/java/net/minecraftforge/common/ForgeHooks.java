@@ -1,6 +1,6 @@
 /*
  * Minecraft Forge
- * Copyright (c) 2016-2019.
+ * Copyright (c) 2016-2020.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -74,6 +74,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.BucketItem;
 import net.minecraft.item.EnchantedBookItem;
+import net.minecraft.item.HoeItem;
 import net.minecraft.item.PickaxeItem;
 import net.minecraft.item.PotionItem;
 import net.minecraft.item.ShovelItem;
@@ -109,6 +110,8 @@ import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.data.IOptionalTagEntry;
+import net.minecraftforge.common.loot.IGlobalLootModifier;
+import net.minecraftforge.common.loot.LootModifierManager;
 import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.DifficultyChangeEvent;
@@ -137,6 +140,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.NoteBlockEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.fluids.FluidAttributes;
+import net.minecraftforge.fml.packs.ResourcePackLoader;
 import net.minecraftforge.registries.DataSerializerEntry;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.ForgeRegistry;
@@ -166,23 +170,17 @@ public class ForgeHooks
     public static boolean canHarvestBlock(@Nonnull BlockState state, @Nonnull PlayerEntity player, @Nonnull IBlockReader world, @Nonnull BlockPos pos)
     {
         //state = state.getActualState(world, pos);
-        if (state.func_235783_q_())
-        {
+        if (!state.func_235783_q_())
             return true;
-        }
 
         ItemStack stack = player.getHeldItemMainhand();
         ToolType tool = state.getHarvestTool();
         if (stack.isEmpty() || tool == null)
-        {
-            return true; // TODO: player.canHarvestBlock(state);
-        }
+            return player.func_234569_d_(state);
 
         int toolLevel = stack.getItem().getHarvestLevel(stack, tool, player, state);
         if (toolLevel < 0)
-        {
-            return true; //TODO: player.canHarvestBlock(state);
-        }
+            return player.func_234569_d_(state);
 
         return ForgeEventFactory.doPlayerHarvestCheck(player, state, toolLevel >= state.getHarvestLevel());
     }
@@ -222,9 +220,12 @@ public class ForgeHooks
         //TODO Axes check Material and Blocks now.
         blocks = getPrivateValue(AxeItem.class, null, 1);
         blocks.forEach(block -> blockToolSetter.accept(block, ToolType.AXE, 0));
+        blocks = getPrivateValue(HoeItem.class, null, 0);
+        blocks.forEach(block -> blockToolSetter.accept(block, ToolType.HOE, 0));
 
-        //This is taken from ItemAxe, if that changes update here.
-        blockToolSetter.accept(Blocks.OBSIDIAN, ToolType.PICKAXE, 3);
+        //This is taken from PickaxeItem, if that changes update here.
+        for (Block block : new Block[]{Blocks.OBSIDIAN, Blocks.field_235399_ni_, Blocks.field_235397_ng_, Blocks.field_235400_nj_, Blocks.field_235398_nh_})
+            blockToolSetter.accept(block, ToolType.PICKAXE, 3);
         for (Block block : new Block[]{Blocks.DIAMOND_BLOCK, Blocks.DIAMOND_ORE, Blocks.EMERALD_ORE, Blocks.EMERALD_BLOCK, Blocks.GOLD_BLOCK, Blocks.GOLD_ORE, Blocks.REDSTONE_ORE})
             blockToolSetter.accept(block, ToolType.PICKAXE, 2);
         for (Block block : new Block[]{Blocks.IRON_BLOCK, Blocks.IRON_ORE, Blocks.LAPIS_BLOCK, Blocks.LAPIS_ORE})
@@ -251,7 +252,7 @@ public class ForgeHooks
             if (isCreative && Screen.func_231172_r_() && state.hasTileEntity())
                 te = world.getTileEntity(pos);
 
-            result = state.getBlock().getPickBlock(state, target, world, pos, player);
+            result = state.getPickBlock(target, world, pos, player);
 
             if (result.isEmpty())
                 LOGGER.warn("Picking on: [{}] {} gave null item", target.getType(), state.getBlock().getRegistryName());
@@ -317,9 +318,9 @@ public class ForgeHooks
         return !MinecraftForge.EVENT_BUS.post(new LivingAttackEvent(entity, src, amount));
     }
 
-    public static LivingKnockBackEvent onLivingKnockBack(LivingEntity target, Entity attacker, float strength, double ratioX, double ratioZ)
+    public static LivingKnockBackEvent onLivingKnockBack(LivingEntity target, float strength, double ratioX, double ratioZ)
     {
-        LivingKnockBackEvent event = new LivingKnockBackEvent(target, attacker, strength, ratioX, ratioZ);
+        LivingKnockBackEvent event = new LivingKnockBackEvent(target, strength, ratioX, ratioZ);
         MinecraftForge.EVENT_BUS.post(event);
         return event;
     }
@@ -603,7 +604,7 @@ public class ForgeHooks
 
         world.captureBlockSnapshots = false;
 
-        if (ret == ActionResultType.SUCCESS)
+        if (ret.isSuccessOrConsume())
         {
             // save new item data
             int newSize = itemstack.getCount();
@@ -654,12 +655,12 @@ public class ForgeHooks
                     int updateFlag = snap.getFlag();
                     BlockState oldBlock = snap.getReplacedBlock();
                     BlockState newBlock = world.getBlockState(snap.getPos());
-                    if (!newBlock.getBlock().hasTileEntity(newBlock)) // Containers get placed automatically
+                    if (!newBlock.hasTileEntity()) // Containers get placed automatically
                     {
                         newBlock.onBlockAdded(world, snap.getPos(), oldBlock, false);
                     }
 
-                    world.markAndNotifyBlock(snap.getPos(), null, oldBlock, newBlock, updateFlag, 512);
+                    world.markAndNotifyBlock(snap.getPos(), world.getChunkAt(snap.getPos()), oldBlock, newBlock, updateFlag, 512);
                 }
                 player.addStat(Stats.ITEM_USED.get(item));
             }
@@ -1171,12 +1172,10 @@ public class ForgeHooks
      * @return The modified list
      */
     public static List<ItemStack> modifyLoot(List<ItemStack> list, LootContext context) {
-    	/*
-        LootModifierManager man = context.getWorld().getServer().getLootModifierManager();
+        LootModifierManager man = ForgeInternalHandler.getLootModifierManager();
         for(IGlobalLootModifier mod : man.getAllLootMods()) {
             list = mod.apply(list, context);
         }
-        */
         return list;
     }
 
@@ -1236,5 +1235,20 @@ public class ForgeHooks
         {
             locations.stream().map(ResourceLocation::toString).forEach(array::add);
         }
+    }
+
+    public static List<String> getModPacks()
+    {
+        List<String> modpacks = ResourcePackLoader.getPackNames();
+        if(modpacks.isEmpty())
+            throw new IllegalStateException("Attempted to retrieve mod packs before they were loaded in!");
+        return modpacks;
+    }
+
+    public static List<String> getModPacksWithVanilla()
+    {
+        List<String> modpacks = getModPacks();
+        modpacks.add("vanilla");
+        return modpacks;
     }
 }

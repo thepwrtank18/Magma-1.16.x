@@ -1,13 +1,13 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.boss.dragon.EnderDragonPartEntity;
+import net.minecraft.server.EntityComplexPart;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.EnderDragonPart;
 import org.bukkit.entity.Entity;
 
 public class CraftEnderDragonPart extends CraftComplexPart implements EnderDragonPart {
-    public CraftEnderDragonPart(CraftServer server, EnderDragonPartEntity entity) {
+    public CraftEnderDragonPart(CraftServer server, EntityComplexPart entity) {
         super(server, entity);
     }
 
@@ -17,8 +17,8 @@ public class CraftEnderDragonPart extends CraftComplexPart implements EnderDrago
     }
 
     @Override
-    public EnderDragonPartEntity getHandle() {
-        return (EnderDragonPartEntity) entity;
+    public EntityComplexPart getHandle() {
+        return (EntityComplexPart) entity;
     }
 
     @Override

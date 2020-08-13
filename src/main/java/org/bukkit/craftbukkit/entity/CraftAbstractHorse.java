@@ -1,8 +1,8 @@
 package org.bukkit.craftbukkit.entity;
 
 import java.util.UUID;
-import net.minecraft.entity.ai.attributes.Attributes;
-import net.minecraft.entity.passive.horse.AbstractHorseEntity;
+import net.minecraft.server.EntityHorseAbstract;
+import net.minecraft.server.GenericAttributes;
 import org.apache.commons.lang.Validate;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryAbstractHorse;
@@ -13,13 +13,13 @@ import org.bukkit.inventory.AbstractHorseInventory;
 
 public abstract class CraftAbstractHorse extends CraftAnimals implements AbstractHorse {
 
-    public CraftAbstractHorse(CraftServer server, AbstractHorseEntity entity) {
+    public CraftAbstractHorse(CraftServer server, EntityHorseAbstract entity) {
         super(server, entity);
     }
 
     @Override
-    public AbstractHorseEntity getHandle() {
-        return (AbstractHorseEntity) entity;
+    public EntityHorseAbstract getHandle() {
+        return (EntityHorseAbstract) entity;
     }
 
     @Override
@@ -41,7 +41,7 @@ public abstract class CraftAbstractHorse extends CraftAnimals implements Abstrac
 
     @Override
     public int getMaxDomestication() {
-        return getHandle().getMaxTemper();
+        return getHandle().getMaxDomestication();
     }
 
     @Override
@@ -52,23 +52,23 @@ public abstract class CraftAbstractHorse extends CraftAnimals implements Abstrac
 
     @Override
     public double getJumpStrength() {
-        return getHandle().getHorseJumpStrength();
+        return getHandle().getJumpStrength();
     }
 
     @Override
     public void setJumpStrength(double strength) {
         Validate.isTrue(strength >= 0, "Jump strength cannot be less than zero");
-        getHandle().getAttribute(Attributes.field_233830_m_).setBaseValue(strength);
+        getHandle().getAttributeInstance(GenericAttributes.JUMP_STRENGTH).setValue(strength);
     }
 
     @Override
     public boolean isTamed() {
-        return getHandle().isTame();
+        return getHandle().isTamed();
     }
 
     @Override
     public void setTamed(boolean tamed) {
-        getHandle().setHorseTamed(tamed);
+        getHandle().setTamed(tamed);
     }
 
     @Override
@@ -81,7 +81,7 @@ public abstract class CraftAbstractHorse extends CraftAnimals implements Abstrac
     public void setOwner(AnimalTamer owner) {
         if (owner != null) {
             setTamed(true);
-            getHandle().setAttackTarget(null, null, false);
+            getHandle().setGoalTarget(null, null, false);
             setOwnerUUID(owner.getUniqueId());
         } else {
             setTamed(false);
@@ -90,15 +90,15 @@ public abstract class CraftAbstractHorse extends CraftAnimals implements Abstrac
     }
 
     public UUID getOwnerUUID() {
-        return getHandle().getOwnerUniqueId();
+        return getHandle().getOwnerUUID();
     }
 
     public void setOwnerUUID(UUID uuid) {
-        getHandle().setOwnerUniqueId(uuid);
+        getHandle().setOwnerUUID(uuid);
     }
 
     @Override
     public AbstractHorseInventory getInventory() {
-        return new CraftInventoryAbstractHorse(getHandle().horseChest);
+        return new CraftInventoryAbstractHorse(getHandle().inventoryChest);
     }
 }

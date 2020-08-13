@@ -1,16 +1,15 @@
 package org.bukkit.craftbukkit.inventory;
 
-import javax.annotation.Nullable;
-import net.minecraft.entity.merchant.IMerchant;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.MerchantOffer;
-import net.minecraft.item.MerchantOffers;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.world.World;
+import net.minecraft.server.ChatComponentText;
+import net.minecraft.server.EntityHuman;
+import net.minecraft.server.IChatBaseComponent;
+import net.minecraft.server.IMerchant;
+import net.minecraft.server.ItemStack;
+import net.minecraft.server.MerchantRecipe;
+import net.minecraft.server.MerchantRecipeList;
+import net.minecraft.server.SoundEffect;
+import net.minecraft.server.SoundEffects;
+import net.minecraft.server.World;
 import org.apache.commons.lang.Validate;
 
 public class CraftMerchantCustom extends CraftMerchant {
@@ -32,15 +31,15 @@ public class CraftMerchantCustom extends CraftMerchant {
 
     public static class MinecraftMerchant implements IMerchant {
 
-        private final ITextComponent title;
-        private final MerchantOffers trades = new MerchantOffers();
-        private PlayerEntity tradingPlayer;
+        private final IChatBaseComponent title;
+        private final MerchantRecipeList trades = new MerchantRecipeList();
+        private EntityHuman tradingPlayer;
         private World tradingWorld;
         protected CraftMerchant craftMerchant;
 
         public MinecraftMerchant(String title) {
             Validate.notNull(title, "Title cannot be null");
-            this.title = new StringTextComponent(title);
+            this.title = new ChatComponentText(title);
         }
 
         @Override
@@ -49,7 +48,7 @@ public class CraftMerchantCustom extends CraftMerchant {
         }
 
         @Override
-        public void setCustomer(PlayerEntity entityhuman) {
+        public void setTradingPlayer(EntityHuman entityhuman) {
             this.tradingPlayer = entityhuman;
             if (entityhuman != null) {
                 this.tradingWorld = entityhuman.world;
@@ -57,32 +56,26 @@ public class CraftMerchantCustom extends CraftMerchant {
         }
 
         @Override
-        public PlayerEntity getCustomer() {
+        public EntityHuman getTrader() {
             return this.tradingPlayer;
         }
 
         @Override
-        public MerchantOffers getOffers() {
+        public MerchantRecipeList getOffers() {
             return this.trades;
         }
 
         @Override
-        public void setClientSideOffers(@Nullable MerchantOffers offers) {
-
-        }
-
-        @Override
-        public void onTrade(MerchantOffer merchantrecipe) {
+        public void a(MerchantRecipe merchantrecipe) {
             // increase recipe's uses
             merchantrecipe.increaseUses();
         }
 
         @Override
-        public void verifySellingItem(ItemStack stack) {
-
+        public void k(ItemStack itemstack) {
         }
 
-        public ITextComponent getScoreboardDisplayName() {
+        public IChatBaseComponent getScoreboardDisplayName() {
             return title;
         }
 
@@ -92,22 +85,22 @@ public class CraftMerchantCustom extends CraftMerchant {
         }
 
         @Override
-        public int getXp() {
+        public int getExperience() {
             return 0; // xp
         }
 
         @Override
-        public void setXP(int i) {
+        public void setForcedExperience(int i) {
         }
 
         @Override
-        public boolean func_213705_dZ() {
+        public boolean isRegularVillager() {
             return false; // is-regular-villager flag (hides some gui elements: xp bar, name suffix)
         }
 
         @Override
-        public SoundEvent getYesSound() {
-            return SoundEvents.ENTITY_VILLAGER_YES;
+        public SoundEffect getTradeSound() {
+            return SoundEffects.ENTITY_VILLAGER_YES;
         }
     }
 }

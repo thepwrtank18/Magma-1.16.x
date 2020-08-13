@@ -1,12 +1,11 @@
 package org.bukkit.craftbukkit.block.data.type;
 
-import net.minecraft.state.BooleanProperty;
 import org.bukkit.block.data.type.Lantern;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public abstract class CraftLantern extends CraftBlockData implements Lantern {
 
-    private static final BooleanProperty HANGING = getBoolean("hanging");
+    private static final net.minecraft.server.BlockStateBoolean HANGING = getBoolean("hanging");
 
     @Override
     public boolean isHanging() {

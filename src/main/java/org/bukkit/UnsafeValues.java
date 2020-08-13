@@ -59,7 +59,7 @@ public interface UnsafeValues {
 
     /**
      * Delete an advancement which was loaded and saved by
-     * {@link #loadAdvancement(NamespacedKey, String)}.
+     * {@link #loadAdvancement(org.bukkit.NamespacedKey, java.lang.String)}.
      * <br>
      * This method will only remove advancement from persistent storage. It
      * should be accompanied by a call to {@link Server#reloadData()} in order

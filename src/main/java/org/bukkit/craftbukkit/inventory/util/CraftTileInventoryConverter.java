@@ -1,19 +1,19 @@
 package org.bukkit.craftbukkit.inventory.util;
 
-import net.minecraft.inventory.IInventory;
+import net.minecraft.server.BlockPosition;
+import net.minecraft.server.IInventory;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.AbstractFurnaceTileEntity;
-import net.minecraft.tileentity.BlastFurnaceTileEntity;
-import net.minecraft.tileentity.BrewingStandTileEntity;
-import net.minecraft.tileentity.DispenserTileEntity;
-import net.minecraft.tileentity.DropperTileEntity;
-import net.minecraft.tileentity.FurnaceTileEntity;
-import net.minecraft.tileentity.HopperTileEntity;
-import net.minecraft.tileentity.LecternTileEntity;
-import net.minecraft.tileentity.LockableLootTileEntity;
-import net.minecraft.tileentity.SmokerTileEntity;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import net.minecraft.server.TileEntityBlastFurnace;
+import net.minecraft.server.TileEntityBrewingStand;
+import net.minecraft.server.TileEntityDispenser;
+import net.minecraft.server.TileEntityDropper;
+import net.minecraft.server.TileEntityFurnace;
+import net.minecraft.server.TileEntityFurnaceFurnace;
+import net.minecraft.server.TileEntityHopper;
+import net.minecraft.server.TileEntityLectern;
+import net.minecraft.server.TileEntityLootable;
+import net.minecraft.server.TileEntitySmoker;
+import net.minecraft.server.World;
 import org.bukkit.craftbukkit.inventory.CraftInventory;
 import org.bukkit.craftbukkit.inventory.CraftInventoryBrewer;
 import org.bukkit.craftbukkit.inventory.CraftInventoryFurnace;
@@ -34,8 +34,8 @@ public abstract class CraftTileInventoryConverter implements CraftInventoryCreat
     @Override
     public Inventory createInventory(InventoryHolder holder, InventoryType type, String title) {
         IInventory te = getTileEntity();
-        if (te instanceof LockableLootTileEntity) {
-            ((LockableLootTileEntity) te).setCustomName(CraftChatMessage.fromStringOrNull(title));
+        if (te instanceof TileEntityLootable) {
+            ((TileEntityLootable) te).setCustomName(CraftChatMessage.fromStringOrNull(title));
         }
 
         return getInventory(te);
@@ -49,21 +49,21 @@ public abstract class CraftTileInventoryConverter implements CraftInventoryCreat
 
         @Override
         public IInventory getTileEntity() {
-            AbstractFurnaceTileEntity furnace = new FurnaceTileEntity();
-            furnace.setWorldAndPos(MinecraftServer.getServer().getWorld(World.field_234918_g_), BlockPos.ZERO); // TODO: customize this if required
+            TileEntityFurnace furnace = new TileEntityFurnaceFurnace();
+            furnace.setLocation(MinecraftServer.getServer().getWorldServer(World.OVERWORLD), BlockPosition.ZERO); // TODO: customize this if required
             return furnace;
         }
 
         @Override
         public Inventory createInventory(InventoryHolder owner, InventoryType type, String title) {
             IInventory tileEntity = getTileEntity();
-            ((AbstractFurnaceTileEntity) tileEntity).setCustomName(CraftChatMessage.fromStringOrNull(title));
+            ((TileEntityFurnace) tileEntity).setCustomName(CraftChatMessage.fromStringOrNull(title));
             return getInventory(tileEntity);
         }
 
         @Override
         public Inventory getInventory(IInventory tileEntity) {
-            return new CraftInventoryFurnace((AbstractFurnaceTileEntity) tileEntity);
+            return new CraftInventoryFurnace((TileEntityFurnace) tileEntity);
         }
     }
 
@@ -71,15 +71,15 @@ public abstract class CraftTileInventoryConverter implements CraftInventoryCreat
 
         @Override
         public IInventory getTileEntity() {
-            return new BrewingStandTileEntity();
+            return new TileEntityBrewingStand();
         }
 
         @Override
         public Inventory createInventory(InventoryHolder holder, InventoryType type, String title) {
             // BrewingStand does not extend TileEntityLootable
             IInventory tileEntity = getTileEntity();
-            if (tileEntity instanceof BrewingStandTileEntity) {
-                ((BrewingStandTileEntity) tileEntity).setCustomName(CraftChatMessage.fromStringOrNull(title));
+            if (tileEntity instanceof TileEntityBrewingStand) {
+                ((TileEntityBrewingStand) tileEntity).setCustomName(CraftChatMessage.fromStringOrNull(title));
             }
             return getInventory(tileEntity);
         }
@@ -94,7 +94,7 @@ public abstract class CraftTileInventoryConverter implements CraftInventoryCreat
 
         @Override
         public IInventory getTileEntity() {
-            return new DispenserTileEntity();
+            return new TileEntityDispenser();
         }
     }
 
@@ -102,7 +102,7 @@ public abstract class CraftTileInventoryConverter implements CraftInventoryCreat
 
         @Override
         public IInventory getTileEntity() {
-            return new DropperTileEntity();
+            return new TileEntityDropper();
         }
     }
 
@@ -110,7 +110,7 @@ public abstract class CraftTileInventoryConverter implements CraftInventoryCreat
 
         @Override
         public IInventory getTileEntity() {
-            return new HopperTileEntity();
+            return new TileEntityHopper();
         }
     }
 
@@ -118,7 +118,7 @@ public abstract class CraftTileInventoryConverter implements CraftInventoryCreat
 
         @Override
         public IInventory getTileEntity() {
-            return new BlastFurnaceTileEntity();
+            return new TileEntityBlastFurnace();
         }
     }
 
@@ -126,7 +126,7 @@ public abstract class CraftTileInventoryConverter implements CraftInventoryCreat
 
         @Override
         public IInventory getTileEntity() {
-            return new LecternTileEntity().inventory;
+            return new TileEntityLectern().inventory;
         }
     }
 
@@ -134,7 +134,7 @@ public abstract class CraftTileInventoryConverter implements CraftInventoryCreat
 
         @Override
         public IInventory getTileEntity() {
-            return new SmokerTileEntity();
+            return new TileEntitySmoker();
         }
     }
 }

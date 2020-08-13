@@ -1,13 +1,13 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.monster.StrayEntity;
+import net.minecraft.server.EntitySkeletonStray;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Stray;
 
 public class CraftStray extends CraftSkeleton implements Stray {
 
-    public CraftStray(CraftServer server, StrayEntity entity) {
+    public CraftStray(CraftServer server, EntitySkeletonStray entity) {
         super(server, entity);
     }
 

@@ -52,7 +52,7 @@ public interface MapMeta extends ItemMeta {
      * behavior if that integer is not a valid map (the current implementation
      * for example will generate a new map with a different ID). The xxxMapView
      * family of methods should be used instead.
-     * @see #setMapView(MapView)
+     * @see #setMapView(org.bukkit.map.MapView)
      */
     @Deprecated
     void setMapId(int id);

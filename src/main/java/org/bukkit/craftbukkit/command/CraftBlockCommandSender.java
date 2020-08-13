@@ -1,9 +1,9 @@
 package org.bukkit.craftbukkit.command;
 
-import net.minecraft.command.CommandSource;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Util;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.server.CommandListenerWrapper;
+import net.minecraft.server.IChatBaseComponent;
+import net.minecraft.server.SystemUtils;
+import net.minecraft.server.TileEntity;
 import org.bukkit.block.Block;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.craftbukkit.block.CraftBlock;
@@ -13,10 +13,10 @@ import org.bukkit.craftbukkit.util.CraftChatMessage;
  * Represents input from a command block
  */
 public class CraftBlockCommandSender extends ServerCommandSender implements BlockCommandSender {
-    private final CommandSource block;
+    private final CommandListenerWrapper block;
     private final TileEntity tile;
 
-    public CraftBlockCommandSender(CommandSource commandBlockListenerAbstract, TileEntity tile) {
+    public CraftBlockCommandSender(CommandListenerWrapper commandBlockListenerAbstract, TileEntity tile) {
         super();
         this.block = commandBlockListenerAbstract;
         this.tile = tile;
@@ -24,13 +24,13 @@ public class CraftBlockCommandSender extends ServerCommandSender implements Bloc
 
     @Override
     public Block getBlock() {
-        return CraftBlock.at(tile.getWorld(), tile.getPos());
+        return CraftBlock.at(tile.getWorld(), tile.getPosition());
     }
 
     @Override
     public void sendMessage(String message) {
-        for (ITextComponent component : CraftChatMessage.fromString(message)) {
-            block.source.sendMessage(component, Util.field_240973_b_);
+        for (IChatBaseComponent component : CraftChatMessage.fromString(message)) {
+            block.base.sendMessage(component, SystemUtils.b);
         }
     }
 
@@ -56,7 +56,7 @@ public class CraftBlockCommandSender extends ServerCommandSender implements Bloc
         throw new UnsupportedOperationException("Cannot change operator status of a block");
     }
 
-    public CommandSource getWrapper() {
+    public CommandListenerWrapper getWrapper() {
         return block;
     }
 }

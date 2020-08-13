@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.TripWireHookBlock;
-
 public final class CraftTripwireHook extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.TripwireHook, org.bukkit.block.data.Attachable, org.bukkit.block.data.Directional, org.bukkit.block.data.Powerable {
 
     public CraftTripwireHook() {
         super();
     }
 
-    public CraftTripwireHook(net.minecraft.block.BlockState state) {
+    public CraftTripwireHook(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftAttachable
 
-    private static final net.minecraft.state.BooleanProperty ATTACHED = getBoolean(TripWireHookBlock.class, "attached");
+    private static final net.minecraft.server.BlockStateBoolean ATTACHED = getBoolean(net.minecraft.server.BlockTripwireHook.class, "attached");
 
     @Override
     public boolean isAttached() {
@@ -31,7 +29,7 @@ public final class CraftTripwireHook extends org.bukkit.craftbukkit.block.data.C
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final net.minecraft.state.EnumProperty<?> FACING = getEnum(TripWireHookBlock.class, "facing");
+    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockTripwireHook.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {
@@ -50,7 +48,7 @@ public final class CraftTripwireHook extends org.bukkit.craftbukkit.block.data.C
 
     // org.bukkit.craftbukkit.block.data.CraftPowerable
 
-    private static final net.minecraft.state.BooleanProperty POWERED = getBoolean(TripWireHookBlock.class, "powered");
+    private static final net.minecraft.server.BlockStateBoolean POWERED = getBoolean(net.minecraft.server.BlockTripwireHook.class, "powered");
 
     @Override
     public boolean isPowered() {

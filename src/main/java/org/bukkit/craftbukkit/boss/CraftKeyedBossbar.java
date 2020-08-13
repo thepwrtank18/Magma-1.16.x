@@ -1,23 +1,23 @@
 package org.bukkit.craftbukkit.boss;
 
-import net.minecraft.server.CustomServerBossInfo;
+import net.minecraft.server.BossBattleCustom;
 import org.bukkit.NamespacedKey;
 import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 
 public class CraftKeyedBossbar extends CraftBossBar implements KeyedBossBar {
 
-    public CraftKeyedBossbar(CustomServerBossInfo bossBattleCustom) {
+    public CraftKeyedBossbar(BossBattleCustom bossBattleCustom) {
         super(bossBattleCustom);
     }
 
     @Override
     public NamespacedKey getKey() {
-        return CraftNamespacedKey.fromMinecraft(getHandle().getId());
+        return CraftNamespacedKey.fromMinecraft(getHandle().getKey());
     }
 
     @Override
-    public CustomServerBossInfo getHandle() {
-        return (CustomServerBossInfo) super.getHandle();
+    public BossBattleCustom getHandle() {
+        return (BossBattleCustom) super.getHandle();
     }
 }

@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableMap.Builder;
 import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.server.NBTTagCompound;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.DelegateDeserialization;
 import org.bukkit.craftbukkit.inventory.CraftMetaItem.SerializableMeta;
@@ -31,10 +31,10 @@ class CraftMetaEnchantedBook extends CraftMetaItem implements EnchantmentStorage
         }
     }
 
-    CraftMetaEnchantedBook(CompoundNBT tag) {
+    CraftMetaEnchantedBook(NBTTagCompound tag) {
         super(tag);
 
-        if (!tag.contains(STORED_ENCHANTMENTS.NBT)) {
+        if (!tag.hasKey(STORED_ENCHANTMENTS.NBT)) {
             return;
         }
 
@@ -48,7 +48,7 @@ class CraftMetaEnchantedBook extends CraftMetaItem implements EnchantmentStorage
     }
 
     @Override
-    void applyToItem(CompoundNBT itemTag) {
+    void applyToItem(NBTTagCompound itemTag) {
         super.applyToItem(itemTag);
 
         applyEnchantments(enchantments, itemTag, STORED_ENCHANTMENTS);

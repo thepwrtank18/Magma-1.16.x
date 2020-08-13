@@ -13,11 +13,3 @@
           }
        }
  
-@@ -51,4 +51,7 @@
-    IRecipeSerializer<?> func_199559_b();
- 
-    IRecipeType<?> func_222127_g();
-+
-+   org.bukkit.inventory.Recipe toBukkitRecipe(); // CraftBukkit
-+
- }

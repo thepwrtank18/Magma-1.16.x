@@ -1,14 +1,6 @@
 --- a/net/minecraft/loot/LootTableManager.java
 +++ b/net/minecraft/loot/LootTableManager.java
-@@ -17,6 +17,7 @@
-    private static final Logger field_186525_a = LogManager.getLogger();
-    private static final Gson field_186526_b = LootSerializers.func_237388_c_().create();
-    private Map<ResourceLocation, LootTable> field_186527_c = ImmutableMap.of();
-+   public Map<LootTable, ResourceLocation> lootTableToKey = ImmutableMap.of(); // CraftBukkit
-    private final LootPredicateManager field_227507_d_;
- 
-    public LootTableManager(LootPredicateManager p_i225887_1_) {
-@@ -36,8 +37,8 @@
+@@ -36,8 +36,8 @@
        }
  
        p_212853_1_.forEach((p_237403_1_, p_237403_2_) -> {

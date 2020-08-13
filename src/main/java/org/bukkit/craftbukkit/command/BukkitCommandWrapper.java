@@ -13,11 +13,11 @@ import com.mojang.brigadier.tree.LiteralCommandNode;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Predicate;
-import net.minecraft.command.CommandSource;
+import net.minecraft.server.CommandListenerWrapper;
 import org.bukkit.command.Command;
 import org.bukkit.craftbukkit.CraftServer;
 
-public class BukkitCommandWrapper implements com.mojang.brigadier.Command<CommandSource>, Predicate<CommandSource>, SuggestionProvider<CommandSource> {
+public class BukkitCommandWrapper implements com.mojang.brigadier.Command<CommandListenerWrapper>, Predicate<CommandListenerWrapper>, SuggestionProvider<CommandListenerWrapper> {
 
     private final CraftServer server;
     private final Command command;
@@ -27,26 +27,26 @@ public class BukkitCommandWrapper implements com.mojang.brigadier.Command<Comman
         this.command = command;
     }
 
-    public LiteralCommandNode<CommandSource> register(CommandDispatcher<CommandSource> dispatcher, String label) {
+    public LiteralCommandNode<CommandListenerWrapper> register(CommandDispatcher<CommandListenerWrapper> dispatcher, String label) {
         return dispatcher.register(
-                LiteralArgumentBuilder.<CommandSource>literal(label).requires(this).executes(this)
-                .then(RequiredArgumentBuilder.<CommandSource, String>argument("args", StringArgumentType.greedyString()).suggests(this).executes(this))
+                LiteralArgumentBuilder.<CommandListenerWrapper>literal(label).requires(this).executes(this)
+                .then(RequiredArgumentBuilder.<CommandListenerWrapper, String>argument("args", StringArgumentType.greedyString()).suggests(this).executes(this))
         );
     }
 
     @Override
-    public boolean test(CommandSource wrapper) {
+    public boolean test(CommandListenerWrapper wrapper) {
         return command.testPermissionSilent(wrapper.getBukkitSender());
     }
 
     @Override
-    public int run(CommandContext<CommandSource> context) throws CommandSyntaxException {
+    public int run(CommandContext<CommandListenerWrapper> context) throws CommandSyntaxException {
         return server.dispatchCommand(context.getSource().getBukkitSender(), context.getInput()) ? 1 : 0;
     }
 
     @Override
-    public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandSource> context, SuggestionsBuilder builder) throws CommandSyntaxException {
-        List<String> results = server.tabComplete(context.getSource().getBukkitSender(), builder.getInput(), context.getSource().getWorld(), context.getSource().getPos(), true);
+    public CompletableFuture<Suggestions> getSuggestions(CommandContext<CommandListenerWrapper> context, SuggestionsBuilder builder) throws CommandSyntaxException {
+        List<String> results = server.tabComplete(context.getSource().getBukkitSender(), builder.getInput(), context.getSource().getWorld(), context.getSource().getPosition(), true);
 
         // Defaults to sub nodes, but we have just one giant args node, so offset accordingly
         builder = builder.createOffset(builder.getInput().lastIndexOf(' ') + 1);

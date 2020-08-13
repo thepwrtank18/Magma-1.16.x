@@ -1,19 +1,19 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.projectile.SpectralArrowEntity;
+import net.minecraft.server.EntitySpectralArrow;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.SpectralArrow;
 
 public class CraftSpectralArrow extends CraftArrow implements SpectralArrow {
 
-    public CraftSpectralArrow(CraftServer server, SpectralArrowEntity entity) {
+    public CraftSpectralArrow(CraftServer server, EntitySpectralArrow entity) {
         super(server, entity);
     }
 
     @Override
-    public SpectralArrowEntity getHandle() {
-        return (SpectralArrowEntity) entity;
+    public EntitySpectralArrow getHandle() {
+        return (EntitySpectralArrow) entity;
     }
 
     @Override

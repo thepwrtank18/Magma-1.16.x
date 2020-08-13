@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.FenceGateBlock;
-
 public final class CraftFenceGate extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.Gate, org.bukkit.block.data.Directional, org.bukkit.block.data.Openable, org.bukkit.block.data.Powerable {
 
     public CraftFenceGate() {
         super();
     }
 
-    public CraftFenceGate(net.minecraft.block.BlockState state) {
+    public CraftFenceGate(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.type.CraftGate
 
-    private static final net.minecraft.state.BooleanProperty IN_WALL = getBoolean(FenceGateBlock.class, "in_wall");
+    private static final net.minecraft.server.BlockStateBoolean IN_WALL = getBoolean(net.minecraft.server.BlockFenceGate.class, "in_wall");
 
     @Override
     public boolean isInWall() {
@@ -31,7 +29,7 @@ public final class CraftFenceGate extends org.bukkit.craftbukkit.block.data.Craf
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final net.minecraft.state.EnumProperty<?> FACING = getEnum(FenceGateBlock.class, "facing");
+    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockFenceGate.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {
@@ -50,7 +48,7 @@ public final class CraftFenceGate extends org.bukkit.craftbukkit.block.data.Craf
 
     // org.bukkit.craftbukkit.block.data.CraftOpenable
 
-    private static final net.minecraft.state.BooleanProperty OPEN = getBoolean(FenceGateBlock.class, "open");
+    private static final net.minecraft.server.BlockStateBoolean OPEN = getBoolean(net.minecraft.server.BlockFenceGate.class, "open");
 
     @Override
     public boolean isOpen() {
@@ -64,7 +62,7 @@ public final class CraftFenceGate extends org.bukkit.craftbukkit.block.data.Craf
 
     // org.bukkit.craftbukkit.block.data.CraftPowerable
 
-    private static final net.minecraft.state.BooleanProperty POWERED = getBoolean(FenceGateBlock.class, "powered");
+    private static final net.minecraft.server.BlockStateBoolean POWERED = getBoolean(net.minecraft.server.BlockFenceGate.class, "powered");
 
     @Override
     public boolean isPowered() {

@@ -1,7 +1,7 @@
 package org.bukkit.craftbukkit.block;
 
-import net.minecraft.tileentity.LockableLootTileEntity;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.server.MinecraftKey;
+import net.minecraft.server.TileEntityLootable;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Nameable;
@@ -10,7 +10,7 @@ import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import org.bukkit.loot.LootTable;
 import org.bukkit.loot.Lootable;
 
-public abstract class CraftLootable<T extends LockableLootTileEntity> extends CraftContainer<T> implements Nameable, Lootable {
+public abstract class CraftLootable<T extends TileEntityLootable> extends CraftContainer<T> implements Nameable, Lootable {
 
     public CraftLootable(Block block, Class<T> tileEntityClass) {
         super(block, tileEntityClass);
@@ -25,7 +25,7 @@ public abstract class CraftLootable<T extends LockableLootTileEntity> extends Cr
         super.applyTo(lootable);
 
         if (this.getSnapshot().lootTable == null) {
-            lootable.setLootTable((ResourceLocation) null, 0L);
+            lootable.setLootTable((MinecraftKey) null, 0L);
         }
     }
 
@@ -35,7 +35,7 @@ public abstract class CraftLootable<T extends LockableLootTileEntity> extends Cr
             return null;
         }
 
-        ResourceLocation key = getSnapshot().lootTable;
+        MinecraftKey key = getSnapshot().lootTable;
         return Bukkit.getLootTable(CraftNamespacedKey.fromMinecraft(key));
     }
 
@@ -55,7 +55,7 @@ public abstract class CraftLootable<T extends LockableLootTileEntity> extends Cr
     }
 
     private void setLootTable(LootTable table, long seed) {
-        ResourceLocation key = (table == null) ? null : CraftNamespacedKey.toMinecraft(table.getKey());
+        MinecraftKey key = (table == null) ? null : CraftNamespacedKey.toMinecraft(table.getKey());
         getSnapshot().setLootTable(key, seed);
     }
 }

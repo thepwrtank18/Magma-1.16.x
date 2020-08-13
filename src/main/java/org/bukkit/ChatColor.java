@@ -163,7 +163,7 @@ public enum ChatColor {
      * Gets the color represented by the specified color code
      *
      * @param code Code to check
-     * @return Associative {@link ChatColor} with the given code,
+     * @return Associative {@link org.bukkit.ChatColor} with the given code,
      *     or null if it doesn't exist
      */
     @Nullable
@@ -175,7 +175,7 @@ public enum ChatColor {
      * Gets the color represented by the specified color code
      *
      * @param code Code to check
-     * @return Associative {@link ChatColor} with the given code,
+     * @return Associative {@link org.bukkit.ChatColor} with the given code,
      *     or null if it doesn't exist
      */
     @Nullable

@@ -1,6 +1,6 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.item.FallingBlockEntity;
+import net.minecraft.server.EntityFallingBlock;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.CraftServer;
@@ -10,13 +10,13 @@ import org.bukkit.entity.FallingBlock;
 
 public class CraftFallingBlock extends CraftEntity implements FallingBlock {
 
-    public CraftFallingBlock(CraftServer server, FallingBlockEntity entity) {
+    public CraftFallingBlock(CraftServer server, EntityFallingBlock entity) {
         super(server, entity);
     }
 
     @Override
-    public FallingBlockEntity getHandle() {
-        return (FallingBlockEntity) entity;
+    public EntityFallingBlock getHandle() {
+        return (EntityFallingBlock) entity;
     }
 
     @Override
@@ -36,17 +36,17 @@ public class CraftFallingBlock extends CraftEntity implements FallingBlock {
 
     @Override
     public BlockData getBlockData() {
-        return CraftBlockData.fromData(getHandle().getBlockState());
+        return CraftBlockData.fromData(getHandle().getBlock());
     }
 
     @Override
     public boolean getDropItem() {
-        return getHandle().shouldDropItem;
+        return getHandle().dropItem;
     }
 
     @Override
     public void setDropItem(boolean drop) {
-        getHandle().shouldDropItem = drop;
+        getHandle().dropItem = drop;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class CraftFallingBlock extends CraftEntity implements FallingBlock {
     public void setTicksLived(int value) {
         super.setTicksLived(value);
 
-        // Second field for FallingBlockEntity
-        getHandle().fallTime = value;
+        // Second field for EntityFallingBlock
+        getHandle().ticksLived = value;
     }
 }

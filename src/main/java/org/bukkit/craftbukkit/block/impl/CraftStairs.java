@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.StairsBlock;
-
 public final class CraftStairs extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.Stairs, org.bukkit.block.data.Bisected, org.bukkit.block.data.Directional, org.bukkit.block.data.Waterlogged {
 
     public CraftStairs() {
         super();
     }
 
-    public CraftStairs(net.minecraft.block.BlockState state) {
+    public CraftStairs(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.type.CraftStairs
 
-    private static final net.minecraft.state.EnumProperty<?> SHAPE = getEnum(StairsBlock.class, "shape");
+    private static final net.minecraft.server.BlockStateEnum<?> SHAPE = getEnum(net.minecraft.server.BlockStairs.class, "shape");
 
     @Override
     public Shape getShape() {
@@ -31,7 +29,7 @@ public final class CraftStairs extends org.bukkit.craftbukkit.block.data.CraftBl
 
     // org.bukkit.craftbukkit.block.data.CraftBisected
 
-    private static final net.minecraft.state.EnumProperty<?> HALF = getEnum(StairsBlock.class, "half");
+    private static final net.minecraft.server.BlockStateEnum<?> HALF = getEnum(net.minecraft.server.BlockStairs.class, "half");
 
     @Override
     public Half getHalf() {
@@ -45,7 +43,7 @@ public final class CraftStairs extends org.bukkit.craftbukkit.block.data.CraftBl
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final net.minecraft.state.EnumProperty<?> FACING = getEnum(StairsBlock.class, "facing");
+    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockStairs.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {
@@ -64,7 +62,7 @@ public final class CraftStairs extends org.bukkit.craftbukkit.block.data.CraftBl
 
     // org.bukkit.craftbukkit.block.data.CraftWaterlogged
 
-    private static final net.minecraft.state.BooleanProperty WATERLOGGED = getBoolean(StairsBlock.class, "waterlogged");
+    private static final net.minecraft.server.BlockStateBoolean WATERLOGGED = getBoolean(net.minecraft.server.BlockStairs.class, "waterlogged");
 
     @Override
     public boolean isWaterlogged() {

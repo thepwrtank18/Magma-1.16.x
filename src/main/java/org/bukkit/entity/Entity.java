@@ -94,6 +94,7 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
      * moves.
      *
      * @return True if entity is on ground.
+     * @see Player#isOnGround()
      */
     public boolean isOnGround();
 
@@ -164,7 +165,7 @@ public interface Entity extends Metadatable, CommandSender, Nameable, Persistent
      * @return {@code List<Entity>} List of entities nearby
      */
     @NotNull
-    public List<Entity> getNearbyEntities(double x, double y, double z);
+    public List<org.bukkit.entity.Entity> getNearbyEntities(double x, double y, double z);
 
     /**
      * Returns a unique id for this entity

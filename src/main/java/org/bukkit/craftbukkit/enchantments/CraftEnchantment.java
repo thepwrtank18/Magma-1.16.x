@@ -1,8 +1,8 @@
 package org.bukkit.craftbukkit.enchantments;
 
-import net.minecraft.enchantment.BindingCurseEnchantment;
-import net.minecraft.enchantment.VanishingCurseEnchantment;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.server.EnchantmentBinding;
+import net.minecraft.server.EnchantmentVanishing;
+import net.minecraft.server.IRegistry;
 import org.bukkit.craftbukkit.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import org.bukkit.enchantments.Enchantment;
@@ -11,10 +11,10 @@ import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemStack;
 
 public class CraftEnchantment extends Enchantment {
-    private final net.minecraft.enchantment.Enchantment target;
+    private final net.minecraft.server.Enchantment target;
 
-    public CraftEnchantment(net.minecraft.enchantment.Enchantment target) {
-        super(CraftNamespacedKey.fromMinecraft(Registry.ENCHANTMENT.getKey(target)));
+    public CraftEnchantment(net.minecraft.server.Enchantment target) {
+        super(CraftNamespacedKey.fromMinecraft(IRegistry.ENCHANTMENT.getKey(target)));
         this.target = target;
     }
 
@@ -25,12 +25,12 @@ public class CraftEnchantment extends Enchantment {
 
     @Override
     public int getStartLevel() {
-        return target.getMinLevel();
+        return target.getStartLevel();
     }
 
     @Override
     public EnchantmentTarget getItemTarget() {
-        switch (target.type) {
+        switch (target.itemTarget) {
         case ARMOR:
             return EnchantmentTarget.ARMOR;
         case ARMOR_FEET:
@@ -66,23 +66,23 @@ public class CraftEnchantment extends Enchantment {
 
     @Override
     public boolean isTreasure() {
-        return target.isTreasureEnchantment();
+        return target.isTreasure();
     }
 
     @Override
     public boolean isCursed() {
-        return target instanceof BindingCurseEnchantment || target instanceof VanishingCurseEnchantment;
+        return target instanceof EnchantmentBinding || target instanceof EnchantmentVanishing;
     }
 
     @Override
     public boolean canEnchantItem(ItemStack item) {
-        return target.canApply(CraftItemStack.asNMSCopy(item));
+        return target.canEnchant(CraftItemStack.asNMSCopy(item));
     }
 
     @Override
     public String getName() {
         // PAIL: migration paths
-        switch (Registry.ENCHANTMENT.getId(target)) {
+        switch (IRegistry.ENCHANTMENT.a(target)) {
         case 0:
             return "PROTECTION_ENVIRONMENTAL";
         case 1:
@@ -160,11 +160,11 @@ public class CraftEnchantment extends Enchantment {
         case 37:
             return "VANISHING_CURSE";
         default:
-            return "UNKNOWN_ENCHANT_" + Registry.ENCHANTMENT.getKey(target);
+            return "UNKNOWN_ENCHANT_" + IRegistry.ENCHANTMENT.a(target);
         }
     }
 
-    public static net.minecraft.enchantment.Enchantment getRaw(Enchantment enchantment) {
+    public static net.minecraft.server.Enchantment getRaw(Enchantment enchantment) {
         if (enchantment instanceof EnchantmentWrapper) {
             enchantment = ((EnchantmentWrapper) enchantment).getEnchantment();
         }
@@ -185,10 +185,10 @@ public class CraftEnchantment extends Enchantment {
             return false;
         }
         CraftEnchantment ench = (CraftEnchantment) other;
-        return !target.isCompatibleWith(ench.target);
+        return !target.isCompatible(ench.target);
     }
 
-    public net.minecraft.enchantment.Enchantment getHandle() {
+    public net.minecraft.server.Enchantment getHandle() {
         return target;
     }
 }

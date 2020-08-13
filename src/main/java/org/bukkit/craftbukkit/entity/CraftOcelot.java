@@ -1,18 +1,18 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.passive.OcelotEntity;
+import net.minecraft.server.EntityOcelot;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Ocelot;
 
 public class CraftOcelot extends CraftAnimals implements Ocelot {
-    public CraftOcelot(CraftServer server, OcelotEntity ocelot) {
+    public CraftOcelot(CraftServer server, EntityOcelot ocelot) {
         super(server, ocelot);
     }
 
     @Override
-    public OcelotEntity getHandle() {
-        return (OcelotEntity) entity;
+    public EntityOcelot getHandle() {
+        return (EntityOcelot) entity;
     }
 
     @Override

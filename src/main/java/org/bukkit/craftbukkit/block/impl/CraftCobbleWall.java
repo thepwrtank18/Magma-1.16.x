@@ -3,23 +3,32 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.WallBlock;
-
 public final class CraftCobbleWall extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.Wall, org.bukkit.block.data.Waterlogged {
 
     public CraftCobbleWall() {
         super();
     }
 
-    public CraftCobbleWall(net.minecraft.block.BlockState state) {
+    public CraftCobbleWall(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.type.CraftWall
 
-    private static final net.minecraft.state.EnumProperty<?>[] HEIGHTS = new net.minecraft.state.EnumProperty[]{
-        getEnum(WallBlock.class, "north"), getEnum(WallBlock.class, "east"), getEnum(WallBlock.class, "south"), getEnum(WallBlock.class, "west")
+    private static final net.minecraft.server.BlockStateBoolean UP = getBoolean(net.minecraft.server.BlockCobbleWall.class, "up");
+    private static final net.minecraft.server.BlockStateEnum<?>[] HEIGHTS = new net.minecraft.server.BlockStateEnum[]{
+        getEnum(net.minecraft.server.BlockCobbleWall.class, "north"), getEnum(net.minecraft.server.BlockCobbleWall.class, "east"), getEnum(net.minecraft.server.BlockCobbleWall.class, "south"), getEnum(net.minecraft.server.BlockCobbleWall.class, "west")
     };
+
+    @Override
+    public boolean isUp() {
+        return get(UP);
+    }
+
+    @Override
+    public void setUp(boolean up) {
+        set(UP, up);
+    }
 
     @Override
     public Height getHeight(org.bukkit.block.BlockFace face) {
@@ -33,7 +42,7 @@ public final class CraftCobbleWall extends org.bukkit.craftbukkit.block.data.Cra
 
     // org.bukkit.craftbukkit.block.data.CraftWaterlogged
 
-    private static final net.minecraft.state.BooleanProperty WATERLOGGED = getBoolean(WallBlock.class, "waterlogged");
+    private static final net.minecraft.server.BlockStateBoolean WATERLOGGED = getBoolean(net.minecraft.server.BlockCobbleWall.class, "waterlogged");
 
     @Override
     public boolean isWaterlogged() {

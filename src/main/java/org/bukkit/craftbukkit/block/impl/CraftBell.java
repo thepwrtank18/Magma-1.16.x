@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.BellBlock;
-
-public final class CraftBell extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.Bell, org.bukkit.block.data.Directional {
+public final class CraftBell extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.type.Bell, org.bukkit.block.data.Directional, org.bukkit.block.data.Powerable {
 
     public CraftBell() {
         super();
     }
 
-    public CraftBell(net.minecraft.block.BlockState state) {
+    public CraftBell(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.type.CraftBell
 
-    private static final net.minecraft.state.EnumProperty<?> ATTACHMENT = getEnum(BellBlock.class, "attachment");
+    private static final net.minecraft.server.BlockStateEnum<?> ATTACHMENT = getEnum(net.minecraft.server.BlockBell.class, "attachment");
 
     @Override
     public Attachment getAttachment() {
@@ -31,7 +29,7 @@ public final class CraftBell extends org.bukkit.craftbukkit.block.data.CraftBloc
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final net.minecraft.state.EnumProperty<?> FACING = getEnum(BellBlock.class, "facing");
+    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockBell.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {
@@ -46,5 +44,19 @@ public final class CraftBell extends org.bukkit.craftbukkit.block.data.CraftBloc
     @Override
     public java.util.Set<org.bukkit.block.BlockFace> getFaces() {
         return getValues(FACING, org.bukkit.block.BlockFace.class);
+    }
+
+    // org.bukkit.craftbukkit.block.data.CraftPowerable
+
+    private static final net.minecraft.server.BlockStateBoolean POWERED = getBoolean(net.minecraft.server.BlockBell.class, "powered");
+
+    @Override
+    public boolean isPowered() {
+        return get(POWERED);
+    }
+
+    @Override
+    public void setPowered(boolean powered) {
+        set(POWERED, powered);
     }
 }

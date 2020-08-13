@@ -1,19 +1,19 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.monster.EndermiteEntity;
+import net.minecraft.server.EntityEndermite;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Endermite;
 import org.bukkit.entity.EntityType;
 
 public class CraftEndermite extends CraftMonster implements Endermite {
 
-    public CraftEndermite(CraftServer server, EndermiteEntity entity) {
+    public CraftEndermite(CraftServer server, EntityEndermite entity) {
         super(server, entity);
     }
 
     @Override
-    public EndermiteEntity getHandle() {
-        return (EndermiteEntity) super.getHandle();
+    public EntityEndermite getHandle() {
+        return (EntityEndermite) super.getHandle();
     }
 
     @Override
@@ -28,11 +28,11 @@ public class CraftEndermite extends CraftMonster implements Endermite {
 
     @Override
     public boolean isPlayerSpawned() {
-        return getHandle().isSpawnedByPlayer();
+        return getHandle().isPlayerSpawned();
     }
 
     @Override
     public void setPlayerSpawned(boolean playerSpawned) {
-        getHandle().setSpawnedByPlayer(playerSpawned);
+        getHandle().setPlayerSpawned(playerSpawned);
     }
 }

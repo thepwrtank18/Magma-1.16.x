@@ -3,7 +3,7 @@ package org.bukkit.craftbukkit.block;
 import com.google.common.base.Preconditions;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.tileentity.SkullTileEntity;
+import net.minecraft.server.TileEntitySkull;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -16,24 +16,24 @@ import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.Rotatable;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
-public class CraftSkull extends CraftBlockEntityState<SkullTileEntity> implements Skull {
+public class CraftSkull extends CraftBlockEntityState<TileEntitySkull> implements Skull {
 
     private static final int MAX_OWNER_LENGTH = 16;
     private GameProfile profile;
 
     public CraftSkull(final Block block) {
-        super(block, SkullTileEntity.class);
+        super(block, TileEntitySkull.class);
     }
 
-    public CraftSkull(final Material material, final SkullTileEntity te) {
+    public CraftSkull(final Material material, final TileEntitySkull te) {
         super(material, te);
     }
 
     @Override
-    public void load(SkullTileEntity skull) {
+    public void load(TileEntitySkull skull) {
         super.load(skull);
 
-        profile = skull.playerProfile;
+        profile = skull.gameProfile;
     }
 
     static int getSkullType(SkullType type) {
@@ -70,7 +70,7 @@ public class CraftSkull extends CraftBlockEntityState<SkullTileEntity> implement
             return false;
         }
 
-        GameProfile profile = MinecraftServer.getServer().getPlayerProfileCache().getGameProfileForUsername(name);
+        GameProfile profile = MinecraftServer.getServer().getUserCache().getProfile(name);
         if (profile == null) {
             return false;
         }
@@ -154,11 +154,11 @@ public class CraftSkull extends CraftBlockEntityState<SkullTileEntity> implement
     }
 
     @Override
-    public void applyTo(SkullTileEntity skull) {
+    public void applyTo(TileEntitySkull skull) {
         super.applyTo(skull);
 
         if (getSkullType() == SkullType.PLAYER) {
-            skull.setPlayerProfile(profile);
+            skull.setGameProfile(profile);
         }
     }
 }

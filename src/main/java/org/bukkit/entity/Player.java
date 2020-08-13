@@ -164,6 +164,20 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
     public boolean performCommand(@NotNull String command);
 
     /**
+     * Returns true if the entity is supported by a block.
+     *
+     * This value is a state updated by the client after each movement.
+     *
+     * @return True if entity is on ground.
+     * @deprecated This value is controlled only by the client and is therefore
+     * unreliable and vulnerable to spoofing and/or desync depending on the
+     * context/time which it is accessed
+     */
+    @Override
+    @Deprecated
+    public boolean isOnGround();
+
+    /**
      * Returns if the player is in sneak mode
      *
      * @return true if player is in sneak mode
@@ -427,7 +441,7 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      * a certain location. This will not actually change the world in any way.
      * This method will use a sign at the location's block or a faked sign
      * sent via
-     * {@link #sendBlockChange(Location, Material, byte)}.
+     * {@link #sendBlockChange(org.bukkit.Location, org.bukkit.Material, byte)}.
      * <p>
      * If the client does not have a sign at the given location it will
      * display an error message to the user.
@@ -445,7 +459,7 @@ public interface Player extends HumanEntity, Conversable, OfflinePlayer, PluginM
      * a certain location. This will not actually change the world in any way.
      * This method will use a sign at the location's block or a faked sign
      * sent via
-     * {@link #sendBlockChange(Location, Material, byte)}.
+     * {@link #sendBlockChange(org.bukkit.Location, org.bukkit.Material, byte)}.
      * <p>
      * If the client does not have a sign at the given location it will
      * display an error message to the user.

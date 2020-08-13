@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.CactusBlock;
-
 public final class CraftCactus extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Ageable {
 
     public CraftCactus() {
         super();
     }
 
-    public CraftCactus(net.minecraft.block.BlockState state) {
+    public CraftCactus(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftAgeable
 
-    private static final net.minecraft.state.IntegerProperty AGE = getInteger(CactusBlock.class, "age");
+    private static final net.minecraft.server.BlockStateInteger AGE = getInteger(net.minecraft.server.BlockCactus.class, "age");
 
     @Override
     public int getAge() {

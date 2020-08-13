@@ -1,8 +1,9 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.item.PaintingEntity;
-import net.minecraft.entity.item.PaintingType;
-import net.minecraft.world.server.ServerWorld;
+import net.minecraft.server.EntityPainting;
+import net.minecraft.server.EntityTypes;
+import net.minecraft.server.Paintings;
+import net.minecraft.server.WorldServer;
 import org.bukkit.Art;
 import org.bukkit.block.BlockFace;
 import org.bukkit.craftbukkit.CraftArt;
@@ -13,13 +14,13 @@ import org.bukkit.entity.Painting;
 
 public class CraftPainting extends CraftHanging implements Painting {
 
-    public CraftPainting(CraftServer server, PaintingEntity entity) {
+    public CraftPainting(CraftServer server, EntityPainting entity) {
         super(server, entity);
     }
 
     @Override
     public Art getArt() {
-        PaintingType art = getHandle().art;
+        Paintings art = getHandle().art;
         return CraftArt.NotchToBukkit(art);
     }
 
@@ -30,14 +31,14 @@ public class CraftPainting extends CraftHanging implements Painting {
 
     @Override
     public boolean setArt(Art art, boolean force) {
-        PaintingEntity painting = this.getHandle();
-        PaintingType oldArt = painting.art;
+        EntityPainting painting = this.getHandle();
+        Paintings oldArt = painting.art;
         painting.art = CraftArt.BukkitToNotch(art);
-        painting.updateFacingWithBoundingBox(painting.getHorizontalFacing());
-        if (!force && !painting.onValidSurface()) {
+        painting.setDirection(painting.getDirection());
+        if (!force && !painting.survives()) {
             // Revert painting since it doesn't fit
             painting.art = oldArt;
-            painting.updateFacingWithBoundingBox(painting.getHorizontalFacing());
+            painting.setDirection(painting.getDirection());
             return false;
         }
         this.update();
@@ -55,20 +56,20 @@ public class CraftPainting extends CraftHanging implements Painting {
     }
 
     private void update() {
-        ServerWorld world = ((CraftWorld) getWorld()).getHandle();
-        PaintingEntity painting = net.minecraft.entity.EntityType.PAINTING.create(world);
-        painting.hangingPosition = getHandle().hangingPosition;
+        WorldServer world = ((CraftWorld) getWorld()).getHandle();
+        EntityPainting painting = EntityTypes.PAINTING.a(world);
+        painting.blockPosition = getHandle().blockPosition;
         painting.art = getHandle().art;
-        painting.updateFacingWithBoundingBox(getHandle().getHorizontalFacing());
-        getHandle().remove();
+        painting.setDirection(getHandle().getDirection());
+        getHandle().die();
         getHandle().velocityChanged = true; // because this occurs when the painting is broken, so it might be important
         world.addEntity(painting);
         this.entity = painting;
     }
 
     @Override
-    public PaintingEntity getHandle() {
-        return (PaintingEntity) entity;
+    public EntityPainting getHandle() {
+        return (EntityPainting) entity;
     }
 
     @Override

@@ -1,8 +1,9 @@
 package org.bukkit.craftbukkit.scoreboard;
 
 import java.util.Map;
-import net.minecraft.scoreboard.ScoreObjective;
-import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.server.Scoreboard;
+import net.minecraft.server.ScoreboardObjective;
+import net.minecraft.server.ScoreboardScore;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.scoreboard.Objective;
@@ -42,11 +43,11 @@ final class CraftScore implements Score {
     public int getScore() throws IllegalStateException {
         Scoreboard board = objective.checkState().board;
 
-        if (board.getObjectiveNames().contains(entry)) { // Lazy
-            Map<ScoreObjective, net.minecraft.scoreboard.Score> scores = board.getObjectivesForEntity(entry);
-            net.minecraft.scoreboard.Score score = scores.get(objective.getHandle());
+        if (board.getPlayers().contains(entry)) { // Lazy
+            Map<ScoreboardObjective, ScoreboardScore> scores = board.getPlayerObjectives(entry);
+            ScoreboardScore score = scores.get(objective.getHandle());
             if (score != null) { // Lazy
-                return score.getScorePoints();
+                return score.getScore();
             }
         }
 
@@ -55,14 +56,14 @@ final class CraftScore implements Score {
 
     @Override
     public void setScore(int score) throws IllegalStateException {
-        objective.checkState().board.getOrCreateScore(entry, objective.getHandle()).setScorePoints(score);
+        objective.checkState().board.getPlayerScoreForObjective(entry, objective.getHandle()).setScore(score);
     }
 
     @Override
     public boolean isScoreSet() throws IllegalStateException {
         Scoreboard board = objective.checkState().board;
 
-        return board.getObjectiveNames().contains(entry) && board.getObjectivesForEntity(entry).containsKey(objective.getHandle());
+        return board.getPlayers().contains(entry) && board.getPlayerObjectives(entry).containsKey(objective.getHandle());
     }
 
     @Override

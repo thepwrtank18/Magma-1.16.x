@@ -1,12 +1,11 @@
 package org.bukkit.craftbukkit.block.data.type;
 
-import net.minecraft.state.EnumProperty;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public abstract class CraftDoor extends CraftBlockData implements Door {
 
-    private static final EnumProperty<?> HINGE = getEnum("hinge");
+    private static final net.minecraft.server.BlockStateEnum<?> HINGE = getEnum("hinge");
 
     @Override
     public Hinge getHinge() {

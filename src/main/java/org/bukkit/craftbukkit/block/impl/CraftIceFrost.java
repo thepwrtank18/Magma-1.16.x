@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.FrostedIceBlock;
-
 public final class CraftIceFrost extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Ageable {
 
     public CraftIceFrost() {
         super();
     }
 
-    public CraftIceFrost(net.minecraft.block.BlockState state) {
+    public CraftIceFrost(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftAgeable
 
-    private static final net.minecraft.state.IntegerProperty AGE = getInteger(FrostedIceBlock.class, "age");
+    private static final net.minecraft.server.BlockStateInteger AGE = getInteger(net.minecraft.server.BlockIceFrost.class, "age");
 
     @Override
     public int getAge() {

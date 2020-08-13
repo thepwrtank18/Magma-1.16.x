@@ -1,6 +1,6 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.passive.horse.MuleEntity;
+import net.minecraft.server.EntityHorseMule;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse.Variant;
@@ -8,7 +8,7 @@ import org.bukkit.entity.Mule;
 
 public class CraftMule extends CraftChestedHorse implements Mule {
 
-    public CraftMule(CraftServer server, MuleEntity entity) {
+    public CraftMule(CraftServer server, EntityHorseMule entity) {
         super(server, entity);
     }
 

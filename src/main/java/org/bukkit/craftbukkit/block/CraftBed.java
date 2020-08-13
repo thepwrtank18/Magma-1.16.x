@@ -1,18 +1,18 @@
 package org.bukkit.craftbukkit.block;
 
-import net.minecraft.tileentity.BedTileEntity;
+import net.minecraft.server.TileEntityBed;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Bed;
 import org.bukkit.block.Block;
 
-public class CraftBed extends CraftBlockEntityState<BedTileEntity> implements Bed {
+public class CraftBed extends CraftBlockEntityState<TileEntityBed> implements Bed {
 
     public CraftBed(Block block) {
-        super(block, BedTileEntity.class);
+        super(block, TileEntityBed.class);
     }
 
-    public CraftBed(Material material, BedTileEntity te) {
+    public CraftBed(Material material, TileEntityBed te) {
         super(material, te);
     }
 

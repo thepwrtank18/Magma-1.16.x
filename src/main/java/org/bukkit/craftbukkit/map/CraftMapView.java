@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.RegistryKey;
-import net.minecraft.world.server.ServerWorld;
-import net.minecraft.world.storage.MapData;
+import net.minecraft.server.ResourceKey;
+import net.minecraft.server.WorldMap;
+import net.minecraft.server.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.CraftWorld;
@@ -22,16 +22,16 @@ public final class CraftMapView implements MapView {
     private final Map<CraftPlayer, RenderData> renderCache = new HashMap<CraftPlayer, RenderData>();
     private final List<MapRenderer> renderers = new ArrayList<MapRenderer>();
     private final Map<MapRenderer, Map<CraftPlayer, CraftMapCanvas>> canvases = new HashMap<MapRenderer, Map<CraftPlayer, CraftMapCanvas>>();
-    protected final MapData worldMap;
+    protected final WorldMap worldMap;
 
-    public CraftMapView(MapData worldMap) {
+    public CraftMapView(WorldMap worldMap) {
         this.worldMap = worldMap;
         addRenderer(new CraftMapRenderer(this, worldMap));
     }
 
     @Override
     public int getId() {
-        String text = worldMap.getName();
+        String text = worldMap.getId();
         if (text.startsWith("map_")) {
             try {
                 return Integer.parseInt(text.substring("map_".length()));
@@ -60,35 +60,35 @@ public final class CraftMapView implements MapView {
 
     @Override
     public World getWorld() {
-        RegistryKey<net.minecraft.world.World> dimension = worldMap.dimension;
-        ServerWorld world = MinecraftServer.getServer().getWorld(dimension);
+        ResourceKey<net.minecraft.server.World> dimension = worldMap.map;
+        WorldServer world = MinecraftServer.getServer().getWorldServer(dimension);
 
-        return (world == null) ? null : world.getWorldCB();
+        return (world == null) ? null : world.getWorld();
     }
 
     @Override
     public void setWorld(World world) {
-        worldMap.dimension = ((CraftWorld) world).getHandle().func_234923_W_();
+        worldMap.map = ((CraftWorld) world).getHandle().getDimensionKey();
     }
 
     @Override
     public int getCenterX() {
-        return worldMap.xCenter;
+        return worldMap.centerX;
     }
 
     @Override
     public int getCenterZ() {
-        return worldMap.zCenter;
+        return worldMap.centerZ;
     }
 
     @Override
     public void setCenterX(int x) {
-        worldMap.xCenter = x;
+        worldMap.centerX = x;
     }
 
     @Override
     public void setCenterZ(int z) {
-        worldMap.zCenter = z;
+        worldMap.centerZ = z;
     }
 
     @Override
@@ -164,7 +164,7 @@ public final class CraftMapView implements MapView {
             for (int i = 0; i < buf.length; ++i) {
                 byte color = buf[i];
                 // There are 208 valid color id's, 0 -> 127 and -128 -> -49
-                if (color >= 0 || color <= -49) render.buffer[i] = color;
+                if (color >= 0 || color <= -21) render.buffer[i] = color;
             }
 
             for (int i = 0; i < canvas.getCursors().size(); ++i) {
@@ -177,12 +177,12 @@ public final class CraftMapView implements MapView {
 
     @Override
     public boolean isTrackingPosition() {
-        return worldMap.trackingPosition;
+        return worldMap.track;
     }
 
     @Override
     public void setTrackingPosition(boolean trackingPosition) {
-        worldMap.trackingPosition = trackingPosition;
+        worldMap.track = trackingPosition;
     }
 
     @Override

@@ -1,23 +1,6 @@
 --- a/net/minecraft/item/crafting/RecipeManager.java
 +++ b/net/minecraft/item/crafting/RecipeManager.java
-@@ -9,6 +9,7 @@
- import com.google.gson.JsonObject;
- import com.google.gson.JsonParseException;
- import com.google.gson.JsonSyntaxException;
-+import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
- import java.util.Collection;
- import java.util.Collections;
- import java.util.Comparator;
-@@ -38,7 +39,7 @@
- public class RecipeManager extends JsonReloadListener {
-    private static final Gson field_223401_a = (new GsonBuilder()).setPrettyPrinting().disableHtmlEscaping().create();
-    private static final Logger field_199521_c = LogManager.getLogger();
--   private Map<IRecipeType<?>, Map<ResourceLocation, IRecipe<?>>> field_199522_d = ImmutableMap.of();
-+   public Map<IRecipeType<?>, Map<ResourceLocation, IRecipe<?>>> field_199522_d = ImmutableMap.of(); // private->public CraftBukkit
-    private boolean field_199523_e;
- 
-    public RecipeManager() {
-@@ -51,9 +52,18 @@
+@@ -51,9 +51,18 @@
  
        for(Entry<ResourceLocation, JsonElement> entry : p_212853_1_.entrySet()) {
           ResourceLocation resourcelocation = entry.getKey();
@@ -36,28 +19,3 @@
              map.computeIfAbsent(irecipe.func_222127_g(), (p_223391_0_) -> {
                 return ImmutableMap.builder();
              }).put(resourcelocation, irecipe);
-@@ -147,4 +157,24 @@
-       });
-       this.field_199522_d = ImmutableMap.copyOf(map);
-    }
-+
-+   // CraftBukkit start
-+   public void clearRecipes() {
-+      this.field_199522_d = Maps.newHashMap();
-+      for (final IRecipeType<?> recipeType : Registry.field_218367_H) {
-+         this.field_199522_d.put(recipeType, new Object2ObjectLinkedOpenHashMap<ResourceLocation, IRecipe<?>>());
-+      }
-+   }
-+   // CraftBukkit end
-+
-+   // CraftBukkit start
-+   public void addRecipe(final IRecipe<?> irecipe) {
-+      final Map<ResourceLocation, IRecipe<?>> map = this.field_199522_d.get(irecipe.func_222127_g());
-+      if (map.containsKey(irecipe.func_199560_c())) {
-+         throw new IllegalStateException("Duplicate recipe ignored with ID " + irecipe.func_199560_c());
-+      }
-+      map.put(irecipe.func_199560_c(), irecipe);
-+   }
-+   // CraftBukkit end
-+
- }

@@ -1,7 +1,7 @@
 package org.bukkit.craftbukkit;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.server.BlockPosition;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
@@ -9,7 +9,7 @@ import org.bukkit.WorldBorder;
 public class CraftWorldBorder implements WorldBorder {
 
     private final World world;
-    private final net.minecraft.world.border.WorldBorder handle;
+    private final net.minecraft.server.WorldBorder handle;
 
     public CraftWorldBorder(CraftWorld world) {
         this.world = world;
@@ -28,7 +28,7 @@ public class CraftWorldBorder implements WorldBorder {
 
     @Override
     public double getSize() {
-        return this.handle.getDiameter();
+        return this.handle.getSize();
     }
 
     @Override
@@ -43,16 +43,16 @@ public class CraftWorldBorder implements WorldBorder {
         time = Math.min(9223372036854775L, Math.max(0L, time));
 
         if (time > 0L) {
-            this.handle.setTransition(this.handle.getSize(), newSize, time * 1000L);
+            this.handle.transitionSizeBetween(this.handle.getSize(), newSize, time * 1000L);
         } else {
-            this.handle.setTransition(newSize);
+            this.handle.setSize(newSize);
         }
     }
 
     @Override
     public Location getCenter() {
-        double x = this.handle.func_230316_a_();
-        double z = this.handle.func_230317_b_();
+        double x = this.handle.getCenterX();
+        double z = this.handle.getCenterZ();
 
         return new Location(this.world, x, 0, z);
     }
@@ -83,12 +83,12 @@ public class CraftWorldBorder implements WorldBorder {
 
     @Override
     public double getDamageAmount() {
-        return this.handle.getDamagePerBlock();
+        return this.handle.getDamageAmount();
     }
 
     @Override
     public void setDamageAmount(double damage) {
-        this.handle.setDamagePerBlock(damage);
+        this.handle.setDamageAmount(damage);
     }
 
     @Override
@@ -115,6 +115,6 @@ public class CraftWorldBorder implements WorldBorder {
     public boolean isInside(Location location) {
         Preconditions.checkArgument(location != null, "location");
 
-        return location.getWorld().equals(this.world) && this.handle.contains(new BlockPos(location.getX(), location.getY(), location.getZ()));
+        return location.getWorld().equals(this.world) && this.handle.a(new BlockPosition(location.getX(), location.getY(), location.getZ()));
     }
 }

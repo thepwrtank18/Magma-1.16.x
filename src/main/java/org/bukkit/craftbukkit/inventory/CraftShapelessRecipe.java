@@ -1,9 +1,10 @@
 package org.bukkit.craftbukkit.inventory;
 
 import java.util.List;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.NonNullList;
+import net.minecraft.server.NonNullList;
+import net.minecraft.server.RecipeItemStack;
+import net.minecraft.server.ShapelessRecipes;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import org.bukkit.inventory.ItemStack;
@@ -12,14 +13,14 @@ import org.bukkit.inventory.ShapelessRecipe;
 
 public class CraftShapelessRecipe extends ShapelessRecipe implements CraftRecipe {
     // TODO: Could eventually use this to add a matches() method or some such
-    private net.minecraft.item.crafting.ShapelessRecipe recipe;
+    private ShapelessRecipes recipe;
 
     public CraftShapelessRecipe(NamespacedKey key, ItemStack result) {
         super(key, result);
     }
 
-    public CraftShapelessRecipe(ItemStack result, net.minecraft.item.crafting.ShapelessRecipe recipe) {
-        this(CraftNamespacedKey.fromMinecraft(recipe.getId()), result);
+    public CraftShapelessRecipe(ItemStack result, ShapelessRecipes recipe) {
+        this(CraftNamespacedKey.fromMinecraft(recipe.getKey()), result);
         this.recipe = recipe;
     }
 
@@ -38,11 +39,11 @@ public class CraftShapelessRecipe extends ShapelessRecipe implements CraftRecipe
     @Override
     public void addToCraftingManager() {
         List<org.bukkit.inventory.RecipeChoice> ingred = this.getChoiceList();
-        NonNullList<Ingredient> data = NonNullList.withSize(ingred.size(), Ingredient.EMPTY);
+        NonNullList<RecipeItemStack> data = NonNullList.a(ingred.size(), RecipeItemStack.a);
         for (int i = 0; i < ingred.size(); i++) {
             data.set(i, toNMS(ingred.get(i), true));
         }
 
-        MinecraftServer.getServer().getRecipeManager().addRecipe(new net.minecraft.item.crafting.ShapelessRecipe(CraftNamespacedKey.toMinecraft(this.getKey()), this.getGroup(), CraftItemStack.asNMSCopy(this.getResult()), data));
+        MinecraftServer.getServer().getCraftingManager().addRecipe(new ShapelessRecipes(CraftNamespacedKey.toMinecraft(this.getKey()), this.getGroup(), CraftItemStack.asNMSCopy(this.getResult()), data));
     }
 }

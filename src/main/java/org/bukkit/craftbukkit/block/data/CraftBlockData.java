@@ -11,18 +11,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.command.arguments.BlockStateParser;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.Property;
-import net.minecraft.state.StateHolder;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.registry.Registry;
+import net.minecraft.server.ArgumentBlock;
+import net.minecraft.server.Block;
+import net.minecraft.server.BlockStateBoolean;
+import net.minecraft.server.BlockStateEnum;
+import net.minecraft.server.BlockStateInteger;
+import net.minecraft.server.EnumDirection;
+import net.minecraft.server.IBlockData;
+import net.minecraft.server.IBlockDataHolder;
+import net.minecraft.server.IBlockState;
+import net.minecraft.server.INamable;
+import net.minecraft.server.IRegistry;
+import net.minecraft.server.NBTTagCompound;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
@@ -31,14 +31,14 @@ import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 
 public class CraftBlockData implements BlockData {
 
-    private BlockState state;
-    private Map<Property<?>, Comparable<?>> parsedStates;
+    private IBlockData state;
+    private Map<IBlockState<?>, Comparable<?>> parsedStates;
 
     protected CraftBlockData() {
         throw new AssertionError("Template Constructor");
     }
 
-    protected CraftBlockData(BlockState state) {
+    protected CraftBlockData(IBlockData state) {
         this.state = state;
     }
 
@@ -47,24 +47,24 @@ public class CraftBlockData implements BlockData {
         return CraftMagicNumbers.getMaterial(state.getBlock());
     }
 
-    public BlockState getState() {
+    public IBlockData getState() {
         return state;
     }
 
     /**
-     * Get a given EnumProperty's value as its Bukkit counterpart.
+     * Get a given BlockStateEnum's value as its Bukkit counterpart.
      *
      * @param nms the NMS state to convert
      * @param bukkit the Bukkit class
      * @param <B> the type
      * @return the matching Bukkit type
      */
-    protected <B extends Enum<B>> B get(EnumProperty<?> nms, Class<B> bukkit) {
+    protected <B extends Enum<B>> B get(BlockStateEnum<?> nms, Class<B> bukkit) {
         return toBukkit(state.get(nms), bukkit);
     }
 
     /**
-     * Convert all values from the given EnumProperty to their appropriate
+     * Convert all values from the given BlockStateEnum to their appropriate
      * Bukkit counterpart.
      *
      * @param nms the NMS state to get values from
@@ -73,10 +73,10 @@ public class CraftBlockData implements BlockData {
      * @return an immutable Set of values in their appropriate Bukkit type
      */
     @SuppressWarnings("unchecked")
-    protected <B extends Enum<B>> Set<B> getValues(EnumProperty<?> nms, Class<B> bukkit) {
+    protected <B extends Enum<B>> Set<B> getValues(BlockStateEnum<?> nms, Class<B> bukkit) {
         ImmutableSet.Builder<B> values = ImmutableSet.builder();
 
-        for (Enum<?> e : nms.getAllowedValues()) {
+        for (Enum<?> e : nms.getValues()) {
             values.add(toBukkit(e, bukkit));
         }
 
@@ -84,16 +84,16 @@ public class CraftBlockData implements BlockData {
     }
 
     /**
-     * Set a given {@link EnumProperty} with the matching enum from Bukkit.
+     * Set a given {@link BlockStateEnum} with the matching enum from Bukkit.
      *
-     * @param nms the NMS EnumProperty to set
+     * @param nms the NMS BlockStateEnum to set
      * @param bukkit the matching Bukkit Enum
      * @param <B> the Bukkit type
      * @param <N> the NMS type
      */
-    protected <B extends Enum<B>, N extends Enum<N> & IStringSerializable> void set(EnumProperty<N> nms, Enum<B> bukkit) {
+    protected <B extends Enum<B>, N extends Enum<N> & INamable> void set(BlockStateEnum<N> nms, Enum<B> bukkit) {
         this.parsedStates = null;
-        this.state = this.state.with(nms, toNMS(bukkit, nms.getValueClass()));
+        this.state = this.state.set(nms, toNMS(bukkit, nms.getType()));
     }
 
     @Override
@@ -105,8 +105,8 @@ public class CraftBlockData implements BlockData {
         CraftBlockData clone = (CraftBlockData) this.clone();
         clone.parsedStates = null;
 
-        for (Property parsed : craft.parsedStates.keySet()) {
-            clone.state = clone.state.with(parsed, craft.state.get(parsed));
+        for (IBlockState parsed : craft.parsedStates.keySet()) {
+            clone.state = clone.state.set(parsed, craft.state.get(parsed));
         }
 
         return clone;
@@ -140,7 +140,7 @@ public class CraftBlockData implements BlockData {
     private static final Map<Class, BiMap<Enum<?>, Enum<?>>> classMappings = new HashMap<>();
 
     /**
-     * Convert an NMS Enum (usually a EnumProperty) to its appropriate Bukkit
+     * Convert an NMS Enum (usually a BlockStateEnum) to its appropriate Bukkit
      * enum from the given class.
      *
      * @throws IllegalStateException if the Enum could not be converted
@@ -157,8 +157,8 @@ public class CraftBlockData implements BlockData {
             }
         }
 
-        if (nms instanceof Direction) {
-            converted = CraftBlock.notchToBlockFace((Direction) nms);
+        if (nms instanceof EnumDirection) {
+            converted = CraftBlock.notchToBlockFace((EnumDirection) nms);
         } else {
             converted = bukkit.getEnumConstants()[nms.ordinal()];
         }
@@ -184,7 +184,7 @@ public class CraftBlockData implements BlockData {
      * @throws IllegalStateException if the Enum could not be converted
      */
     @SuppressWarnings("unchecked")
-    private static <N extends Enum<N> & IStringSerializable> N toNMS(Enum<?> bukkit, Class<N> nms) {
+    private static <N extends Enum<N> & INamable> N toNMS(Enum<?> bukkit, Class<N> nms) {
         Enum<?> converted;
         BiMap<Enum<?>, Enum<?>> nmsToBukkit = classMappings.get(nms);
 
@@ -220,7 +220,7 @@ public class CraftBlockData implements BlockData {
      * @param <T> the type
      * @return the current value of the given state
      */
-    protected <T extends Comparable<T>> T get(Property<T> ibs) {
+    protected <T extends Comparable<T>> T get(IBlockState<T> ibs) {
         // Straight integer or boolean getter
         return this.state.get(ibs);
     }
@@ -233,15 +233,15 @@ public class CraftBlockData implements BlockData {
      * @param <T> the state's type
      * @param <V> the value's type. Must match the state's type.
      */
-    public <T extends Comparable<T>, V extends T> void set(Property<T> ibs, V v) {
+    public <T extends Comparable<T>, V extends T> void set(IBlockState<T> ibs, V v) {
         // Straight integer or boolean setter
         this.parsedStates = null;
-        this.state = this.state.with(ibs, v);
+        this.state = this.state.set(ibs, v);
     }
 
     @Override
     public String getAsString() {
-        return toString(((StateHolder) state).getValues());
+        return toString(state.getStateMap());
     }
 
     @Override
@@ -263,26 +263,26 @@ public class CraftBlockData implements BlockData {
         return "CraftBlockData{" + getAsString() + "}";
     }
 
-    // Mimicked from StateHolder#toString()
-    public String toString(Map<Property<?>, Comparable<?>> states) {
-        StringBuilder stateString = new StringBuilder(Registry.BLOCK.getKey(state.getBlock()).toString());
+    // Mimicked from BlockDataAbstract#toString()
+    public String toString(Map<IBlockState<?>, Comparable<?>> states) {
+        StringBuilder stateString = new StringBuilder(IRegistry.BLOCK.getKey(state.getBlock()).toString());
 
         if (!states.isEmpty()) {
             stateString.append('[');
-            stateString.append(states.entrySet().stream().map(StateHolder.field_235890_a_).collect(Collectors.joining(",")));
+            stateString.append(states.entrySet().stream().map(IBlockDataHolder.STATE_TO_VALUE).collect(Collectors.joining(",")));
             stateString.append(']');
         }
 
         return stateString.toString();
     }
 
-    public CompoundNBT toStates() {
-        CompoundNBT compound = new CompoundNBT();
+    public NBTTagCompound toStates() {
+        NBTTagCompound compound = new NBTTagCompound();
 
-        for (Map.Entry<Property<?>, Comparable<?>> entry : state.getValues().entrySet()) {
-            Property iblockstate = (Property) entry.getKey();
+        for (Map.Entry<IBlockState<?>, Comparable<?>> entry : state.getStateMap().entrySet()) {
+            IBlockState iblockstate = (IBlockState) entry.getKey();
 
-            compound.putString(iblockstate.getName(), iblockstate.getName(entry.getValue()));
+            compound.setString(iblockstate.getName(), iblockstate.a(entry.getValue()));
         }
 
         return compound;
@@ -298,40 +298,40 @@ public class CraftBlockData implements BlockData {
         return state.hashCode();
     }
 
-    protected static BooleanProperty getBoolean(String name) {
+    protected static BlockStateBoolean getBoolean(String name) {
         throw new AssertionError("Template Method");
     }
 
-    protected static BooleanProperty getBoolean(String name, boolean optional) {
+    protected static BlockStateBoolean getBoolean(String name, boolean optional) {
         throw new AssertionError("Template Method");
     }
 
-    protected static EnumProperty<?> getEnum(String name) {
+    protected static BlockStateEnum<?> getEnum(String name) {
         throw new AssertionError("Template Method");
     }
 
-    protected static IntegerProperty getInteger(String name) {
+    protected static BlockStateInteger getInteger(String name) {
         throw new AssertionError("Template Method");
     }
 
-    protected static BooleanProperty getBoolean(Class<? extends Block> block, String name) {
-        return (BooleanProperty) getState(block, name, false);
+    protected static BlockStateBoolean getBoolean(Class<? extends Block> block, String name) {
+        return (BlockStateBoolean) getState(block, name, false);
     }
 
-    protected static BooleanProperty getBoolean(Class<? extends Block> block, String name, boolean optional) {
-        return (BooleanProperty) getState(block, name, optional);
+    protected static BlockStateBoolean getBoolean(Class<? extends Block> block, String name, boolean optional) {
+        return (BlockStateBoolean) getState(block, name, optional);
     }
 
-    protected static EnumProperty<?> getEnum(Class<? extends Block> block, String name) {
-        return (EnumProperty<?>) getState(block, name, false);
+    protected static BlockStateEnum<?> getEnum(Class<? extends Block> block, String name) {
+        return (BlockStateEnum<?>) getState(block, name, false);
     }
 
-    protected static IntegerProperty getInteger(Class<? extends Block> block, String name) {
-        return (IntegerProperty) getState(block, name, false);
+    protected static BlockStateInteger getInteger(Class<? extends Block> block, String name) {
+        return (BlockStateInteger) getState(block, name, false);
     }
 
     /**
-     * Get a specified {@link Property} from a given block's class with a
+     * Get a specified {@link IBlockState} from a given block's class with a
      * given name
      *
      * @param block the class to retrieve the state from
@@ -341,15 +341,15 @@ public class CraftBlockData implements BlockData {
      * @throws IllegalStateException if the state is null and {@code optional}
      * is false.
      */
-    private static Property<?> getState(Class<? extends Block> block, String name, boolean optional) {
-        Property<?> state = null;
+    private static IBlockState<?> getState(Class<? extends Block> block, String name, boolean optional) {
+        IBlockState<?> state = null;
 
-        for (Block instance : Registry.BLOCK) {
+        for (Block instance : IRegistry.BLOCK) {
             if (instance.getClass() == block) {
                 if (state == null) {
-                    state = instance.getStateContainer().getProperty(name);
+                    state = instance.getStates().a(name);
                 } else {
-                    Property<?> newState = instance.getStateContainer().getProperty(name);
+                    IBlockState<?> newState = instance.getStates().a(name);
 
                     Preconditions.checkState(state == newState, "State mistmatch %s,%s", state, newState);
                 }
@@ -362,31 +362,30 @@ public class CraftBlockData implements BlockData {
     }
 
     /**
-     * Get the minimum value allowed by the IntegerProperty.
+     * Get the minimum value allowed by the BlockStateInteger.
      *
      * @param state the state to check
      * @return the minimum value allowed
      */
-    protected static int getMin(IntegerProperty state) {
+    protected static int getMin(BlockStateInteger state) {
         return state.min;
     }
 
     /**
-     * Get the maximum value allowed by the IntegerProperty.
+     * Get the maximum value allowed by the BlockStateInteger.
      *
      * @param state the state to check
      * @return the maximum value allowed
      */
-    protected static int getMax(IntegerProperty state) {
+    protected static int getMax(BlockStateInteger state) {
         return state.max;
     }
 
     //
-    private static final Map<Class<? extends Block>, Function<BlockState, CraftBlockData>> MAP = new HashMap<>();
+    private static final Map<Class<? extends Block>, Function<IBlockData, CraftBlockData>> MAP = new HashMap<>();
 
     static {
         //<editor-fold desc="CraftBlockData Registration" defaultstate="collapsed">
-        /* // TODO: 26/06/2020 Come back and add this
         register(net.minecraft.server.BlockAnvil.class, org.bukkit.craftbukkit.block.impl.CraftAnvil::new);
         register(net.minecraft.server.BlockBamboo.class, org.bukkit.craftbukkit.block.impl.CraftBamboo::new);
         register(net.minecraft.server.BlockBanner.class, org.bukkit.craftbukkit.block.impl.CraftBanner::new);
@@ -514,40 +513,39 @@ public class CraftBlockData implements BlockData {
         register(net.minecraft.server.BlockWitherSkull.class, org.bukkit.craftbukkit.block.impl.CraftWitherSkull::new);
         register(net.minecraft.server.BlockWitherSkullWall.class, org.bukkit.craftbukkit.block.impl.CraftWitherSkullWall::new);
         register(net.minecraft.server.BlockWoodButton.class, org.bukkit.craftbukkit.block.impl.CraftWoodButton::new);
-         */
         //</editor-fold>
     }
 
-    private static void register(Class<? extends Block> nms, Function<BlockState, CraftBlockData> bukkit) {
+    private static void register(Class<? extends Block> nms, Function<IBlockData, CraftBlockData> bukkit) {
         Preconditions.checkState(MAP.put(nms, bukkit) == null, "Duplicate mapping %s->%s", nms, bukkit);
     }
 
     public static CraftBlockData newData(Material material, String data) {
         Preconditions.checkArgument(material == null || material.isBlock(), "Cannot get data for not block %s", material);
 
-        BlockState blockData;
+        IBlockData blockData;
         Block block = CraftMagicNumbers.getBlock(material);
-        Map<Property<?>, Comparable<?>> parsed = null;
+        Map<IBlockState<?>, Comparable<?>> parsed = null;
 
         // Data provided, use it
         if (data != null) {
             try {
                 // Material provided, force that material in
                 if (block != null) {
-                    data = Registry.BLOCK.getKey(block) + data;
+                    data = IRegistry.BLOCK.getKey(block) + data;
                 }
 
                 StringReader reader = new StringReader(data);
-                BlockStateParser arg = new BlockStateParser(reader, false).parse(false);
+                ArgumentBlock arg = new ArgumentBlock(reader, false).a(false);
                 Preconditions.checkArgument(!reader.canRead(), "Spurious trailing data: " + data);
 
-                blockData = arg.getState();
-                parsed = arg.getProperties();
+                blockData = arg.getBlockData();
+                parsed = arg.getStateMap();
             } catch (CommandSyntaxException ex) {
                 throw new IllegalArgumentException("Could not parse data: " + data, ex);
             }
         } else {
-            blockData = block.getDefaultState();
+            blockData = block.getBlockData();
         }
 
         CraftBlockData craft = fromData(blockData);
@@ -555,7 +553,7 @@ public class CraftBlockData implements BlockData {
         return craft;
     }
 
-    public static CraftBlockData fromData(BlockState data) {
+    public static CraftBlockData fromData(IBlockData data) {
         return MAP.getOrDefault(data.getBlock().getClass(), CraftBlockData::new).apply(data);
     }
 }

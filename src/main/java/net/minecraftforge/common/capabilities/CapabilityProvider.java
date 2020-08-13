@@ -1,6 +1,6 @@
 /*
  * Minecraft Forge
- * Copyright (c) 2016-2019.
+ * Copyright (c) 2016-2020.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,7 @@ public abstract class CapabilityProvider<B extends CapabilityProvider<B>> implem
 {
     private final @Nonnull Class<B> baseClass;
     private @Nullable CapabilityDispatcher capabilities;
-    public boolean valid = true; // private->public CraftBukkit
+    private boolean valid = true;
 
     protected CapabilityProvider(Class<B> baseClass)
     {

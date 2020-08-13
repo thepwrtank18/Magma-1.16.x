@@ -1,12 +1,11 @@
 package org.bukkit.craftbukkit.block.data.type;
 
-import net.minecraft.state.BooleanProperty;
 import org.bukkit.block.data.type.Piston;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public abstract class CraftPiston extends CraftBlockData implements Piston {
 
-    private static final BooleanProperty EXTENDED = getBoolean("extended");
+    private static final net.minecraft.server.BlockStateBoolean EXTENDED = getBoolean("extended");
 
     @Override
     public boolean isExtended() {

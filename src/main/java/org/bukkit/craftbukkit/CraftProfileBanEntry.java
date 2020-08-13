@@ -4,25 +4,25 @@ import com.mojang.authlib.GameProfile;
 import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
-import net.minecraft.server.management.BanList;
-import net.minecraft.server.management.ProfileBanEntry;
+import net.minecraft.server.GameProfileBanEntry;
+import net.minecraft.server.GameProfileBanList;
 import org.bukkit.Bukkit;
 
 public final class CraftProfileBanEntry implements org.bukkit.BanEntry {
-    private final BanList list;
+    private final GameProfileBanList list;
     private final GameProfile profile;
     private Date created;
     private String source;
     private Date expiration;
     private String reason;
 
-    public CraftProfileBanEntry(GameProfile profile, ProfileBanEntry entry, BanList list) {
+    public CraftProfileBanEntry(GameProfile profile, GameProfileBanEntry entry, GameProfileBanList list) {
         this.list = list;
         this.profile = profile;
         this.created = entry.getCreated() != null ? new Date(entry.getCreated().getTime()) : null;
-        this.source = entry.getBannedBy();
-        this.expiration = entry.getBanEndDate() != null ? new Date(entry.getBanEndDate().getTime()) : null;
-        this.reason = entry.getBanReason();
+        this.source = entry.getSource();
+        this.expiration = entry.getExpires() != null ? new Date(entry.getExpires().getTime()) : null;
+        this.reason = entry.getReason();
     }
 
     @Override
@@ -76,10 +76,10 @@ public final class CraftProfileBanEntry implements org.bukkit.BanEntry {
 
     @Override
     public void save() {
-        ProfileBanEntry entry = new ProfileBanEntry(profile, this.created, this.source, this.expiration, this.reason);
-        this.list.addEntry(entry);
+        GameProfileBanEntry entry = new GameProfileBanEntry(profile, this.created, this.source, this.expiration, this.reason);
+        this.list.add(entry);
         try {
-            this.list.writeChanges();
+            this.list.save();
         } catch (IOException ex) {
             Bukkit.getLogger().log(Level.SEVERE, "Failed to save banned-players.json, {0}", ex.getMessage());
         }

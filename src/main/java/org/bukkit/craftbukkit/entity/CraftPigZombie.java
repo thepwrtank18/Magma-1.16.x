@@ -1,24 +1,24 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.monster.ZombifiedPiglinEntity;
+import net.minecraft.server.EntityPigZombie;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.PigZombie;
 
 public class CraftPigZombie extends CraftZombie implements PigZombie {
 
-    public CraftPigZombie(CraftServer server, ZombifiedPiglinEntity entity) {
+    public CraftPigZombie(CraftServer server, EntityPigZombie entity) {
         super(server, entity);
     }
 
     @Override
     public int getAnger() {
-        return getHandle().func_230256_F__();
+        return getHandle().getAnger();
     }
 
     @Override
     public void setAnger(int level) {
-        getHandle().func_230260_a__(level);
+        getHandle().setAnger(level);
     }
 
     @Override
@@ -32,8 +32,8 @@ public class CraftPigZombie extends CraftZombie implements PigZombie {
     }
 
     @Override
-    public ZombifiedPiglinEntity getHandle() {
-        return (ZombifiedPiglinEntity) entity;
+    public EntityPigZombie getHandle() {
+        return (EntityPigZombie) entity;
     }
 
     @Override

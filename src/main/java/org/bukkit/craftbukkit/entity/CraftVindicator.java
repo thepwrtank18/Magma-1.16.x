@@ -1,19 +1,19 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.monster.VindicatorEntity;
+import net.minecraft.server.EntityVindicator;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Vindicator;
 
 public class CraftVindicator extends CraftIllager implements Vindicator {
 
-    public CraftVindicator(CraftServer server, VindicatorEntity entity) {
+    public CraftVindicator(CraftServer server, EntityVindicator entity) {
         super(server, entity);
     }
 
     @Override
-    public VindicatorEntity getHandle() {
-        return (VindicatorEntity) super.getHandle();
+    public EntityVindicator getHandle() {
+        return (EntityVindicator) super.getHandle();
     }
 
     @Override

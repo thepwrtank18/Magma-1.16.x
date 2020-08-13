@@ -1,8 +1,8 @@
 package org.bukkit.craftbukkit.inventory;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.entity.MobEntity;
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.server.EntityInsentient;
+import net.minecraft.server.EnumItemSlot;
 import org.bukkit.craftbukkit.CraftEquipmentSlot;
 import org.bukkit.craftbukkit.entity.CraftLivingEntity;
 import org.bukkit.entity.Entity;
@@ -21,35 +21,35 @@ public class CraftEntityEquipment implements EntityEquipment {
     @Override
     public void setItem(EquipmentSlot slot, ItemStack item) {
         Preconditions.checkArgument(slot != null, "slot must not be null");
-        EquipmentSlotType nmsSlot = CraftEquipmentSlot.getNMS(slot);
+        EnumItemSlot nmsSlot = CraftEquipmentSlot.getNMS(slot);
         setEquipment(nmsSlot, item);
     }
 
     @Override
     public ItemStack getItem(EquipmentSlot slot) {
         Preconditions.checkArgument(slot != null, "slot must not be null");
-        EquipmentSlotType nmsSlot = CraftEquipmentSlot.getNMS(slot);
+        EnumItemSlot nmsSlot = CraftEquipmentSlot.getNMS(slot);
         return getEquipment(nmsSlot);
     }
 
     @Override
     public ItemStack getItemInMainHand() {
-        return getEquipment(EquipmentSlotType.MAINHAND);
+        return getEquipment(EnumItemSlot.MAINHAND);
     }
 
     @Override
     public void setItemInMainHand(ItemStack item) {
-        setEquipment(EquipmentSlotType.MAINHAND, item);
+        setEquipment(EnumItemSlot.MAINHAND, item);
     }
 
     @Override
     public ItemStack getItemInOffHand() {
-        return getEquipment(EquipmentSlotType.OFFHAND);
+        return getEquipment(EnumItemSlot.OFFHAND);
     }
 
     @Override
     public void setItemInOffHand(ItemStack item) {
-        setEquipment(EquipmentSlotType.OFFHAND, item);
+        setEquipment(EnumItemSlot.OFFHAND, item);
     }
 
     @Override
@@ -64,74 +64,74 @@ public class CraftEntityEquipment implements EntityEquipment {
 
     @Override
     public ItemStack getHelmet() {
-        return getEquipment(EquipmentSlotType.HEAD);
+        return getEquipment(EnumItemSlot.HEAD);
     }
 
     @Override
     public void setHelmet(ItemStack helmet) {
-        setEquipment(EquipmentSlotType.HEAD, helmet);
+        setEquipment(EnumItemSlot.HEAD, helmet);
     }
 
     @Override
     public ItemStack getChestplate() {
-        return getEquipment(EquipmentSlotType.CHEST);
+        return getEquipment(EnumItemSlot.CHEST);
     }
 
     @Override
     public void setChestplate(ItemStack chestplate) {
-        setEquipment(EquipmentSlotType.CHEST, chestplate);
+        setEquipment(EnumItemSlot.CHEST, chestplate);
     }
 
     @Override
     public ItemStack getLeggings() {
-        return getEquipment(EquipmentSlotType.LEGS);
+        return getEquipment(EnumItemSlot.LEGS);
     }
 
     @Override
     public void setLeggings(ItemStack leggings) {
-        setEquipment(EquipmentSlotType.LEGS, leggings);
+        setEquipment(EnumItemSlot.LEGS, leggings);
     }
 
     @Override
     public ItemStack getBoots() {
-        return getEquipment(EquipmentSlotType.FEET);
+        return getEquipment(EnumItemSlot.FEET);
     }
 
     @Override
     public void setBoots(ItemStack boots) {
-        setEquipment(EquipmentSlotType.FEET, boots);
+        setEquipment(EnumItemSlot.FEET, boots);
     }
 
     @Override
     public ItemStack[] getArmorContents() {
         ItemStack[] armor = new ItemStack[]{
-                getEquipment(EquipmentSlotType.FEET),
-                getEquipment(EquipmentSlotType.LEGS),
-                getEquipment(EquipmentSlotType.CHEST),
-                getEquipment(EquipmentSlotType.HEAD),
+                getEquipment(EnumItemSlot.FEET),
+                getEquipment(EnumItemSlot.LEGS),
+                getEquipment(EnumItemSlot.CHEST),
+                getEquipment(EnumItemSlot.HEAD),
         };
         return armor;
     }
 
     @Override
     public void setArmorContents(ItemStack[] items) {
-        setEquipment(EquipmentSlotType.FEET, items.length >= 1 ? items[0] : null);
-        setEquipment(EquipmentSlotType.LEGS, items.length >= 2 ? items[1] : null);
-        setEquipment(EquipmentSlotType.CHEST, items.length >= 3 ? items[2] : null);
-        setEquipment(EquipmentSlotType.HEAD, items.length >= 4 ? items[3] : null);
+        setEquipment(EnumItemSlot.FEET, items.length >= 1 ? items[0] : null);
+        setEquipment(EnumItemSlot.LEGS, items.length >= 2 ? items[1] : null);
+        setEquipment(EnumItemSlot.CHEST, items.length >= 3 ? items[2] : null);
+        setEquipment(EnumItemSlot.HEAD, items.length >= 4 ? items[3] : null);
     }
 
-    private ItemStack getEquipment(EquipmentSlotType slot) {
-        return CraftItemStack.asBukkitCopy(entity.getHandle().getItemStackFromSlot(slot));
+    private ItemStack getEquipment(EnumItemSlot slot) {
+        return CraftItemStack.asBukkitCopy(entity.getHandle().getEquipment(slot));
     }
 
-    private void setEquipment(EquipmentSlotType slot, ItemStack stack) {
-        entity.getHandle().setItemStackToSlot(slot, CraftItemStack.asNMSCopy(stack));
+    private void setEquipment(EnumItemSlot slot, ItemStack stack) {
+        entity.getHandle().setSlot(slot, CraftItemStack.asNMSCopy(stack));
     }
 
     @Override
     public void clear() {
-        for (EquipmentSlotType slot : EquipmentSlotType.values()) {
+        for (EnumItemSlot slot : EnumItemSlot.values()) {
             setEquipment(slot, null);
         }
     }
@@ -153,77 +153,77 @@ public class CraftEntityEquipment implements EntityEquipment {
 
     @Override
     public float getItemInMainHandDropChance() {
-       return getDropChance(EquipmentSlotType.MAINHAND);
+       return getDropChance(EnumItemSlot.MAINHAND);
     }
 
     @Override
     public void setItemInMainHandDropChance(float chance) {
-        setDropChance(EquipmentSlotType.MAINHAND, chance);
+        setDropChance(EnumItemSlot.MAINHAND, chance);
     }
 
     @Override
     public float getItemInOffHandDropChance() {
-        return getDropChance(EquipmentSlotType.OFFHAND);
+        return getDropChance(EnumItemSlot.OFFHAND);
     }
 
     @Override
     public void setItemInOffHandDropChance(float chance) {
-        setDropChance(EquipmentSlotType.OFFHAND, chance);
+        setDropChance(EnumItemSlot.OFFHAND, chance);
     }
 
     @Override
     public float getHelmetDropChance() {
-        return getDropChance(EquipmentSlotType.HEAD);
+        return getDropChance(EnumItemSlot.HEAD);
     }
 
     @Override
     public void setHelmetDropChance(float chance) {
-        setDropChance(EquipmentSlotType.HEAD, chance);
+        setDropChance(EnumItemSlot.HEAD, chance);
     }
 
     @Override
     public float getChestplateDropChance() {
-        return getDropChance(EquipmentSlotType.CHEST);
+        return getDropChance(EnumItemSlot.CHEST);
     }
 
     @Override
     public void setChestplateDropChance(float chance) {
-        setDropChance(EquipmentSlotType.CHEST, chance);
+        setDropChance(EnumItemSlot.CHEST, chance);
     }
 
     @Override
     public float getLeggingsDropChance() {
-        return getDropChance(EquipmentSlotType.LEGS);
+        return getDropChance(EnumItemSlot.LEGS);
     }
 
     @Override
     public void setLeggingsDropChance(float chance) {
-        setDropChance(EquipmentSlotType.LEGS, chance);
+        setDropChance(EnumItemSlot.LEGS, chance);
     }
 
     @Override
     public float getBootsDropChance() {
-        return getDropChance(EquipmentSlotType.FEET);
+        return getDropChance(EnumItemSlot.FEET);
     }
 
     @Override
     public void setBootsDropChance(float chance) {
-        setDropChance(EquipmentSlotType.FEET, chance);
+        setDropChance(EnumItemSlot.FEET, chance);
     }
 
-    private void setDropChance(EquipmentSlotType slot, float chance) {
-        if (slot == EquipmentSlotType.MAINHAND || slot == EquipmentSlotType.OFFHAND) {
-            ((MobEntity) entity.getHandle()).inventoryHandsDropChances[slot.getIndex()] = chance;
+    private void setDropChance(EnumItemSlot slot, float chance) {
+        if (slot == EnumItemSlot.MAINHAND || slot == EnumItemSlot.OFFHAND) {
+            ((EntityInsentient) entity.getHandle()).dropChanceHand[slot.b()] = chance;
         } else {
-            ((MobEntity) entity.getHandle()).inventoryArmorDropChances[slot.getIndex()] = chance;
+            ((EntityInsentient) entity.getHandle()).dropChanceArmor[slot.b()] = chance;
         }
     }
 
-    private float getDropChance(EquipmentSlotType slot) {
-        if (slot == EquipmentSlotType.MAINHAND || slot == EquipmentSlotType.OFFHAND) {
-            return ((MobEntity) entity.getHandle()).inventoryHandsDropChances[slot.getIndex()];
+    private float getDropChance(EnumItemSlot slot) {
+        if (slot == EnumItemSlot.MAINHAND || slot == EnumItemSlot.OFFHAND) {
+            return ((EntityInsentient) entity.getHandle()).dropChanceHand[slot.b()];
         } else {
-            return ((MobEntity) entity.getHandle()).inventoryArmorDropChances[slot.getIndex()];
+            return ((EntityInsentient) entity.getHandle()).dropChanceArmor[slot.b()];
         }
     }
 }

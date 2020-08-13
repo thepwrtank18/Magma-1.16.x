@@ -1,17 +1,17 @@
 package org.bukkit.craftbukkit.inventory;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.container.RepairContainer;
+import net.minecraft.server.ContainerAnvil;
+import net.minecraft.server.IInventory;
 import org.bukkit.Location;
 import org.bukkit.inventory.AnvilInventory;
 
 public class CraftInventoryAnvil extends CraftResultInventory implements AnvilInventory {
 
     private final Location location;
-    private final RepairContainer container;
+    private final ContainerAnvil container;
 
-    public CraftInventoryAnvil(Location location, IInventory inventory, IInventory resultInventory, RepairContainer container) {
+    public CraftInventoryAnvil(Location location, IInventory inventory, IInventory resultInventory, ContainerAnvil container) {
         super(inventory, resultInventory);
         this.location = location;
         this.container = container;
@@ -24,17 +24,17 @@ public class CraftInventoryAnvil extends CraftResultInventory implements AnvilIn
 
     @Override
     public String getRenameText() {
-        return container.repairedItemName;
+        return container.renameText;
     }
 
     @Override
     public int getRepairCost() {
-        return container.maximumCost.get();
+        return container.levelCost.get();
     }
 
     @Override
     public void setRepairCost(int i) {
-        container.maximumCost.set(i);
+        container.levelCost.set(i);
     }
 
     @Override

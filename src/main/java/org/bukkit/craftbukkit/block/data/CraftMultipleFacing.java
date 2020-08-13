@@ -1,17 +1,16 @@
 package org.bukkit.craftbukkit.block.data;
 
-import net.minecraft.state.BooleanProperty;
 import org.bukkit.block.data.MultipleFacing;
 
 public abstract class CraftMultipleFacing extends CraftBlockData implements MultipleFacing {
 
-    private static final BooleanProperty[] FACES = new BooleanProperty[]{
+    private static final net.minecraft.server.BlockStateBoolean[] FACES = new net.minecraft.server.BlockStateBoolean[]{
         getBoolean("north", true), getBoolean("east", true), getBoolean("south", true), getBoolean("west", true), getBoolean("up", true), getBoolean("down", true)
     };
 
     @Override
     public boolean hasFace(org.bukkit.block.BlockFace face) {
-        BooleanProperty state = FACES[face.ordinal()];
+        net.minecraft.server.BlockStateBoolean state = FACES[face.ordinal()];
         if (state == null) {
             throw new IllegalArgumentException("Non-allowed face " + face + ". Check MultipleFacing.getAllowedFaces.");
         }
@@ -20,7 +19,7 @@ public abstract class CraftMultipleFacing extends CraftBlockData implements Mult
 
     @Override
     public void setFace(org.bukkit.block.BlockFace face, boolean has) {
-        BooleanProperty state = FACES[face.ordinal()];
+        net.minecraft.server.BlockStateBoolean state = FACES[face.ordinal()];
         if (state == null) {
             throw new IllegalArgumentException("Non-allowed face " + face + ". Check MultipleFacing.getAllowedFaces.");
         }

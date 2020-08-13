@@ -1,12 +1,11 @@
 package org.bukkit.craftbukkit.block.data.type;
 
-import net.minecraft.state.BooleanProperty;
 import org.bukkit.block.data.type.BrewingStand;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public abstract class CraftBrewingStand extends CraftBlockData implements BrewingStand {
 
-    private static final BooleanProperty[] HAS_BOTTLE = new BooleanProperty[]{
+    private static final net.minecraft.server.BlockStateBoolean[] HAS_BOTTLE = new net.minecraft.server.BlockStateBoolean[]{
         getBoolean("has_bottle_0"), getBoolean("has_bottle_1"), getBoolean("has_bottle_2")
     };
 

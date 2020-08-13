@@ -1,17 +1,15 @@
 package org.bukkit.craftbukkit.util;
 
-import net.minecraft.util.math.vector.Vector3d;
-
 public final class CraftVector {
 
     private CraftVector() {
     }
 
-    public static org.bukkit.util.Vector toBukkit(Vector3d nms) {
+    public static org.bukkit.util.Vector toBukkit(net.minecraft.server.Vec3D nms) {
         return new org.bukkit.util.Vector(nms.x, nms.y, nms.z);
     }
 
-    public static Vector3d toNMS(org.bukkit.util.Vector bukkit) {
-        return new Vector3d(bukkit.getX(), bukkit.getY(), bukkit.getZ());
+    public static net.minecraft.server.Vec3D toNMS(org.bukkit.util.Vector bukkit) {
+        return new net.minecraft.server.Vec3D(bukkit.getX(), bukkit.getY(), bukkit.getZ());
     }
 }

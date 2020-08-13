@@ -1,31 +1,31 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.entity.passive.MooshroomEntity;
+import net.minecraft.server.EntityMushroomCow;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.MushroomCow;
 
 public class CraftMushroomCow extends CraftCow implements MushroomCow {
-    public CraftMushroomCow(CraftServer server, MooshroomEntity entity) {
+    public CraftMushroomCow(CraftServer server, EntityMushroomCow entity) {
         super(server, entity);
     }
 
     @Override
-    public MooshroomEntity getHandle() {
-        return (MooshroomEntity) entity;
+    public EntityMushroomCow getHandle() {
+        return (EntityMushroomCow) entity;
     }
 
     @Override
     public Variant getVariant() {
-        return Variant.values()[getHandle().getMooshroomType().ordinal()];
+        return Variant.values()[getHandle().getVariant().ordinal()];
     }
 
     @Override
     public void setVariant(Variant variant) {
         Preconditions.checkArgument(variant != null, "variant");
 
-        getHandle().setMooshroomType(MooshroomEntity.Type.values()[variant.ordinal()]);
+        getHandle().setVariant(EntityMushroomCow.Type.values()[variant.ordinal()]);
     }
 
     @Override

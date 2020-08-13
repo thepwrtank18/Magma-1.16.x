@@ -1,8 +1,7 @@
 package org.bukkit.craftbukkit.tag;
 
-import net.minecraft.tags.ITag;
-import net.minecraft.tags.NetworkTagCollection;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.server.MinecraftKey;
+import net.minecraft.server.Tags;
 import org.bukkit.Keyed;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Tag;
@@ -10,21 +9,19 @@ import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 
 public abstract class CraftTag<N, B extends Keyed> implements Tag<B> {
 
-    private final net.minecraft.tags.NetworkTagCollection<N> registry;
-    private final ResourceLocation tag;
+    private final net.minecraft.server.Tags<N> registry;
+    private final MinecraftKey tag;
     //
-    private int version = -1;
-    private ITag<N> handle;
+    private net.minecraft.server.Tag<N> handle;
 
-    public CraftTag(NetworkTagCollection<N> registry, ResourceLocation tag) {
+    public CraftTag(Tags<N> registry, MinecraftKey tag) {
         this.registry = registry;
         this.tag = tag;
     }
 
-    protected ITag<N> getHandle() {
-        if (version != registry.version) {
-            handle = registry.get(tag);
-            version = registry.version;
+    protected net.minecraft.server.Tag<N> getHandle() {
+        if (handle == null) {
+            handle = registry.b(tag);
         }
 
         return handle;

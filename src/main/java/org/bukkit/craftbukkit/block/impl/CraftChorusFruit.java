@@ -3,27 +3,25 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.ChorusPlantBlock;
-
 public final class CraftChorusFruit extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.MultipleFacing {
 
     public CraftChorusFruit() {
         super();
     }
 
-    public CraftChorusFruit(net.minecraft.block.BlockState state) {
+    public CraftChorusFruit(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftMultipleFacing
 
-    private static final net.minecraft.state.BooleanProperty[] FACES = new net.minecraft.state.BooleanProperty[]{
-        getBoolean(ChorusPlantBlock.class, "north", true), getBoolean(ChorusPlantBlock.class, "east", true), getBoolean(ChorusPlantBlock.class, "south", true), getBoolean(ChorusPlantBlock.class, "west", true), getBoolean(ChorusPlantBlock.class, "up", true), getBoolean(ChorusPlantBlock.class, "down", true)
+    private static final net.minecraft.server.BlockStateBoolean[] FACES = new net.minecraft.server.BlockStateBoolean[]{
+        getBoolean(net.minecraft.server.BlockChorusFruit.class, "north", true), getBoolean(net.minecraft.server.BlockChorusFruit.class, "east", true), getBoolean(net.minecraft.server.BlockChorusFruit.class, "south", true), getBoolean(net.minecraft.server.BlockChorusFruit.class, "west", true), getBoolean(net.minecraft.server.BlockChorusFruit.class, "up", true), getBoolean(net.minecraft.server.BlockChorusFruit.class, "down", true)
     };
 
     @Override
     public boolean hasFace(org.bukkit.block.BlockFace face) {
-        net.minecraft.state.BooleanProperty state = FACES[face.ordinal()];
+        net.minecraft.server.BlockStateBoolean state = FACES[face.ordinal()];
         if (state == null) {
             throw new IllegalArgumentException("Non-allowed face " + face + ". Check MultipleFacing.getAllowedFaces.");
         }
@@ -32,7 +30,7 @@ public final class CraftChorusFruit extends org.bukkit.craftbukkit.block.data.Cr
 
     @Override
     public void setFace(org.bukkit.block.BlockFace face, boolean has) {
-        net.minecraft.state.BooleanProperty state = FACES[face.ordinal()];
+        net.minecraft.server.BlockStateBoolean state = FACES[face.ordinal()];
         if (state == null) {
             throw new IllegalArgumentException("Non-allowed face " + face + ". Check MultipleFacing.getAllowedFaces.");
         }

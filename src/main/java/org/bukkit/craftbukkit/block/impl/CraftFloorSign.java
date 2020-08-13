@@ -9,13 +9,13 @@ public final class CraftFloorSign extends org.bukkit.craftbukkit.block.data.Craf
         super();
     }
 
-    public CraftFloorSign(net.minecraft.block.BlockState state) {
+    public CraftFloorSign(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftRotatable
 
-    private static final net.minecraft.state.IntegerProperty ROTATION = getInteger(net.minecraft.block.StandingSignBlock.class, "rotation");
+    private static final net.minecraft.server.BlockStateInteger ROTATION = getInteger(net.minecraft.server.BlockFloorSign.class, "rotation");
 
     @Override
     public org.bukkit.block.BlockFace getRotation() {
@@ -118,7 +118,7 @@ public final class CraftFloorSign extends org.bukkit.craftbukkit.block.data.Craf
 
     // org.bukkit.craftbukkit.block.data.CraftWaterlogged
 
-    private static final net.minecraft.state.BooleanProperty WATERLOGGED = getBoolean(net.minecraft.block.StandingSignBlock.class, "waterlogged");
+    private static final net.minecraft.server.BlockStateBoolean WATERLOGGED = getBoolean(net.minecraft.server.BlockFloorSign.class, "waterlogged");
 
     @Override
     public boolean isWaterlogged() {

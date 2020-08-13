@@ -264,8 +264,8 @@ public final class Bukkit {
     /**
      * Broadcast a message to all players.
      * <p>
-     * This is the same as calling {@link #broadcast(String,
-     * String)} to {@link Server#BROADCAST_CHANNEL_USERS}
+     * This is the same as calling {@link #broadcast(java.lang.String,
+     * java.lang.String)} to {@link Server#BROADCAST_CHANNEL_USERS}
      *
      * @param message the message
      * @return the number of players
@@ -394,6 +394,28 @@ public final class Bukkit {
      * @return the default ticks per ambient mobs spawn value
      */
     public static int getTicksPerAmbientSpawns() {
+        return server.getTicksPerAmbientSpawns();
+    }
+
+    /**
+     * Gets the default ticks per water ambient mob spawns value.
+     * <p>
+     * <b>Example Usage:</b>
+     * <ul>
+     * <li>A value of 1 will mean the server will attempt to spawn water ambient mobs
+     *     every tick.
+     * <li>A value of 400 will mean the server will attempt to spawn water ambient mobs
+     *     every 400th tick.
+     * <li>A value below 0 will be reset back to Minecraft's default.
+     * </ul>
+     * <p>
+     * <b>Note:</b> If set to 0, ambient mobs spawning will be disabled.
+     * <p>
+     * Minecraft default: 1.
+     *
+     * @return the default ticks per water ambient mobs spawn value
+     */
+    public static int getTicksPerWaterAmbientSpawns() {
         return server.getTicksPerAmbientSpawns();
     }
 
@@ -582,8 +604,8 @@ public final class Bukkit {
      * @param structureType the type of structure to find
      * @return a newly created item stack
      *
-     * @see World#locateNearestStructure(Location,
-     *      StructureType, int, boolean)
+     * @see World#locateNearestStructure(org.bukkit.Location,
+     *      org.bukkit.StructureType, int, boolean)
      */
     @NotNull
     public static ItemStack createExplorerMap(@NotNull World world, @NotNull Location location, @NotNull StructureType structureType) {
@@ -605,8 +627,8 @@ public final class Bukkit {
      * @param findUnexplored whether to find unexplored structures
      * @return the newly created item stack
      *
-     * @see World#locateNearestStructure(Location,
-     *      StructureType, int, boolean)
+     * @see World#locateNearestStructure(org.bukkit.Location,
+     *      org.bukkit.StructureType, int, boolean)
      */
     @NotNull
     public static ItemStack createExplorerMap(@NotNull World world, @NotNull Location location, @NotNull StructureType structureType, int radius, boolean findUnexplored) {
@@ -692,6 +714,17 @@ public final class Bukkit {
     @NotNull
     public static List<Recipe> getRecipesFor(@NotNull ItemStack result) {
         return server.getRecipesFor(result);
+    }
+
+    /**
+     * Get the {@link Recipe} for the given key.
+     *
+     * @param recipeKey the key of the recipe to return
+     * @return the recipe for the given key or null.
+     */
+    @Nullable
+    public static Recipe getRecipe(@NotNull NamespacedKey recipeKey) {
+        return server.getRecipe(recipeKey);
     }
 
     /**
@@ -821,7 +854,7 @@ public final class Bukkit {
      *             unique past a single session.
      * @param name the name the player to retrieve
      * @return an offline player
-     * @see #getOfflinePlayer(UUID)
+     * @see #getOfflinePlayer(java.util.UUID)
      */
     @Deprecated
     @NotNull
@@ -1104,6 +1137,16 @@ public final class Bukkit {
     }
 
     /**
+     * Gets user-specified limit for number of water ambient mobs that can spawn
+     * in a chunk.
+     *
+     * @return the water ambient spawn limit
+     */
+    public static int getWaterAmbientSpawnLimit() {
+        return server.getAmbientSpawnLimit();
+    }
+
+    /**
      * Gets user-specified limit for number of ambient mobs that can spawn in
      * a chunk.
      *
@@ -1255,7 +1298,7 @@ public final class Bukkit {
     /**
      * Create a ChunkData for use in a generator.
      *
-     * See {@link ChunkGenerator#generateChunkData(World, java.util.Random, int, int, ChunkGenerator.BiomeGrid)}
+     * See {@link ChunkGenerator#generateChunkData(org.bukkit.World, java.util.Random, int, int, org.bukkit.generator.ChunkGenerator.BiomeGrid)}
      *
      * @param world the world to create the ChunkData for
      * @return a new ChunkData for the world

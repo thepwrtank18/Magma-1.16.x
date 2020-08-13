@@ -1,14 +1,24 @@
 package org.bukkit.craftbukkit.block.data.type;
 
-import net.minecraft.state.EnumProperty;
 import org.bukkit.block.data.type.Wall;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public abstract class CraftWall extends CraftBlockData implements Wall {
 
-    private static final EnumProperty<?>[] HEIGHTS = new EnumProperty[]{
+    private static final net.minecraft.server.BlockStateBoolean UP = getBoolean("up");
+    private static final net.minecraft.server.BlockStateEnum<?>[] HEIGHTS = new net.minecraft.server.BlockStateEnum[]{
         getEnum("north"), getEnum("east"), getEnum("south"), getEnum("west")
     };
+
+    @Override
+    public boolean isUp() {
+        return get(UP);
+    }
+
+    @Override
+    public void setUp(boolean up) {
+        set(UP, up);
+    }
 
     @Override
     public Height getHeight(org.bukkit.block.BlockFace face) {

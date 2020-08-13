@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.StemBlock;
-
 public final class CraftStem extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Ageable {
 
     public CraftStem() {
         super();
     }
 
-    public CraftStem(net.minecraft.block.BlockState state) {
+    public CraftStem(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftAgeable
 
-    private static final net.minecraft.state.IntegerProperty AGE = getInteger(StemBlock.class, "age");
+    private static final net.minecraft.server.BlockStateInteger AGE = getInteger(net.minecraft.server.BlockStem.class, "age");
 
     @Override
     public int getAge() {

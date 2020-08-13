@@ -1,12 +1,11 @@
 package org.bukkit.craftbukkit.block.data.type;
 
-import net.minecraft.state.BooleanProperty;
 import org.bukkit.block.data.type.EndPortalFrame;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public abstract class CraftEndPortalFrame extends CraftBlockData implements EndPortalFrame {
 
-    private static final BooleanProperty EYE = getBoolean("eye");
+    private static final net.minecraft.server.BlockStateBoolean EYE = getBoolean("eye");
 
     @Override
     public boolean hasEye() {

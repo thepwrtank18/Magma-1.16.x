@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.PressurePlateBlock;
-
 public final class CraftPressurePlateBinary extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Powerable {
 
     public CraftPressurePlateBinary() {
         super();
     }
 
-    public CraftPressurePlateBinary(net.minecraft.block.BlockState state) {
+    public CraftPressurePlateBinary(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftPowerable
 
-    private static final net.minecraft.state.BooleanProperty POWERED = getBoolean(PressurePlateBlock.class, "powered");
+    private static final net.minecraft.server.BlockStateBoolean POWERED = getBoolean(net.minecraft.server.BlockPressurePlateBinary.class, "powered");
 
     @Override
     public boolean isPowered() {

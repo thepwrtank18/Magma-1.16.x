@@ -1,8 +1,8 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.entity.monster.ZombieEntity;
-import net.minecraft.entity.monster.ZombieVillagerEntity;
+import net.minecraft.server.EntityZombie;
+import net.minecraft.server.EntityZombieVillager;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Villager;
@@ -10,13 +10,13 @@ import org.bukkit.entity.Zombie;
 
 public class CraftZombie extends CraftMonster implements Zombie {
 
-    public CraftZombie(CraftServer server, ZombieEntity entity) {
+    public CraftZombie(CraftServer server, EntityZombie entity) {
         super(server, entity);
     }
 
     @Override
-    public ZombieEntity getHandle() {
-        return (ZombieEntity) entity;
+    public EntityZombie getHandle() {
+        return (EntityZombie) entity;
     }
 
     @Override
@@ -31,17 +31,17 @@ public class CraftZombie extends CraftMonster implements Zombie {
 
     @Override
     public boolean isBaby() {
-        return getHandle().isChild();
+        return getHandle().isBaby();
     }
 
     @Override
     public void setBaby(boolean flag) {
-        getHandle().setChild(flag);
+        getHandle().setBaby(flag);
     }
 
     @Override
     public boolean isVillager() {
-        return getHandle() instanceof ZombieVillagerEntity;
+        return getHandle() instanceof EntityZombieVillager;
     }
 
     @Override
@@ -61,7 +61,7 @@ public class CraftZombie extends CraftMonster implements Zombie {
 
     @Override
     public boolean isConverting() {
-        return getHandle().isDrowning();
+        return getHandle().isDrownConverting();
     }
 
     @Override
@@ -75,9 +75,52 @@ public class CraftZombie extends CraftMonster implements Zombie {
     public void setConversionTime(int time) {
         if (time < 0) {
             getHandle().drownedConversionTime = -1;
-            getHandle().getDataManager().set(ZombieEntity.DROWNING, false);
+            getHandle().getDataWatcher().set(EntityZombie.DROWN_CONVERTING, false);
         } else {
-            getHandle().startDrowning(time);
+            getHandle().startDrownedConversion(time);
         }
+    }
+
+    @Override
+    public int getAge() {
+        return getHandle().isBaby() ? -1 : 0;
+    }
+
+    @Override
+    public void setAge(int i) {
+        getHandle().setBaby(i < 0);
+    }
+
+    @Override
+    public void setAgeLock(boolean b) {
+    }
+
+    @Override
+    public boolean getAgeLock() {
+        return false;
+    }
+
+    @Override
+    public void setBaby() {
+        getHandle().setBaby(true);
+    }
+
+    @Override
+    public void setAdult() {
+        getHandle().setBaby(false);
+    }
+
+    @Override
+    public boolean isAdult() {
+        return !getHandle().isBaby();
+    }
+
+    @Override
+    public boolean canBreed() {
+        return false;
+    }
+
+    @Override
+    public void setBreed(boolean b) {
     }
 }

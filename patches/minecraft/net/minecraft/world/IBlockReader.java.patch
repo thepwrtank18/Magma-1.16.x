@@ -1,17 +1,6 @@
 --- a/net/minecraft/world/IBlockReader.java
 +++ b/net/minecraft/world/IBlockReader.java
-@@ -13,8 +13,10 @@
- import net.minecraft.util.math.BlockRayTraceResult;
- import net.minecraft.util.math.MathHelper;
- import net.minecraft.util.math.RayTraceContext;
-+import net.minecraft.util.math.RayTraceResult;
- import net.minecraft.util.math.shapes.VoxelShape;
- import net.minecraft.util.math.vector.Vector3d;
-+import org.apache.commons.lang.NotImplementedException;
- 
- public interface IBlockReader {
-    @Nullable
-@@ -25,7 +27,7 @@
+@@ -26,7 +26,7 @@
     FluidState func_204610_c(BlockPos p_204610_1_);
  
     default int func_217298_h(BlockPos p_217298_1_) {
@@ -20,12 +9,3 @@
     }
  
     default int func_201572_C() {
-@@ -132,4 +134,8 @@
-          }
-       }
-    }
-+
-+    default RayTraceResult rayTraceBlock(RayTraceContext rayTraceContext, BlockPos position) {
-+      throw new NotImplementedException();
-+    }
- }

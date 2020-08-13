@@ -1,19 +1,19 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.passive.DolphinEntity;
+import net.minecraft.server.EntityDolphin;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Dolphin;
 import org.bukkit.entity.EntityType;
 
 public class CraftDolphin extends CraftWaterMob implements Dolphin {
 
-    public CraftDolphin(CraftServer server, DolphinEntity entity) {
+    public CraftDolphin(CraftServer server, EntityDolphin entity) {
         super(server, entity);
     }
 
     @Override
-    public DolphinEntity getHandle() {
-        return (DolphinEntity) super.getHandle();
+    public EntityDolphin getHandle() {
+        return (EntityDolphin) super.getHandle();
     }
 
     @Override

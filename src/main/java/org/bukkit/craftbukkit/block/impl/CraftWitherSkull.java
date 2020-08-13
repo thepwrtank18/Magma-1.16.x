@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.WitherSkeletonSkullBlock;
-
 public final class CraftWitherSkull extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Rotatable {
 
     public CraftWitherSkull() {
         super();
     }
 
-    public CraftWitherSkull(net.minecraft.block.BlockState state) {
+    public CraftWitherSkull(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftRotatable
 
-    private static final net.minecraft.state.IntegerProperty ROTATION = getInteger(WitherSkeletonSkullBlock.class, "rotation");
+    private static final net.minecraft.server.BlockStateInteger ROTATION = getInteger(net.minecraft.server.BlockWitherSkull.class, "rotation");
 
     @Override
     public org.bukkit.block.BlockFace getRotation() {

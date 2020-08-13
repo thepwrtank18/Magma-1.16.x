@@ -1,20 +1,20 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.entity.passive.PandaEntity;
+import net.minecraft.server.EntityPanda;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Panda;
 
 public class CraftPanda extends CraftAnimals implements Panda {
 
-    public CraftPanda(CraftServer server, PandaEntity entity) {
+    public CraftPanda(CraftServer server, EntityPanda entity) {
         super(server, entity);
     }
 
     @Override
-    public PandaEntity getHandle() {
-        return (PandaEntity) super.getHandle();
+    public EntityPanda getHandle() {
+        return (EntityPanda) super.getHandle();
     }
 
     @Override
@@ -47,15 +47,15 @@ public class CraftPanda extends CraftAnimals implements Panda {
         getHandle().setHiddenGene(toNms(gene));
     }
 
-    public static Gene fromNms(PandaEntity.Gene gene) {
+    public static Gene fromNms(EntityPanda.Gene gene) {
         Preconditions.checkArgument(gene != null, "Gene may not be null");
 
         return Gene.values()[gene.ordinal()];
     }
 
-    public static PandaEntity.Gene toNms(Gene gene) {
+    public static EntityPanda.Gene toNms(Gene gene) {
         Preconditions.checkArgument(gene != null, "Gene may not be null");
 
-        return PandaEntity.Gene.values()[gene.ordinal()];
+        return EntityPanda.Gene.values()[gene.ordinal()];
     }
 }

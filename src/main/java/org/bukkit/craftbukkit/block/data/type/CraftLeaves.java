@@ -1,14 +1,12 @@
 package org.bukkit.craftbukkit.block.data.type;
 
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.IntegerProperty;
 import org.bukkit.block.data.type.Leaves;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public class CraftLeaves extends CraftBlockData implements Leaves {
 
-    private static final IntegerProperty DISTANCE = getInteger("distance");
-    private static final BooleanProperty PERSISTENT = getBoolean("persistent");
+    private static final net.minecraft.server.BlockStateInteger DISTANCE = getInteger("distance");
+    private static final net.minecraft.server.BlockStateBoolean PERSISTENT = getBoolean("persistent");
 
     @Override
     public boolean isPersistent() {

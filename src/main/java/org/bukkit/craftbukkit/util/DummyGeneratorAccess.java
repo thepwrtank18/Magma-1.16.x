@@ -3,70 +3,64 @@ package org.bukkit.craftbukkit.util;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
-import javax.annotation.Nullable;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.fluid.Fluid;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.DifficultyInstance;
-import net.minecraft.world.DimensionType;
-import net.minecraft.world.ITickList;
-import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeManager;
-import net.minecraft.world.border.WorldBorder;
-import net.minecraft.world.chunk.AbstractChunkProvider;
-import net.minecraft.world.chunk.ChunkStatus;
-import net.minecraft.world.chunk.IChunk;
-import net.minecraft.world.gen.Heightmap.Type;
-import net.minecraft.world.lighting.WorldLightManager;
-import net.minecraft.world.storage.IWorldInfo;
+import net.minecraft.server.AxisAlignedBB;
+import net.minecraft.server.BiomeBase;
+import net.minecraft.server.BiomeManager;
+import net.minecraft.server.Block;
+import net.minecraft.server.BlockPosition;
+import net.minecraft.server.ChunkStatus;
+import net.minecraft.server.DifficultyDamageScaler;
+import net.minecraft.server.DimensionManager;
+import net.minecraft.server.Entity;
+import net.minecraft.server.EntityHuman;
+import net.minecraft.server.Fluid;
+import net.minecraft.server.FluidType;
+import net.minecraft.server.GeneratorAccess;
+import net.minecraft.server.HeightMap;
+import net.minecraft.server.IBlockData;
+import net.minecraft.server.IChunkAccess;
+import net.minecraft.server.IChunkProvider;
+import net.minecraft.server.IRegistryCustom;
+import net.minecraft.server.LightEngine;
+import net.minecraft.server.ParticleParam;
+import net.minecraft.server.SoundCategory;
+import net.minecraft.server.SoundEffect;
+import net.minecraft.server.TickList;
+import net.minecraft.server.TickListEmpty;
+import net.minecraft.server.TileEntity;
+import net.minecraft.server.WorldBorder;
+import net.minecraft.server.WorldData;
+import net.minecraft.server.WorldServer;
 
-public class DummyGeneratorAccess implements IWorld {
+public class DummyGeneratorAccess implements GeneratorAccess {
 
-    public static final IWorld INSTANCE = new DummyGeneratorAccess();
+    public static final GeneratorAccess INSTANCE = new DummyGeneratorAccess();
 
     protected DummyGeneratorAccess() {
     }
 
+    @Override
+    public TickList<Block> getBlockTickList() {
+        return TickListEmpty.b();
+    }
 
     @Override
-    public ITickList<Block> getPendingBlockTicks() {
+    public TickList<FluidType> getFluidTickList() {
+        return TickListEmpty.b();
+    }
+
+    @Override
+    public WorldData getWorldData() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public ITickList<Fluid> getPendingFluidTicks() {
+    public DifficultyDamageScaler getDamageScaler(BlockPosition blockposition) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public World getWorld() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public IWorldInfo getWorldInfo() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public DifficultyInstance getDifficultyForLocation(BlockPos pos) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public AbstractChunkProvider getChunkProvider() {
+    public IChunkProvider getChunkProvider() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -76,27 +70,102 @@ public class DummyGeneratorAccess implements IWorld {
     }
 
     @Override
-    public void playSound(@Nullable PlayerEntity player, BlockPos pos, SoundEvent soundIn, SoundCategory category, float volume, float pitch) {
-
+    public void playSound(EntityHuman entityhuman, BlockPosition blockposition, SoundEffect soundeffect, SoundCategory soundcategory, float f, float f1) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void addParticle(IParticleData particleData, double x, double y, double z, double xSpeed, double ySpeed, double zSpeed) {
-
+    public void addParticle(ParticleParam particleparam, double d0, double d1, double d2, double d3, double d4, double d5) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void playEvent(@Nullable PlayerEntity player, int type, BlockPos pos, int data) {
-
+    public void a(EntityHuman entityhuman, int i, BlockPosition blockposition, int j) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public float func_230487_a_(Direction p_230487_1_, boolean p_230487_2_) {
-        return 0;
+    public WorldServer getMinecraftWorld() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public WorldLightManager getLightManager() {
+    public IRegistryCustom r() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<Entity> getEntities(Entity entity, AxisAlignedBB aabb, Predicate<? super Entity> prdct) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public <T extends Entity> List<T> a(Class<? extends T> type, AxisAlignedBB aabb, Predicate<? super T> prdct) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public List<? extends EntityHuman> getPlayers() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public IChunkAccess getChunkAt(int i, int i1, ChunkStatus cs, boolean bln) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int a(HeightMap.Type type, int i, int i1) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int c() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public BiomeManager d() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public BiomeBase a(int i, int i1, int i2) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean s_() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public int getSeaLevel() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public DimensionManager getDimensionManager() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public LightEngine e() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public TileEntity getTileEntity(BlockPosition blockposition) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public IBlockData getType(BlockPosition blockposition) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public Fluid getFluid(BlockPosition blockposition) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -105,95 +174,23 @@ public class DummyGeneratorAccess implements IWorld {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @Nullable
     @Override
-    public TileEntity getTileEntity(BlockPos pos) {
+    public boolean a(BlockPosition bp, Predicate<IBlockData> prdct) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public BlockState getBlockState(BlockPos pos) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public FluidState getFluidState(BlockPos pos) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<Entity> getEntitiesInAABBexcluding(@Nullable Entity entityIn, AxisAlignedBB boundingBox, @Nullable Predicate<? super Entity> predicate) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public <T extends Entity> List<T> getEntitiesWithinAABB(Class<? extends T> clazz, AxisAlignedBB aabb, @Nullable Predicate<? super T> filter) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public List<? extends PlayerEntity> getPlayers() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Nullable
-    @Override
-    public IChunk getChunk(int x, int z, ChunkStatus requiredStatus, boolean nonnull) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public int getHeight(Type heightmapType, int x, int z) {
-        return 0;
-    }
-
-    @Override
-    public int getSkylightSubtracted() {
-        return 0;
-    }
-
-    @Override
-    public BiomeManager getBiomeManager() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public Biome getNoiseBiomeRaw(int x, int y, int z) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean isRemote() {
+    public boolean a(BlockPosition blockposition, IBlockData iblockdata, int i, int j) {
         return false;
     }
 
     @Override
-    public int getSeaLevel() {
-        return 0;
-    }
-
-    @Override
-    public DimensionType func_230315_m_() {
+    public boolean a(BlockPosition blockposition, boolean flag) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public boolean func_241211_a_(BlockPos p_241211_1_, BlockState p_241211_2_, int p_241211_3_, int p_241211_4_) {
-        return false;
-    }
-
-    @Override
-    public boolean removeBlock(BlockPos pos, boolean isMoving) {
-        return false;
-    }
-
-    @Override
-    public boolean func_241212_a_(BlockPos p_241212_1_, boolean p_241212_2_, @Nullable Entity p_241212_3_, int p_241212_4_) {
-        return false;
-    }
-
-    @Override
-    public boolean hasBlockState(BlockPos p_217375_1_, Predicate<BlockState> p_217375_2_) {
-        return false;
+    public boolean a(BlockPosition blockposition, boolean flag, Entity entity, int i) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

@@ -3,21 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.TargetBlock;
-
 public final class CraftTarget extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.AnaloguePowerable {
 
     public CraftTarget() {
         super();
     }
 
-    public CraftTarget(net.minecraft.block.BlockState state) {
+    public CraftTarget(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftAnaloguePowerable
 
-    private static final net.minecraft.state.IntegerProperty POWER = getInteger(TargetBlock.class, "power");
+    private static final net.minecraft.server.BlockStateInteger POWER = getInteger(net.minecraft.server.BlockTarget.class, "power");
 
     @Override
     public int getPower() {

@@ -1,25 +1,23 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.item.ExperienceBottleEntity;
-import net.minecraft.entity.projectile.FishingBobberEntity;
+import net.minecraft.server.EntityThrownExpBottle;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ThrownExpBottle;
 
 public class CraftThrownExpBottle extends CraftThrowableProjectile implements ThrownExpBottle {
-
-    public CraftThrownExpBottle(CraftServer server, ExperienceBottleEntity entity) {
+    public CraftThrownExpBottle(CraftServer server, EntityThrownExpBottle entity) {
         super(server, entity);
     }
 
     @Override
-    public ExperienceBottleEntity getHandle() {
-        return (ExperienceBottleEntity) entity;
+    public EntityThrownExpBottle getHandle() {
+        return (EntityThrownExpBottle) entity;
     }
 
     @Override
     public String toString() {
-        return "ExperienceBottleEntity";
+        return "EntityThrownExpBottle";
     }
 
     @Override

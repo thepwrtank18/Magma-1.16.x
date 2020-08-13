@@ -3,19 +3,19 @@ package org.bukkit.entity;
 /**
  * Represents a Piglin.
  */
-public interface Piglin extends Monster {
+public interface Piglin extends PiglinAbstract {
 
     /**
-     * Gets whether the piglin is a baby
+     * Get whether the piglin is able to hunt hoglins.
      *
-     * @return Whether the piglin is a baby
+     * @return Whether the piglin is able to hunt hoglins
      */
-    public boolean isBaby();
+    public boolean isAbleToHunt();
 
     /**
-     * Sets whether the piglin is a baby
+     * Sets whether the piglin is able to hunt hoglins.
      *
-     * @param flag Whether the piglin is a baby
+     * @param flag Whether the piglin is able to hunt hoglins.
      */
-    public void setBaby(boolean flag);
+    public void setIsAbleToHunt(boolean flag);
 }

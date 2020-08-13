@@ -1,6 +1,6 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.monster.ShulkerEntity;
+import net.minecraft.server.EntityShulker;
 import org.bukkit.DyeColor;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
@@ -8,7 +8,7 @@ import org.bukkit.entity.Shulker;
 
 public class CraftShulker extends CraftGolem implements Shulker {
 
-    public CraftShulker(CraftServer server, ShulkerEntity entity) {
+    public CraftShulker(CraftServer server, EntityShulker entity) {
         super(server, entity);
     }
 
@@ -23,17 +23,17 @@ public class CraftShulker extends CraftGolem implements Shulker {
     }
 
     @Override
-    public ShulkerEntity getHandle() {
-        return (ShulkerEntity) entity;
+    public EntityShulker getHandle() {
+        return (EntityShulker) entity;
     }
 
     @Override
     public DyeColor getColor() {
-        return DyeColor.getByWoolData(getHandle().getDataManager().get(ShulkerEntity.COLOR));
+        return DyeColor.getByWoolData(getHandle().getDataWatcher().get(EntityShulker.COLOR));
     }
 
     @Override
     public void setColor(DyeColor color) {
-        getHandle().getDataManager().set(ShulkerEntity.COLOR, (color == null) ? 16 : color.getWoolData());
+        getHandle().getDataWatcher().set(EntityShulker.COLOR, (color == null) ? 16 : color.getWoolData());
     }
 }

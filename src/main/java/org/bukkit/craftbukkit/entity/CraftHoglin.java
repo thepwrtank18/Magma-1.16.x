@@ -1,19 +1,61 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.monster.HoglinEntity;
+import com.google.common.base.Preconditions;
+import net.minecraft.server.EntityHoglin;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Hoglin;
 
 public class CraftHoglin extends CraftAnimals implements Hoglin {
 
-    public CraftHoglin(CraftServer server, HoglinEntity entity) {
+    public CraftHoglin(CraftServer server, EntityHoglin entity) {
         super(server, entity);
     }
 
     @Override
-    public HoglinEntity getHandle() {
-        return (HoglinEntity) entity;
+    public boolean isImmuneToZombification() {
+        return getHandle().isImmuneToZombification();
+    }
+
+    @Override
+    public void setImmuneToZombification(boolean flag) {
+        getHandle().setImmuneToZombification(flag);
+    }
+
+    @Override
+    public boolean isAbleToBeHunted() {
+        return getHandle().cannotBeHunted;
+    }
+
+    @Override
+    public void setIsAbleToBeHunted(boolean flag) {
+        getHandle().cannotBeHunted = flag;
+    }
+
+    @Override
+    public int getConversionTime() {
+        Preconditions.checkState(isConverting(), "Entity not converting");
+        return getHandle().conversionTicks;
+    }
+
+    @Override
+    public void setConversionTime(int time) {
+        if (time < 0) {
+            getHandle().conversionTicks = -1;
+            getHandle().setImmuneToZombification(false);
+        } else {
+            getHandle().conversionTicks = time;
+        }
+    }
+
+    @Override
+    public boolean isConverting() {
+        return getHandle().isConverting();
+    }
+
+    @Override
+    public EntityHoglin getHandle() {
+        return (EntityHoglin) entity;
     }
 
     @Override

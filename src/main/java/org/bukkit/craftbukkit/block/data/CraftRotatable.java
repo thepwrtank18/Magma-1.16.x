@@ -1,11 +1,10 @@
 package org.bukkit.craftbukkit.block.data;
 
-import net.minecraft.state.IntegerProperty;
 import org.bukkit.block.data.Rotatable;
 
 public abstract class CraftRotatable extends CraftBlockData implements Rotatable {
 
-    private static final IntegerProperty ROTATION = getInteger("rotation");
+    private static final net.minecraft.server.BlockStateInteger ROTATION = getInteger("rotation");
 
     @Override
     public org.bukkit.block.BlockFace getRotation() {

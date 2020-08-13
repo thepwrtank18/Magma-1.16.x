@@ -1,19 +1,19 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.merchant.villager.WanderingTraderEntity;
+import net.minecraft.server.EntityVillagerTrader;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.WanderingTrader;
 
 public class CraftWanderingTrader extends CraftAbstractVillager implements WanderingTrader {
 
-    public CraftWanderingTrader(CraftServer server, WanderingTraderEntity entity) {
+    public CraftWanderingTrader(CraftServer server, EntityVillagerTrader entity) {
         super(server, entity);
     }
 
     @Override
-    public WanderingTraderEntity getHandle() {
-        return (WanderingTraderEntity) entity;
+    public EntityVillagerTrader getHandle() {
+        return (EntityVillagerTrader) entity;
     }
 
     @Override

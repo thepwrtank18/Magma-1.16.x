@@ -371,7 +371,7 @@ public abstract class Enchantment implements Keyed {
      *
      * @param name Name to fetch
      * @return Resulting Enchantment, or null if not found
-     * @deprecated enchantments are badly named, use {@link #getByKey(NamespacedKey)}.
+     * @deprecated enchantments are badly named, use {@link #getByKey(org.bukkit.NamespacedKey)}.
      */
     @Deprecated
     @Contract("null -> null")

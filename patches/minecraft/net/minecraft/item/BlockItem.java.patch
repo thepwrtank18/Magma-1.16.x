@@ -1,27 +1,6 @@
 --- a/net/minecraft/item/BlockItem.java
 +++ b/net/minecraft/item/BlockItem.java
-@@ -25,6 +25,7 @@
- import net.minecraft.world.World;
- import net.minecraftforge.api.distmarker.Dist;
- import net.minecraftforge.api.distmarker.OnlyIn;
-+import org.apache.commons.lang.NotImplementedException;
- 
- public class BlockItem extends Item {
-    @Deprecated
-@@ -35,7 +36,11 @@
-       this.field_150939_a = p_i48527_1_;
-    }
- 
--   public ActionResultType func_195939_a(ItemUseContext p_195939_1_) {
-+    public static BlockState getBlockState(BlockState defaultState, CompoundNBT blockData) {
-+      throw new NotImplementedException();
-+    }
-+
-+    public ActionResultType func_195939_a(ItemUseContext p_195939_1_) {
-       ActionResultType actionresulttype = this.func_195942_a(new BlockItemUseContext(p_195939_1_));
-       return !actionresulttype.func_226246_a_() && this.func_219971_r() ? this.func_77659_a(p_195939_1_.field_196006_g, p_195939_1_.field_196001_b, p_195939_1_.field_221534_c).func_188397_a() : actionresulttype;
-    }
-@@ -69,8 +74,8 @@
+@@ -69,8 +69,8 @@
                    }
                 }
  
@@ -32,7 +11,7 @@
                 if (playerentity == null || !playerentity.field_71075_bZ.field_75098_d) {
                    itemstack.func_190918_g(1);
                 }
-@@ -81,10 +86,16 @@
+@@ -81,10 +81,16 @@
        }
     }
  
@@ -49,7 +28,7 @@
     @Nullable
     public BlockItemUseContext func_219984_b(BlockItemUseContext p_219984_1_) {
        return p_219984_1_;
-@@ -192,10 +203,18 @@
+@@ -192,10 +198,18 @@
     }
  
     public Block func_179223_d() {

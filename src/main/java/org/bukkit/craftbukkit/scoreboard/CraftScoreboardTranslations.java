@@ -1,8 +1,8 @@
 package org.bukkit.craftbukkit.scoreboard;
 
 import com.google.common.collect.ImmutableBiMap;
-import net.minecraft.scoreboard.ScoreCriteria;
-import net.minecraft.scoreboard.Scoreboard;
+import net.minecraft.server.IScoreboardCriteria;
+import net.minecraft.server.Scoreboard;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.RenderType;
 
@@ -16,18 +16,18 @@ final class CraftScoreboardTranslations {
     private CraftScoreboardTranslations() {}
 
     static DisplaySlot toBukkitSlot(int i) {
-        return SLOTS.inverse().get(Scoreboard.getObjectiveDisplaySlot(i));
+        return SLOTS.inverse().get(Scoreboard.getSlotName(i));
     }
 
     static int fromBukkitSlot(DisplaySlot slot) {
-        return Scoreboard.getObjectiveDisplaySlotNumber(SLOTS.get(slot));
+        return Scoreboard.getSlotForName(SLOTS.get(slot));
     }
 
-    static RenderType toBukkitRender(ScoreCriteria.RenderType display) {
+    static RenderType toBukkitRender(IScoreboardCriteria.EnumScoreboardHealthDisplay display) {
         return RenderType.valueOf(display.name());
     }
 
-    static ScoreCriteria.RenderType fromBukkitRender(RenderType render) {
-        return ScoreCriteria.RenderType.valueOf(render.name());
+    static IScoreboardCriteria.EnumScoreboardHealthDisplay fromBukkitRender(RenderType render) {
+        return IScoreboardCriteria.EnumScoreboardHealthDisplay.valueOf(render.name());
     }
 }

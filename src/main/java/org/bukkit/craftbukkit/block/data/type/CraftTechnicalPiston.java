@@ -1,12 +1,11 @@
 package org.bukkit.craftbukkit.block.data.type;
 
-import net.minecraft.state.EnumProperty;
 import org.bukkit.block.data.type.TechnicalPiston;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public abstract class CraftTechnicalPiston extends CraftBlockData implements TechnicalPiston {
 
-    private static final EnumProperty<?> TYPE = getEnum("type");
+    private static final net.minecraft.server.BlockStateEnum<?> TYPE = getEnum("type");
 
     @Override
     public Type getType() {

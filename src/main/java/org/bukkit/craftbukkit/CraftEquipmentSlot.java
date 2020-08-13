@@ -1,32 +1,32 @@
 package org.bukkit.craftbukkit;
 
-import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.server.EnumItemSlot;
 import org.bukkit.inventory.EquipmentSlot;
 
 public class CraftEquipmentSlot {
 
-    private static final EquipmentSlotType[] slots = new EquipmentSlotType[EquipmentSlot.values().length];
-    private static final EquipmentSlot[] enums = new EquipmentSlot[EquipmentSlotType.values().length];
+    private static final EnumItemSlot[] slots = new EnumItemSlot[EquipmentSlot.values().length];
+    private static final EquipmentSlot[] enums = new EquipmentSlot[EnumItemSlot.values().length];
 
     static {
-        set(EquipmentSlot.HAND, EquipmentSlotType.MAINHAND);
-        set(EquipmentSlot.OFF_HAND, EquipmentSlotType.OFFHAND);
-        set(EquipmentSlot.FEET, EquipmentSlotType.FEET);
-        set(EquipmentSlot.LEGS, EquipmentSlotType.LEGS);
-        set(EquipmentSlot.CHEST, EquipmentSlotType.CHEST);
-        set(EquipmentSlot.HEAD, EquipmentSlotType.HEAD);
+        set(EquipmentSlot.HAND, EnumItemSlot.MAINHAND);
+        set(EquipmentSlot.OFF_HAND, EnumItemSlot.OFFHAND);
+        set(EquipmentSlot.FEET, EnumItemSlot.FEET);
+        set(EquipmentSlot.LEGS, EnumItemSlot.LEGS);
+        set(EquipmentSlot.CHEST, EnumItemSlot.CHEST);
+        set(EquipmentSlot.HEAD, EnumItemSlot.HEAD);
     }
 
-    private static void set(EquipmentSlot type, EquipmentSlotType value) {
+    private static void set(EquipmentSlot type, EnumItemSlot value) {
         slots[type.ordinal()] = value;
         enums[value.ordinal()] = type;
     }
 
-    public static EquipmentSlot getSlot(EquipmentSlotType nms) {
+    public static EquipmentSlot getSlot(EnumItemSlot nms) {
         return enums[nms.ordinal()];
     }
 
-    public static EquipmentSlotType getNMS(EquipmentSlot slot) {
+    public static EnumItemSlot getNMS(EquipmentSlot slot) {
         return slots[slot.ordinal()];
     }
 }

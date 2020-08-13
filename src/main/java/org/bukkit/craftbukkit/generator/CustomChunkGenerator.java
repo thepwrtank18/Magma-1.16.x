@@ -1,20 +1,45 @@
 package org.bukkit.craftbukkit.generator;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.world.World;
-import net.minecraft.world.chunk.ChunkPrimer;
+import com.google.common.base.Preconditions;
+import com.mojang.serialization.Codec;
+import java.util.List;
+import java.util.Random;
+import net.minecraft.server.BiomeBase;
+import net.minecraft.server.BiomeManager;
+import net.minecraft.server.BiomeStorage;
+import net.minecraft.server.Block;
+import net.minecraft.server.BlockPosition;
+import net.minecraft.server.ChunkSection;
+import net.minecraft.server.DefinedStructureManager;
+import net.minecraft.server.DimensionManager;
+import net.minecraft.server.EnumCreatureType;
+import net.minecraft.server.GeneratorAccess;
+import net.minecraft.server.GeneratorAccessSeed;
+import net.minecraft.server.HeightMap;
+import net.minecraft.server.IBlockAccess;
+import net.minecraft.server.IChunkAccess;
+import net.minecraft.server.IRegistry;
+import net.minecraft.server.IRegistryCustom;
+import net.minecraft.server.ITileEntity;
+import net.minecraft.server.ProtoChunk;
+import net.minecraft.server.RegionLimitedWorldAccess;
+import net.minecraft.server.RegistryMaterials;
+import net.minecraft.server.StructureManager;
+import net.minecraft.server.StructureSettings;
+import net.minecraft.server.TileEntity;
+import net.minecraft.server.WorldChunkManager;
+import net.minecraft.server.WorldDimension;
+import net.minecraft.server.WorldGenStage;
+import net.minecraft.server.WorldServer;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.craftbukkit.block.CraftBlock;
+import org.bukkit.generator.ChunkGenerator;
+import org.bukkit.generator.ChunkGenerator.BiomeGrid;
+import org.bukkit.generator.ChunkGenerator.ChunkData;
 
 public class CustomChunkGenerator extends InternalChunkGenerator {
 
-    // TODO: 29/06/2020 Come back
-
-    public CustomChunkGenerator(World worldchunkmanager, ChunkPrimer structuresettings) {
-        super(worldchunkmanager, structuresettings);
-    }
-
-    /*
     private final net.minecraft.server.ChunkGenerator delegate;
     private final ChunkGenerator generator;
     private final WorldServer world;
@@ -42,12 +67,12 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
 
         @Override
         public Biome getBiome(int x, int y, int z) {
-            return CraftBlock.biomeBaseToBiome(biome.getBiome(x >> 2, y >> 2, z >> 2));
+            return CraftBlock.biomeBaseToBiome((IRegistry<BiomeBase>) biome.g, biome.getBiome(x >> 2, y >> 2, z >> 2));
         }
 
         @Override
         public void setBiome(int x, int y, int z, Biome bio) {
-            biome.setBiome(x >> 2, y >> 2, z >> 2, CraftBlock.biomeToBiomeBase(bio));
+            biome.setBiome(x >> 2, y >> 2, z >> 2, CraftBlock.biomeToBiomeBase((IRegistry<BiomeBase>) biome.g, bio));
         }
     }
 
@@ -60,7 +85,7 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
     }
 
     @Override
-    public void createBiomes(IChunkAccess ichunkaccess) {
+    public void createBiomes(IRegistry<BiomeBase> iregistry, IChunkAccess ichunkaccess) {
         // Don't allow the server to override any custom biomes that have been set
     }
 
@@ -70,8 +95,8 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
     }
 
     @Override
-    public void storeStructures(IWorld IWorld, StructureManager structuremanager, IChunkAccess ichunkaccess) {
-        delegate.storeStructures(IWorld, structuremanager, ichunkaccess);
+    public void storeStructures(GeneratorAccessSeed generatoraccessseed, StructureManager structuremanager, IChunkAccess ichunkaccess) {
+        delegate.storeStructures(generatoraccessseed, structuremanager, ichunkaccess);
     }
 
     @Override
@@ -87,7 +112,7 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
         random.setSeed((long) x * 341873128712L + (long) z * 132897987541L);
 
         // Get default biome data for chunk
-        CustomBiomeGrid biomegrid = new CustomBiomeGrid(new BiomeStorage(ichunkaccess.getPos(), this.getWorldChunkManager()));
+        CustomBiomeGrid biomegrid = new CustomBiomeGrid(new BiomeStorage(world.r().b(IRegistry.ay), ichunkaccess.getPos(), this.getWorldChunkManager()));
 
         ChunkData data;
         if (generator.isParallelCapable()) {
@@ -134,12 +159,13 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
     }
 
     @Override
-    public void createStructures(StructureManager structuremanager, IChunkAccess ichunkaccess, DefinedStructureManager definedstructuremanager, long i) {
+    public void createStructures(IRegistryCustom iregistrycustom, StructureManager structuremanager, IChunkAccess ichunkaccess, DefinedStructureManager definedstructuremanager, long i) {
         if (generator.shouldGenerateStructures()) {
             // Still need a way of getting the biome of this chunk to pass to createStructures
             // Using default biomes for now.
-            delegate.createStructures(structuremanager, ichunkaccess, definedstructuremanager, i);
+            delegate.createStructures(iregistrycustom, structuremanager, ichunkaccess, definedstructuremanager, i);
         }
+
     }
 
     @Override
@@ -150,18 +176,13 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
     }
 
     @Override
-    public void buildNoise(IWorld IWorld, StructureManager structuremanager, IChunkAccess ichunkaccess) {
+    public void buildNoise(GeneratorAccess generatoraccess, StructureManager structuremanager, IChunkAccess ichunkaccess) {
         // Disable vanilla generation
     }
 
     @Override
     public int getBaseHeight(int i, int j, HeightMap.Type heightmap_type) {
         return delegate.getBaseHeight(i, j, heightmap_type);
-    }
-
-    @Override
-    public List<BiomeBase.BiomeMeta> getMobsFor(BiomeBase biomebase, StructureManager structuremanager, EnumCreatureType enumcreaturetype, BlockPosition blockposition) {
-        return delegate.getMobsFor(biomebase, structuremanager, enumcreaturetype, blockposition);
     }
 
     @Override
@@ -197,6 +218,4 @@ public class CustomChunkGenerator extends InternalChunkGenerator {
     protected Codec<? extends net.minecraft.server.ChunkGenerator> a() {
         throw new UnsupportedOperationException("Cannot serialize CustomChunkGenerator");
     }
-
-     */
 }

@@ -1,6 +1,6 @@
 /*
  * Minecraft Forge
- * Copyright (c) 2016-2019.
+ * Copyright (c) 2016-2020.
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,15 +19,10 @@
 
 package net.minecraftforge.items.wrapper;
 
-import java.util.List;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.IItemHandlerModifiable;
-import org.bukkit.Location;
-import org.bukkit.craftbukkit.entity.CraftHumanEntity;
-import org.bukkit.entity.HumanEntity;
-import org.bukkit.inventory.InventoryHolder;
 
 public class RecipeWrapper implements IInventory {
 
@@ -101,41 +96,6 @@ public class RecipeWrapper implements IInventory {
     public boolean isItemValidForSlot(int slot, ItemStack stack)
     {
         return inv.isItemValid(slot, stack);
-    }
-
-    @Override
-    public List<ItemStack> getContents() {
-        return null;
-    }
-
-    @Override
-    public void onOpen(CraftHumanEntity who) {
-
-    }
-
-    @Override
-    public void onClose(CraftHumanEntity who) {
-
-    }
-
-    @Override
-    public List<HumanEntity> getViewers() {
-        return null;
-    }
-
-    @Override
-    public InventoryHolder getOwner() {
-        return null;
-    }
-
-    @Override
-    public void setMaxStackSize(int size) {
-
-    }
-
-    @Override
-    public Location getLocation() {
-        return null;
     }
 
     @Override

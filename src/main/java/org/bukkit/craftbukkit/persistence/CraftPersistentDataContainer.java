@@ -1,27 +1,27 @@
 package org.bukkit.craftbukkit.persistence;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.nbt.INBT;
+import net.minecraft.server.NBTBase;
+import net.minecraft.server.NBTTagCompound;
 import org.apache.commons.lang.Validate;
 import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.util.CraftNBTTagConfigSerializer;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.jetbrains.annotations.NotNull;
 
 public final class CraftPersistentDataContainer implements PersistentDataContainer {
 
-    private final Map<String, INBT> customDataTags = new HashMap<>();
+    private final Map<String, NBTBase> customDataTags = new HashMap<>();
     private final CraftPersistentDataTypeRegistry registry;
     private final CraftPersistentDataAdapterContext adapterContext;
 
-    public CraftPersistentDataContainer(Map<String, INBT> customTags, CraftPersistentDataTypeRegistry registry) {
+    public CraftPersistentDataContainer(Map<String, NBTBase> customTags, CraftPersistentDataTypeRegistry registry) {
         this(registry);
         this.customDataTags.putAll(customTags);
     }
@@ -45,7 +45,7 @@ public final class CraftPersistentDataContainer implements PersistentDataContain
         Validate.notNull(key, "The provided key for the custom value was null");
         Validate.notNull(type, "The provided type for the custom value was null");
 
-        INBT value = this.customDataTags.get(key.toString());
+        NBTBase value = this.customDataTags.get(key.toString());
         if (value == null) {
             return false;
         }
@@ -58,7 +58,7 @@ public final class CraftPersistentDataContainer implements PersistentDataContain
         Validate.notNull(key, "The provided key for the custom value was null");
         Validate.notNull(type, "The provided type for the custom value was null");
 
-        INBT value = this.customDataTags.get(key.toString());
+        NBTBase value = this.customDataTags.get(key.toString());
         if (value == null) {
             return null;
         }
@@ -73,8 +73,17 @@ public final class CraftPersistentDataContainer implements PersistentDataContain
     }
 
     @Override
-    public @NotNull Set<NamespacedKey> getKeys() {
-        return null;
+    public Set<NamespacedKey> getKeys() {
+        Set<NamespacedKey> keys = new HashSet<>();
+
+        this.customDataTags.keySet().forEach(key -> {
+            String[] keyData = key.split(":", 2);
+            if (keyData.length == 2) {
+                keys.add(new NamespacedKey(keyData[0], keyData[1]));
+            }
+        });
+
+        return keys;
     }
 
     @Override
@@ -100,35 +109,35 @@ public final class CraftPersistentDataContainer implements PersistentDataContain
             return false;
         }
 
-        Map<String, INBT> myRawMap = getRaw();
-        Map<String, INBT> theirRawMap = ((CraftPersistentDataContainer) obj).getRaw();
+        Map<String, NBTBase> myRawMap = getRaw();
+        Map<String, NBTBase> theirRawMap = ((CraftPersistentDataContainer) obj).getRaw();
 
         return Objects.equals(myRawMap, theirRawMap);
     }
 
-    public CompoundNBT toTagCompound() {
-        CompoundNBT tag = new CompoundNBT();
-        for (Entry<String, INBT> entry : this.customDataTags.entrySet()) {
-            tag.put(entry.getKey(), entry.getValue());
+    public NBTTagCompound toTagCompound() {
+        NBTTagCompound tag = new NBTTagCompound();
+        for (Entry<String, NBTBase> entry : this.customDataTags.entrySet()) {
+            tag.set(entry.getKey(), entry.getValue());
         }
         return tag;
     }
 
-    public void put(String key, INBT base) {
+    public void put(String key, NBTBase base) {
         this.customDataTags.put(key, base);
     }
 
-    public void putAll(Map<String, INBT> map) {
+    public void putAll(Map<String, NBTBase> map) {
         this.customDataTags.putAll(map);
     }
 
-    public void putAll(CompoundNBT compound) {
-        for (String key : compound.keySet()) {
+    public void putAll(NBTTagCompound compound) {
+        for (String key : compound.getKeys()) {
             this.customDataTags.put(key, compound.get(key));
         }
     }
 
-    public Map<String, INBT> getRaw() {
+    public Map<String, NBTBase> getRaw() {
         return this.customDataTags;
     }
 

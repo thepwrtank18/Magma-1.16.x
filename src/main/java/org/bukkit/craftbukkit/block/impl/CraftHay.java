@@ -9,13 +9,13 @@ public final class CraftHay extends org.bukkit.craftbukkit.block.data.CraftBlock
         super();
     }
 
-    public CraftHay(net.minecraft.block.BlockState state) {
+    public CraftHay(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftOrientable
 
-    private static final net.minecraft.state.EnumProperty<?> AXIS = getEnum(net.minecraft.block.HayBlock.class, "axis");
+    private static final net.minecraft.server.BlockStateEnum<?> AXIS = getEnum(net.minecraft.server.BlockHay.class, "axis");
 
     @Override
     public org.bukkit.Axis getAxis() {

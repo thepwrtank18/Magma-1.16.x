@@ -3,23 +3,19 @@
  */
 package org.bukkit.craftbukkit.block.impl;
 
-import net.minecraft.block.AnvilBlock;
-import net.minecraft.block.BlockState;
-import net.minecraft.state.EnumProperty;
-
 public final class CraftAnvil extends org.bukkit.craftbukkit.block.data.CraftBlockData implements org.bukkit.block.data.Directional {
 
     public CraftAnvil() {
         super();
     }
 
-    public CraftAnvil(BlockState state) {
+    public CraftAnvil(net.minecraft.server.IBlockData state) {
         super(state);
     }
 
     // org.bukkit.craftbukkit.block.data.CraftDirectional
 
-    private static final EnumProperty<?> FACING = getEnum(AnvilBlock.class, "facing");
+    private static final net.minecraft.server.BlockStateEnum<?> FACING = getEnum(net.minecraft.server.BlockAnvil.class, "facing");
 
     @Override
     public org.bukkit.block.BlockFace getFacing() {

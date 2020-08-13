@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
  * soulsand.
  *
  * By default only one thread will call
- * {@link #generateChunkData(World, Random, int, int, BiomeGrid)}
+ * {@link #generateChunkData(org.bukkit.World, java.util.Random, int, int, org.bukkit.generator.ChunkGenerator.BiomeGrid)}
  * at a time, although this may not necessarily be the main server thread.
  *
  * If your generator is capable of fully asynchronous generation, then
@@ -101,7 +101,7 @@ public abstract class ChunkGenerator {
      * This method should <b>never</b> modify a ChunkData after it has
      * been returned.
      * <p>
-     * This method <b>must</b> return a ChunkData returned by {@link ChunkGenerator#createChunkData(World)}
+     * This method <b>must</b> return a ChunkData returned by {@link ChunkGenerator#createChunkData(org.bukkit.World)}
      *
      * @param world The world this chunk will be used for
      * @param random The random generator to use

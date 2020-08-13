@@ -61,7 +61,7 @@ public interface Server extends PluginMessageRecipient {
      * Used for all administrative messages, such as an operator using a
      * command.
      * <p>
-     * For use in {@link #broadcast(String, String)}.
+     * For use in {@link #broadcast(java.lang.String, java.lang.String)}.
      */
     public static final String BROADCAST_CHANNEL_ADMINISTRATIVE = "bukkit.broadcast.admin";
 
@@ -69,7 +69,7 @@ public interface Server extends PluginMessageRecipient {
      * Used for all announcement messages, such as informing users that a
      * player has joined.
      * <p>
-     * For use in {@link #broadcast(String, String)}.
+     * For use in {@link #broadcast(java.lang.String, java.lang.String)}.
      */
     public static final String BROADCAST_CHANNEL_USERS = "bukkit.broadcast.user";
 
@@ -217,8 +217,8 @@ public interface Server extends PluginMessageRecipient {
     /**
      * Broadcast a message to all players.
      * <p>
-     * This is the same as calling {@link #broadcast(String,
-     * String)} to {@link #BROADCAST_CHANNEL_USERS}
+     * This is the same as calling {@link #broadcast(java.lang.String,
+     * java.lang.String)} to {@link #BROADCAST_CHANNEL_USERS}
      *
      * @param message the message
      * @return the number of players
@@ -313,6 +313,26 @@ public interface Server extends PluginMessageRecipient {
      * @return the default ticks per water mobs spawn value
      */
     public int getTicksPerWaterSpawns();
+
+    /**
+     * Gets the default ticks per water ambient mob spawns value.
+     * <p>
+     * <b>Example Usage:</b>
+     * <ul>
+     * <li>A value of 1 will mean the server will attempt to spawn water ambient mobs
+     *     every tick.
+     * <li>A value of 400 will mean the server will attempt to spawn water ambient mobs
+     *     every 400th tick.
+     * <li>A value below 0 will be reset back to Minecraft's default.
+     * </ul>
+     * <p>
+     * <b>Note:</b> If set to 0, ambient mobs spawning will be disabled.
+     * <p>
+     * Minecraft default: 1.
+     *
+     * @return the default ticks per water ambient mobs spawn value
+     */
+    public int getTicksPerWaterAmbientSpawns();
 
     /**
      * Gets the default ticks per ambient mob spawns value.
@@ -489,8 +509,8 @@ public interface Server extends PluginMessageRecipient {
      * @param structureType the type of structure to find
      * @return a newly created item stack
      *
-     * @see World#locateNearestStructure(Location,
-     *      StructureType, int, boolean)
+     * @see World#locateNearestStructure(org.bukkit.Location,
+     *      org.bukkit.StructureType, int, boolean)
      */
     @NotNull
     public ItemStack createExplorerMap(@NotNull World world, @NotNull Location location, @NotNull StructureType structureType);
@@ -510,8 +530,8 @@ public interface Server extends PluginMessageRecipient {
      * @param findUnexplored whether to find unexplored structures
      * @return the newly created item stack
      *
-     * @see World#locateNearestStructure(Location,
-     *      StructureType, int, boolean)
+     * @see World#locateNearestStructure(org.bukkit.Location,
+     *      org.bukkit.StructureType, int, boolean)
      */
     @NotNull
     public ItemStack createExplorerMap(@NotNull World world, @NotNull Location location, @NotNull StructureType structureType, int radius, boolean findUnexplored);
@@ -580,6 +600,15 @@ public interface Server extends PluginMessageRecipient {
      */
     @NotNull
     public List<Recipe> getRecipesFor(@NotNull ItemStack result);
+
+    /**
+     * Get the {@link Recipe} for the given key.
+     *
+     * @param recipeKey the key of the recipe to return
+     * @return the recipe for the given key or null.
+     */
+    @Nullable
+    public Recipe getRecipe(@NotNull NamespacedKey recipeKey);
 
     /**
      * Get an iterator through the list of crafting recipes.
@@ -684,7 +713,7 @@ public interface Server extends PluginMessageRecipient {
      *             unique past a single session.
      * @param name the name the player to retrieve
      * @return an offline player
-     * @see #getOfflinePlayer(UUID)
+     * @see #getOfflinePlayer(java.util.UUID)
      */
     @Deprecated
     @NotNull
@@ -921,6 +950,14 @@ public interface Server extends PluginMessageRecipient {
     int getWaterAnimalSpawnLimit();
 
     /**
+     * Gets user-specified limit for number of water ambient mobs that can spawn
+     * in a chunk.
+     *
+     * @return the water ambient spawn limit
+     */
+    int getWaterAmbientSpawnLimit();
+
+    /**
      * Gets user-specified limit for number of ambient mobs that can spawn in
      * a chunk.
      *
@@ -1048,7 +1085,7 @@ public interface Server extends PluginMessageRecipient {
     /**
      * Create a ChunkData for use in a generator.
      *
-     * See {@link ChunkGenerator#generateChunkData(World, java.util.Random, int, int, ChunkGenerator.BiomeGrid)}
+     * See {@link ChunkGenerator#generateChunkData(org.bukkit.World, java.util.Random, int, int, org.bukkit.generator.ChunkGenerator.BiomeGrid)}
      *
      * @param world the world to create the ChunkData for
      * @return a new ChunkData for the world

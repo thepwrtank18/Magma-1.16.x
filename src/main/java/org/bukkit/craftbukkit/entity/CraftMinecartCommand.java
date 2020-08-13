@@ -1,7 +1,7 @@
 package org.bukkit.craftbukkit.entity;
 
 import java.util.Set;
-import net.minecraft.entity.item.minecart.CommandBlockMinecartEntity;
+import net.minecraft.server.EntityMinecartCommandBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.craftbukkit.CraftServer;
@@ -17,29 +17,29 @@ import org.bukkit.plugin.Plugin;
 public class CraftMinecartCommand extends CraftMinecart implements CommandMinecart {
     private final PermissibleBase perm = new PermissibleBase(this);
 
-    public CraftMinecartCommand(CraftServer server, CommandBlockMinecartEntity entity) {
+    public CraftMinecartCommand(CraftServer server, EntityMinecartCommandBlock entity) {
         super(server, entity);
     }
 
     @Override
-    public CommandBlockMinecartEntity getHandle() {
-        return (CommandBlockMinecartEntity) entity;
+    public EntityMinecartCommandBlock getHandle() {
+        return (EntityMinecartCommandBlock) entity;
     }
 
     @Override
     public String getCommand() {
-        return getHandle().getCommandBlockLogic().getCommand();
+        return getHandle().getCommandBlock().getCommand();
     }
 
     @Override
     public void setCommand(String command) {
-        getHandle().getCommandBlockLogic().setCommand(command != null ? command : "");
-        getHandle().getDataManager().set(CommandBlockMinecartEntity.COMMAND, getHandle().getCommandBlockLogic().getCommand());
+        getHandle().getCommandBlock().setCommand(command != null ? command : "");
+        getHandle().getDataWatcher().set(EntityMinecartCommandBlock.COMMAND, getHandle().getCommandBlock().getCommand());
     }
 
     @Override
     public void setName(String name) {
-        getHandle().getCommandBlockLogic().setName(CraftChatMessage.fromStringOrNull(name));
+        getHandle().getCommandBlock().setName(CraftChatMessage.fromStringOrNull(name));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class CraftMinecartCommand extends CraftMinecart implements CommandMineca
 
     @Override
     public String getName() {
-        return CraftChatMessage.fromComponent(getHandle().getCommandBlockLogic().getName());
+        return CraftChatMessage.fromComponent(getHandle().getCommandBlock().getName());
     }
 
     @Override

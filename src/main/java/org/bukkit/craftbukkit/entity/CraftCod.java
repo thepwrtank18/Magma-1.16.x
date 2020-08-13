@@ -1,19 +1,19 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.entity.passive.fish.CodEntity;
+import net.minecraft.server.EntityCod;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Cod;
 import org.bukkit.entity.EntityType;
 
 public class CraftCod extends CraftFish implements Cod {
 
-    public CraftCod(CraftServer server, CodEntity entity) {
+    public CraftCod(CraftServer server, EntityCod entity) {
         super(server, entity);
     }
 
     @Override
-    public CodEntity getHandle() {
-        return (CodEntity) super.getHandle();
+    public EntityCod getHandle() {
+        return (EntityCod) super.getHandle();
     }
 
     @Override

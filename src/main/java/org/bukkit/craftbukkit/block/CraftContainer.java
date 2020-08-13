@@ -1,13 +1,13 @@
 package org.bukkit.craftbukkit.block;
 
-import net.minecraft.tileentity.LockableTileEntity;
-import net.minecraft.world.LockCode;
+import net.minecraft.server.ChestLock;
+import net.minecraft.server.TileEntityContainer;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
 
-public abstract class CraftContainer<T extends LockableTileEntity> extends CraftBlockEntityState<T> implements Container {
+public abstract class CraftContainer<T extends TileEntityContainer> extends CraftBlockEntityState<T> implements Container {
 
     public CraftContainer(Block block, Class<T> tileEntityClass) {
         super(block, tileEntityClass);
@@ -19,17 +19,17 @@ public abstract class CraftContainer<T extends LockableTileEntity> extends Craft
 
     @Override
     public boolean isLocked() {
-        return !this.getSnapshot().code.lock.isEmpty();
+        return !this.getSnapshot().chestLock.key.isEmpty();
     }
 
     @Override
     public String getLock() {
-        return this.getSnapshot().code.lock;
+        return this.getSnapshot().chestLock.key;
     }
 
     @Override
     public void setLock(String key) {
-        this.getSnapshot().code = (key == null) ? LockCode.EMPTY_CODE : new LockCode(key);
+        this.getSnapshot().chestLock = (key == null) ? ChestLock.a : new ChestLock(key);
     }
 
     @Override

@@ -3,10 +3,10 @@ package org.bukkit.craftbukkit.inventory;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
+import net.minecraft.server.EntityHuman;
+import net.minecraft.server.IInventory;
+import net.minecraft.server.ItemStack;
+import net.minecraft.server.NonNullList;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
@@ -55,7 +55,7 @@ public class CraftInventoryCustom extends CraftInventory {
 
         public MinecraftInventory(InventoryHolder owner, int size, String title) {
             Validate.notNull(title, "Title cannot be null");
-            this.items = NonNullList.withSize(size, ItemStack.EMPTY);
+            this.items = NonNullList.a(size, ItemStack.b);
             this.title = title;
             this.viewers = new ArrayList<HumanEntity>();
             this.owner = owner;
@@ -63,56 +63,56 @@ public class CraftInventoryCustom extends CraftInventory {
         }
 
         @Override
-        public int getSizeInventory() {
+        public int getSize() {
             return items.size();
         }
 
         @Override
-        public ItemStack getStackInSlot(int i) {
+        public ItemStack getItem(int i) {
             return items.get(i);
         }
 
         @Override
-        public ItemStack decrStackSize(int i, int j) {
-            ItemStack stack = this.getStackInSlot(i);
+        public ItemStack splitStack(int i, int j) {
+            ItemStack stack = this.getItem(i);
             ItemStack result;
-            if (stack == ItemStack.EMPTY) return stack;
+            if (stack == ItemStack.b) return stack;
             if (stack.getCount() <= j) {
-                this.setInventorySlotContents(i, ItemStack.EMPTY);
+                this.setItem(i, ItemStack.b);
                 result = stack;
             } else {
                 result = CraftItemStack.copyNMSStack(stack, j);
-                stack.shrink(j);
+                stack.subtract(j);
             }
-            this.markDirty();
+            this.update();
             return result;
         }
 
         @Override
-        public ItemStack removeStackFromSlot(int i) {
-            ItemStack stack = this.getStackInSlot(i);
+        public ItemStack splitWithoutUpdate(int i) {
+            ItemStack stack = this.getItem(i);
             ItemStack result;
-            if (stack == ItemStack.EMPTY) return stack;
+            if (stack == ItemStack.b) return stack;
             if (stack.getCount() <= 1) {
-                this.setInventorySlotContents(i, null);
+                this.setItem(i, null);
                 result = stack;
             } else {
                 result = CraftItemStack.copyNMSStack(stack, 1);
-                stack.shrink(1);
+                stack.subtract(1);
             }
             return result;
         }
 
         @Override
-        public void setInventorySlotContents(int i, ItemStack itemstack) {
+        public void setItem(int i, ItemStack itemstack) {
             items.set(i, itemstack);
-            if (itemstack != ItemStack.EMPTY && this.getInventoryStackLimit() > 0 && itemstack.getCount() > this.getInventoryStackLimit()) {
-                itemstack.setCount(this.getInventoryStackLimit());
+            if (itemstack != ItemStack.b && this.getMaxStackSize() > 0 && itemstack.getCount() > this.getMaxStackSize()) {
+                itemstack.setCount(this.getMaxStackSize());
             }
         }
 
         @Override
-        public int getInventoryStackLimit() {
+        public int getMaxStackSize() {
             return maxStack;
         }
 
@@ -122,10 +122,10 @@ public class CraftInventoryCustom extends CraftInventory {
         }
 
         @Override
-        public void markDirty() {}
+        public void update() {}
 
         @Override
-        public boolean isUsableByPlayer(PlayerEntity entityhuman) {
+        public boolean a(EntityHuman entityhuman) {
             return true;
         }
 
@@ -159,17 +159,17 @@ public class CraftInventoryCustom extends CraftInventory {
         }
 
         @Override
-        public boolean isItemValidForSlot(int i, ItemStack itemstack) {
+        public boolean b(int i, ItemStack itemstack) {
             return true;
         }
 
         @Override
-        public void openInventory(PlayerEntity entityHuman) {
+        public void startOpen(EntityHuman entityHuman) {
 
         }
 
         @Override
-        public void closeInventory(PlayerEntity entityHuman) {
+        public void closeContainer(EntityHuman entityHuman) {
 
         }
 

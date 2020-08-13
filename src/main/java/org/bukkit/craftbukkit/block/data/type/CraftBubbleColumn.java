@@ -1,12 +1,11 @@
 package org.bukkit.craftbukkit.block.data.type;
 
-import net.minecraft.state.BooleanProperty;
 import org.bukkit.block.data.type.BubbleColumn;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 
 public abstract class CraftBubbleColumn extends CraftBlockData implements BubbleColumn {
 
-    private static final BooleanProperty DRAG = getBoolean("drag");
+    private static final net.minecraft.server.BlockStateBoolean DRAG = getBoolean("drag");
 
     @Override
     public boolean isDrag() {
