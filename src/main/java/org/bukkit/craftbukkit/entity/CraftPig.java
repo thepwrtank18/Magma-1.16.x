@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
+import net.minecraft.entity.passive.PigEntity;
 import net.minecraft.server.EntityPig;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftServer;
@@ -9,7 +10,7 @@ import org.bukkit.entity.Pig;
 
 public class CraftPig extends CraftAnimals implements Pig {
 
-    public CraftPig(CraftServer server, EntityPig entity) {
+    public CraftPig(CraftServer server, PigEntity entity) {
         super(server, entity);
     }
 
@@ -58,8 +59,8 @@ public class CraftPig extends CraftAnimals implements Pig {
     }
 
     @Override
-    public EntityPig getHandle() {
-        return (EntityPig) entity;
+    public PigEntity getHandle() {
+        return (PigEntity) entity;
     }
 
     @Override

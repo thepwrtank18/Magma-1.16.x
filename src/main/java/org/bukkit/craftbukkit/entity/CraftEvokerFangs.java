@@ -1,7 +1,6 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.server.EntityEvokerFangs;
-import net.minecraft.server.EntityLiving;
+import net.minecraft.entity.projectile.EvokerFangsEntity;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.EvokerFangs;
@@ -9,13 +8,13 @@ import org.bukkit.entity.LivingEntity;
 
 public class CraftEvokerFangs extends CraftEntity implements EvokerFangs {
 
-    public CraftEvokerFangs(CraftServer server, EntityEvokerFangs entity) {
+    public CraftEvokerFangs(CraftServer server, EvokerFangsEntity entity) {
         super(server, entity);
     }
 
     @Override
-    public EntityEvokerFangs getHandle() {
-        return (EntityEvokerFangs) super.getHandle();
+    public EvokerFangsEntity getHandle() {
+        return (EvokerFangsEntity) super.getHandle();
     }
 
     @Override
@@ -30,13 +29,13 @@ public class CraftEvokerFangs extends CraftEntity implements EvokerFangs {
 
     @Override
     public LivingEntity getOwner() {
-        EntityLiving owner = getHandle().getOwner();
+        net.minecraft.entity.LivingEntity owner = getHandle().getCaster();
 
         return (owner == null) ? null : (LivingEntity) owner.getBukkitEntity();
     }
 
     @Override
     public void setOwner(LivingEntity owner) {
-        getHandle().a(owner == null ? null : ((CraftLivingEntity) owner).getHandle());
+        getHandle().setCaster(owner == null ? null : ((CraftLivingEntity) owner).getHandle());
     }
 }

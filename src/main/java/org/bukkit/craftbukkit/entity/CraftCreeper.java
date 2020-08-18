@@ -1,7 +1,7 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.server.EntityCreeper;
+import net.minecraft.entity.monster.CreeperEntity;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EntityType;
@@ -9,13 +9,13 @@ import org.bukkit.event.entity.CreeperPowerEvent;
 
 public class CraftCreeper extends CraftMonster implements Creeper {
 
-    public CraftCreeper(CraftServer server, EntityCreeper entity) {
+    public CraftCreeper(CraftServer server, CreeperEntity entity) {
         super(server, entity);
     }
 
     @Override
     public boolean isPowered() {
-        return getHandle().isPowered();
+        return getHandle().isCharged();
     }
 
     @Override
@@ -44,12 +44,12 @@ public class CraftCreeper extends CraftMonster implements Creeper {
     public void setMaxFuseTicks(int ticks) {
         Preconditions.checkArgument(ticks >= 0, "ticks < 0");
 
-        getHandle().maxFuseTicks = ticks;
+        getHandle().fuseTime = ticks;
     }
 
     @Override
     public int getMaxFuseTicks() {
-        return getHandle().maxFuseTicks;
+        return getHandle().fuseTime;
     }
 
     @Override
@@ -75,8 +75,8 @@ public class CraftCreeper extends CraftMonster implements Creeper {
     }
 
     @Override
-    public EntityCreeper getHandle() {
-        return (EntityCreeper) entity;
+    public CreeperEntity getHandle() {
+        return (CreeperEntity) entity;
     }
 
     @Override

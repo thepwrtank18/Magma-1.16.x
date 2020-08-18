@@ -1,13 +1,13 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.server.EntityPiglinAbstract;
+import net.minecraft.entity.monster.piglin.AbstractPiglinEntity;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.PiglinAbstract;
 
 public class CraftPiglinAbstract extends CraftMonster implements PiglinAbstract {
 
-    public CraftPiglinAbstract(CraftServer server, EntityPiglinAbstract entity) {
+    public CraftPiglinAbstract(CraftServer server, AbstractPiglinEntity entity) {
         super(server, entity);
     }
 
@@ -96,7 +96,7 @@ public class CraftPiglinAbstract extends CraftMonster implements PiglinAbstract 
     }
 
     @Override
-    public EntityPiglinAbstract getHandle() {
-        return (EntityPiglinAbstract) super.getHandle();
+    public AbstractPiglinEntity getHandle() {
+        return (AbstractPiglinEntity) super.getHandle();
     }
 }

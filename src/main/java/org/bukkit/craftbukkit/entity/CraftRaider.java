@@ -1,8 +1,8 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.server.BlockPosition;
-import net.minecraft.server.EntityRaider;
+import net.minecraft.entity.monster.AbstractRaiderEntity;
+import net.minecraft.util.math.BlockPos;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.block.CraftBlock;
@@ -10,13 +10,13 @@ import org.bukkit.entity.Raider;
 
 public abstract class CraftRaider extends CraftMonster implements Raider {
 
-    public CraftRaider(CraftServer server, EntityRaider entity) {
+    public CraftRaider(CraftServer server, AbstractRaiderEntity entity) {
         super(server, entity);
     }
 
     @Override
-    public EntityRaider getHandle() {
-        return (EntityRaider) super.getHandle();
+    public AbstractRaiderEntity getHandle() {
+        return (AbstractRaiderEntity) super.getHandle();
     }
 
     @Override
@@ -32,31 +32,31 @@ public abstract class CraftRaider extends CraftMonster implements Raider {
     @Override
     public void setPatrolTarget(Block block) {
         if (block == null) {
-            getHandle().setPatrolTarget((BlockPosition) null);
+            getHandle().setPatrolTarget((BlockPos) null);
         } else {
             Preconditions.checkArgument(block.getWorld().equals(this.getWorld()), "Block must be in same world");
 
-            getHandle().setPatrolTarget(new BlockPosition(block.getX(), block.getY(), block.getZ()));
+            getHandle().setPatrolTarget(new BlockPos(block.getX(), block.getY(), block.getZ()));
         }
     }
 
     @Override
     public boolean isPatrolLeader() {
-        return getHandle().isPatrolLeader();
+        return getHandle().isLeader();
     }
 
     @Override
     public void setPatrolLeader(boolean leader) {
-        getHandle().setPatrolLeader(leader);
+        getHandle().setLeader(leader);
     }
 
     @Override
     public boolean isCanJoinRaid() {
-        return getHandle().isCanJoinRaid();
+        return getHandle().func_213658_ej();
     }
 
     @Override
     public void setCanJoinRaid(boolean join) {
-        getHandle().setCanJoinRaid(join);
+        getHandle().func_213644_t(join);
     }
 }

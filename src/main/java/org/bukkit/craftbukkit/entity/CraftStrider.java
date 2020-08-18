@@ -1,6 +1,7 @@
 package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
+import net.minecraft.entity.passive.StriderEntity;
 import net.minecraft.server.EntityStrider;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftServer;
@@ -9,7 +10,7 @@ import org.bukkit.entity.Strider;
 
 public class CraftStrider extends CraftAnimals implements Strider {
 
-    public CraftStrider(CraftServer server, EntityStrider entity) {
+    public CraftStrider(CraftServer server, StriderEntity entity) {
         super(server, entity);
     }
 
@@ -68,8 +69,8 @@ public class CraftStrider extends CraftAnimals implements Strider {
     }
 
     @Override
-    public EntityStrider getHandle() {
-        return (EntityStrider) entity;
+    public StriderEntity getHandle() {
+        return (StriderEntity) entity;
     }
 
     @Override

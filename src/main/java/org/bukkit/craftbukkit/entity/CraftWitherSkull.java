@@ -1,28 +1,28 @@
 package org.bukkit.craftbukkit.entity;
 
-import net.minecraft.server.EntityWitherSkull;
+import net.minecraft.entity.projectile.WitherSkullEntity;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.WitherSkull;
 
 public class CraftWitherSkull extends CraftFireball implements WitherSkull {
-    public CraftWitherSkull(CraftServer server, EntityWitherSkull entity) {
+    public CraftWitherSkull(CraftServer server, WitherSkullEntity entity) {
         super(server, entity);
     }
 
     @Override
     public void setCharged(boolean charged) {
-        getHandle().setCharged(charged);
+        getHandle().setSkullInvulnerable(charged);
     }
 
     @Override
     public boolean isCharged() {
-        return getHandle().isCharged();
+        return getHandle().isSkullInvulnerable();
     }
 
     @Override
-    public EntityWitherSkull getHandle() {
-        return (EntityWitherSkull) entity;
+    public WitherSkullEntity getHandle() {
+        return (WitherSkullEntity) entity;
     }
 
     @Override
