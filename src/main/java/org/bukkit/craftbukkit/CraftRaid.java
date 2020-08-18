@@ -7,18 +7,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
-import net.minecraft.server.BlockPosition;
-import net.minecraft.server.EntityRaider;
-import net.minecraft.server.World;
+import net.minecraft.entity.monster.AbstractRaiderEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.bukkit.Location;
 import org.bukkit.Raid;
 import org.bukkit.entity.Raider;
 
 public final class CraftRaid implements Raid {
 
-    private final net.minecraft.server.Raid handle;
+    private final net.minecraft.world.raid.Raid handle;
 
-    public CraftRaid(net.minecraft.server.Raid handle) {
+    public CraftRaid(net.minecraft.world.raid.Raid handle) {
         this.handle = handle;
     }
 
@@ -39,16 +39,16 @@ public final class CraftRaid implements Raid {
 
     @Override
     public void setBadOmenLevel(int badOmenLevel) {
-        int max = handle.getMaxBadOmenLevel();
+        int max = handle.getMaxLevel();
         Preconditions.checkArgument(0 <= badOmenLevel && badOmenLevel <= max, "Bad Omen level must be between 0 and %s", max);
         handle.badOmenLevel = badOmenLevel;
     }
 
     @Override
     public Location getLocation() {
-        BlockPosition pos = handle.getCenter();
+        BlockPos pos = handle.getCenter();
         World world = handle.getWorld();
-        return new Location(world.getWorld(), pos.getX(), pos.getY(), pos.getZ());
+        return new Location(world.getWorldCB(), pos.getX(), pos.getY(), pos.getZ());
     }
 
     @Override
@@ -81,7 +81,7 @@ public final class CraftRaid implements Raid {
 
     @Override
     public float getTotalHealth() {
-        return handle.sumMobHealth();
+        return handle.getCurrentHealth();
     }
 
     @Override
@@ -91,9 +91,9 @@ public final class CraftRaid implements Raid {
 
     @Override
     public List<Raider> getRaiders() {
-        return handle.getRaiders().stream().map(new Function<EntityRaider, Raider>() {
+        return handle.getRaiders().stream().map(new Function<AbstractRaiderEntity, Raider>() {
             @Override
-            public Raider apply(EntityRaider entityRaider) {
+            public Raider apply(AbstractRaiderEntity entityRaider) {
                 return (Raider) entityRaider.getBukkitEntity();
             }
         }).collect(ImmutableList.toImmutableList());

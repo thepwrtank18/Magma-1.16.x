@@ -99,10 +99,10 @@ public final class CraftMagicNumbers implements UnsafeValues {
             }
 
             ResourceLocation key = key(material);
-            Registry.ITEM.getValue(key).ifPresent((item) -> {
+            Registry.ITEM.func_241873_b(key).ifPresent((item) -> {
                 MATERIAL_ITEM.put(material, item);
             });
-            Registry.BLOCK.getValue(key).ifPresent((block) -> {
+            Registry.BLOCK.func_241873_b(key).ifPresent((block) -> {
                 MATERIAL_BLOCK.put(material, block);
             });
         }

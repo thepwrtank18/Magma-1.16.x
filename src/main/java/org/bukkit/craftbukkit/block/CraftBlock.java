@@ -486,20 +486,20 @@ public class CraftBlock implements Block {
         getWorld().setBiome(getX(), getY(), getZ(), bio);
     }
 
-    public static Biome biomeBaseToBiome(IRegistry<BiomeBase> registry, BiomeBase base) {
+    public static Biome biomeBaseToBiome(Registry<net.minecraft.world.biome.Biome> registry, net.minecraft.world.biome.Biome base) {
         if (base == null) {
             return null;
         }
 
-        return Registry.BIOME.get(CraftNamespacedKey.fromMinecraft(registry.getKey(base)));
+        return org.bukkit.Registry.BIOME.get(CraftNamespacedKey.fromMinecraft(registry.getKey(base)));
     }
 
-    public static BiomeBase biomeToBiomeBase(IRegistry<BiomeBase> registry, Biome bio) {
+    public static net.minecraft.world.biome.Biome biomeToBiomeBase(Registry<net.minecraft.world.biome.Biome> registry, Biome bio) {
         if (bio == null) {
             return null;
         }
 
-        return registry.get(CraftNamespacedKey.toMinecraft(bio.getKey()));
+        return registry.getOrDefault(CraftNamespacedKey.toMinecraft(bio.getKey()));
     }
 
     @Override
