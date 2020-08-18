@@ -6,14 +6,15 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Predicate;
-import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.SharedSeedRandom;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.SectionPos;
 import net.minecraft.util.palette.PalettedContainer;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.LightType;
 import net.minecraft.world.biome.BiomeContainer;
 import net.minecraft.world.biome.provider.BiomeProvider;
@@ -26,6 +27,7 @@ import org.bukkit.Chunk;
 import org.bukkit.ChunkSnapshot;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
@@ -297,8 +299,8 @@ public class CraftChunk implements Chunk {
         BiomeContainer biome = null;
 
         if (includeBiome || includeBiomeTempRain) {
-            BiomeProvider wcm = world.getHandle().getChunkProvider().getChunkGenerator().getWorldChunkManager();
-            biome = new BiomeContainer(world.getHandle().r().b(IRegistry.ay), new ChunkCoordIntPair(x, z), wcm);
+            BiomeProvider wcm = world.getHandle().getChunkProvider().getChunkGenerator().getBiomeProvider();
+            biome = new BiomeContainer(world.getHandle().func_241828_r().func_243612_b(Registry.field_239720_u_), new ChunkPos(x, z), wcm);
         }
 
         /* Fill with empty data */
