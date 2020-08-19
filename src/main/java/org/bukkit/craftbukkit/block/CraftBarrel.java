@@ -1,6 +1,8 @@
 package org.bukkit.craftbukkit.block;
 
+import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.BarrelTileEntity;
+import net.minecraft.util.SoundEvents;
 import org.bukkit.Material;
 import org.bukkit.block.Barrel;
 import org.bukkit.block.Block;
@@ -35,9 +37,9 @@ public class CraftBarrel extends CraftLootable<BarrelTileEntity> implements Barr
     public void open() {
         requirePlaced();
         if (!getTileEntity().opened) {
-            IBlockData blockData = getTileEntity().getBlock();
-            getTileEntity().setOpenFlag(blockData, true);
-            getTileEntity().playOpenSound(blockData, SoundEffects.BLOCK_BARREL_OPEN);
+            BlockState blockData = getTileEntity().getBlockState();
+            getTileEntity().setOpenProperty(blockData, true);
+            getTileEntity().playSound(blockData, SoundEvents.BLOCK_BARREL_OPEN);
         }
         getTileEntity().opened = true;
     }
@@ -46,9 +48,9 @@ public class CraftBarrel extends CraftLootable<BarrelTileEntity> implements Barr
     public void close() {
         requirePlaced();
         if (getTileEntity().opened) {
-            IBlockData blockData = getTileEntity().getBlock();
-            getTileEntity().setOpenFlag(blockData, false);
-            getTileEntity().playOpenSound(blockData, SoundEffects.BLOCK_BARREL_CLOSE);
+            BlockState blockData = getTileEntity().getBlockState();
+            getTileEntity().setOpenProperty(blockData, false);
+            getTileEntity().playSound(blockData, SoundEvents.BLOCK_BARREL_CLOSE);
         }
         getTileEntity().opened = false;
     }

@@ -4,6 +4,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.ChestBlock;
 import net.minecraft.inventory.container.INamedContainerProvider;
 import net.minecraft.tileentity.ChestTileEntity;
+import net.minecraft.util.SoundEvents;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Chest;
@@ -59,9 +60,9 @@ public class CraftChest extends CraftLootable<ChestTileEntity> implements Chest 
     public void open() {
         requirePlaced();
         if (!getTileEntity().opened) {
-            net.minecraft.server.Block block = getTileEntity().getBlock().getBlock();
-            getTileEntity().getWorld().playBlockAction(getTileEntity().getPosition(), block, 1, getTileEntity().viewingCount + 1);
-            getTileEntity().playOpenSound(SoundEffects.BLOCK_CHEST_OPEN);
+            net.minecraft.block.Block block = getTileEntity().getBlockState().getBlock();
+            getTileEntity().getWorld().addBlockEvent(getTileEntity().getPos(), block, 1, getTileEntity().numPlayersUsing + 1);
+            getTileEntity().playSound(SoundEvents.BLOCK_CHEST_OPEN);
         }
         getTileEntity().opened = true;
     }
@@ -70,9 +71,9 @@ public class CraftChest extends CraftLootable<ChestTileEntity> implements Chest 
     public void close() {
         requirePlaced();
         if (getTileEntity().opened) {
-            net.minecraft.server.Block block = getTileEntity().getBlock().getBlock();
-            getTileEntity().getWorld().playBlockAction(getTileEntity().getPosition(), block, 1, 0);
-            getTileEntity().playOpenSound(SoundEffects.BLOCK_CHEST_CLOSE);
+            net.minecraft.block.Block block = getTileEntity().getBlockState().getBlock();
+            getTileEntity().getWorld().addBlockEvent(getTileEntity().getPos(), block, 1, 0);
+            getTileEntity().playSound(SoundEvents.BLOCK_CHEST_CLOSE);
         }
         getTileEntity().opened = false;
     }

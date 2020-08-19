@@ -77,7 +77,7 @@ public class CraftBlock implements Block {
 
     @Override
     public World getWorld() {
-        return world.getWorld().getWorldCB();
+        return world.getMinecraftWorld().getWorldCB();
     }
 
     public CraftWorld getCraftWorld() {
@@ -193,7 +193,7 @@ public class CraftBlock implements Block {
             net.minecraft.block.BlockState old = world.getBlockState(position);
             boolean success = world.setBlockState(position, blockData, 2 | 16 | 1024); // NOTIFY | NO_OBSERVER | NO_PLACE (custom)
             if (success) {
-                world.getWorld().notifyBlockUpdate(
+                world.getMinecraftWorld().notifyBlockUpdate(
                         position,
                         old,
                         blockData,
@@ -211,7 +211,7 @@ public class CraftBlock implements Block {
 
     @Override
     public byte getLightLevel() {
-        return (byte) world.getWorld().getLight(position);
+        return (byte) world.getMinecraftWorld().getLight(position);
     }
 
     @Override
@@ -514,12 +514,12 @@ public class CraftBlock implements Block {
 
     @Override
     public boolean isBlockPowered() {
-        return world.getWorld().getStrongPower(position) > 0;
+        return world.getMinecraftWorld().getStrongPower(position) > 0;
     }
 
     @Override
     public boolean isBlockIndirectlyPowered() {
-        return world.getWorld().isBlockPowered(position);
+        return world.getMinecraftWorld().isBlockPowered(position);
     }
 
     @Override
@@ -542,12 +542,12 @@ public class CraftBlock implements Block {
 
     @Override
     public boolean isBlockFacePowered(BlockFace face) {
-        return world.getWorld().isSidePowered(position, blockFaceToNotch(face));
+        return world.getMinecraftWorld().isSidePowered(position, blockFaceToNotch(face));
     }
 
     @Override
     public boolean isBlockFaceIndirectlyPowered(BlockFace face) {
-        int power = world.getWorld().getRedstonePower(position, blockFaceToNotch(face));
+        int power = world.getMinecraftWorld().getRedstonePower(position, blockFaceToNotch(face));
 
         Block relative = getRelative(face);
         if (relative.getType() == Material.REDSTONE_WIRE) {
@@ -560,7 +560,7 @@ public class CraftBlock implements Block {
     @Override
     public int getBlockPower(BlockFace face) {
         int power = 0;
-        net.minecraft.world.World world = this.world.getWorld();
+        net.minecraft.world.World world = this.world.getMinecraftWorld();
         int x = getX();
         int y = getY();
         int z = getZ();
@@ -630,7 +630,7 @@ public class CraftBlock implements Block {
 
         // Modelled off EntityHuman#hasBlock
         if (block != Blocks.AIR && (item == null || !iblockdata.func_235783_q_() || nmsItem.canHarvestBlock(iblockdata))) { // TODO: 26/06/2020 func_235783_q_ this could be isToolNotRequired ? fix this if it breaks ;)
-            net.minecraft.block.Block.spawnDrops(iblockdata, (ServerWorld) world.getWorld(), position, world.getTileEntity(position), null, nmsItem);
+            net.minecraft.block.Block.spawnDrops(iblockdata, (ServerWorld) world.getMinecraftWorld(), position, world.getTileEntity(position), null, nmsItem);
             result = true;
         }
 
@@ -654,7 +654,7 @@ public class CraftBlock implements Block {
 
         // Modelled off EntityHuman#hasBlock
         if (item == null || !iblockdata.func_235783_q_() || nms.canHarvestBlock(iblockdata)) { // TODO: 26/06/2020 func_235783_q_ ^^
-            return net.minecraft.block.Block.getDrops(iblockdata, (ServerWorld) world.getWorld(), position, world.getTileEntity(position), entity == null ? null : ((CraftEntity) entity).getHandle(), nms)
+            return net.minecraft.block.Block.getDrops(iblockdata, (ServerWorld) world.getMinecraftWorld(), position, world.getTileEntity(position), entity == null ? null : ((CraftEntity) entity).getHandle(), nms)
                     .stream().map(CraftItemStack::asBukkitCopy).collect(Collectors.toList());
         } else {
             return Collections.emptyList();

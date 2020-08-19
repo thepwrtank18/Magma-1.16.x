@@ -39,7 +39,7 @@ public final class CapturedBlockState extends CraftBlockState {
                 int j = 2 + random.nextInt(2);
 
                 for (int k = 0; k < j; ++k) {
-                    BeeEntity entitybee = new BeeEntity(EntityType.BEE, generatoraccess.getWorld());
+                    BeeEntity entitybee = new BeeEntity(EntityType.BEE, generatoraccess.getMinecraftWorld());
 
                     tileentitybeehive.tryEnterHive(entitybee, false, random.nextInt(599));
                 }
