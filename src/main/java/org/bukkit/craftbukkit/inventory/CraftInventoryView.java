@@ -1,6 +1,6 @@
 package org.bukkit.craftbukkit.inventory;
 
-import net.minecraft.server.Container;
+import net.minecraft.inventory.container.Container;
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.entity.CraftHumanEntity;
 import org.bukkit.craftbukkit.util.CraftChatMessage;
@@ -48,11 +48,11 @@ public class CraftInventoryView extends InventoryView {
 
     @Override
     public void setItem(int slot, ItemStack item) {
-        net.minecraft.server.ItemStack stack = CraftItemStack.asNMSCopy(item);
+        net.minecraft.item.ItemStack stack = CraftItemStack.asNMSCopy(item);
         if (slot >= 0) {
-            container.getSlot(slot).set(stack);
+            container.getSlot(slot).putStack(stack);
         } else {
-            player.getHandle().drop(stack, false);
+            player.getHandle().dropItem(stack, false);
         }
     }
 
@@ -61,7 +61,7 @@ public class CraftInventoryView extends InventoryView {
         if (slot < 0) {
             return null;
         }
-        return CraftItemStack.asCraftMirror(container.getSlot(slot).getItem());
+        return CraftItemStack.asCraftMirror(container.getSlot(slot).getStack());
     }
 
     @Override

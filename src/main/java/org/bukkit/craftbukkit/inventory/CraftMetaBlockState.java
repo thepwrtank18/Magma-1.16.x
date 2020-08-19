@@ -3,38 +3,38 @@ package org.bukkit.craftbukkit.inventory;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
 import java.util.Map;
-import net.minecraft.server.EnumColor;
-import net.minecraft.server.NBTBase;
-import net.minecraft.server.NBTTagCompound;
-import net.minecraft.server.TileEntity;
-import net.minecraft.server.TileEntityBanner;
-import net.minecraft.server.TileEntityBarrel;
-import net.minecraft.server.TileEntityBeacon;
-import net.minecraft.server.TileEntityBeehive;
-import net.minecraft.server.TileEntityBell;
-import net.minecraft.server.TileEntityBlastFurnace;
-import net.minecraft.server.TileEntityBrewingStand;
-import net.minecraft.server.TileEntityCampfire;
-import net.minecraft.server.TileEntityChest;
-import net.minecraft.server.TileEntityCommand;
-import net.minecraft.server.TileEntityComparator;
-import net.minecraft.server.TileEntityDispenser;
-import net.minecraft.server.TileEntityDropper;
-import net.minecraft.server.TileEntityEnchantTable;
-import net.minecraft.server.TileEntityEndGateway;
-import net.minecraft.server.TileEntityEnderChest;
-import net.minecraft.server.TileEntityFurnaceFurnace;
-import net.minecraft.server.TileEntityHopper;
-import net.minecraft.server.TileEntityJigsaw;
-import net.minecraft.server.TileEntityJukeBox;
-import net.minecraft.server.TileEntityLectern;
-import net.minecraft.server.TileEntityLightDetector;
-import net.minecraft.server.TileEntityMobSpawner;
-import net.minecraft.server.TileEntityShulkerBox;
-import net.minecraft.server.TileEntitySign;
-import net.minecraft.server.TileEntitySkull;
-import net.minecraft.server.TileEntitySmoker;
-import net.minecraft.server.TileEntityStructure;
+import net.minecraft.item.DyeColor;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.nbt.INBT;
+import net.minecraft.tileentity.BannerTileEntity;
+import net.minecraft.tileentity.BarrelTileEntity;
+import net.minecraft.tileentity.BeaconTileEntity;
+import net.minecraft.tileentity.BeehiveTileEntity;
+import net.minecraft.tileentity.BellTileEntity;
+import net.minecraft.tileentity.BlastFurnaceTileEntity;
+import net.minecraft.tileentity.BrewingStandTileEntity;
+import net.minecraft.tileentity.CampfireTileEntity;
+import net.minecraft.tileentity.ChestTileEntity;
+import net.minecraft.tileentity.CommandBlockTileEntity;
+import net.minecraft.tileentity.ComparatorTileEntity;
+import net.minecraft.tileentity.DaylightDetectorTileEntity;
+import net.minecraft.tileentity.DispenserTileEntity;
+import net.minecraft.tileentity.DropperTileEntity;
+import net.minecraft.tileentity.EnchantingTableTileEntity;
+import net.minecraft.tileentity.EndGatewayTileEntity;
+import net.minecraft.tileentity.EnderChestTileEntity;
+import net.minecraft.tileentity.FurnaceTileEntity;
+import net.minecraft.tileentity.HopperTileEntity;
+import net.minecraft.tileentity.JigsawTileEntity;
+import net.minecraft.tileentity.JukeboxTileEntity;
+import net.minecraft.tileentity.LecternTileEntity;
+import net.minecraft.tileentity.MobSpawnerTileEntity;
+import net.minecraft.tileentity.ShulkerBoxTileEntity;
+import net.minecraft.tileentity.SignTileEntity;
+import net.minecraft.tileentity.SkullTileEntity;
+import net.minecraft.tileentity.SmokerTileEntity;
+import net.minecraft.tileentity.StructureBlockTileEntity;
+import net.minecraft.tileentity.TileEntity;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -58,7 +58,7 @@ import org.bukkit.craftbukkit.block.CraftDropper;
 import org.bukkit.craftbukkit.block.CraftEnchantingTable;
 import org.bukkit.craftbukkit.block.CraftEndGateway;
 import org.bukkit.craftbukkit.block.CraftEnderChest;
-import org.bukkit.craftbukkit.block.CraftFurnaceFurnace;
+import org.bukkit.craftbukkit.block.CraftFurnace;
 import org.bukkit.craftbukkit.block.CraftHopper;
 import org.bukkit.craftbukkit.block.CraftJigsaw;
 import org.bukkit.craftbukkit.block.CraftJukebox;
@@ -78,7 +78,7 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
     static final ItemMetaKey BLOCK_ENTITY_TAG = new ItemMetaKey("BlockEntityTag");
 
     final Material material;
-    NBTTagCompound blockEntityTag;
+    CompoundNBT blockEntityTag;
 
     CraftMetaBlockState(CraftMetaItem meta, Material material) {
         super(meta);
@@ -94,11 +94,11 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
         this.blockEntityTag = te.blockEntityTag;
     }
 
-    CraftMetaBlockState(NBTTagCompound tag, Material material) {
+    CraftMetaBlockState(CompoundNBT tag, Material material) {
         super(tag);
         this.material = material;
 
-        if (tag.hasKeyOfType(BLOCK_ENTITY_TAG.NBT, CraftMagicNumbers.NBT.TAG_COMPOUND)) {
+        if (tag.contains(BLOCK_ENTITY_TAG.NBT, CraftMagicNumbers.NBT.TAG_COMPOUND)) {
             blockEntityTag = tag.getCompound(BLOCK_ENTITY_TAG.NBT);
         } else {
             blockEntityTag = null;
@@ -117,25 +117,25 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
     }
 
     @Override
-    void applyToItem(NBTTagCompound tag) {
+    void applyToItem(CompoundNBT tag) {
         super.applyToItem(tag);
 
         if (blockEntityTag != null) {
-            tag.set(BLOCK_ENTITY_TAG.NBT, blockEntityTag);
+            tag.put(BLOCK_ENTITY_TAG.NBT, blockEntityTag);
         }
     }
 
     @Override
-    void deserializeInternal(NBTTagCompound tag, Object context) {
+    void deserializeInternal(CompoundNBT tag, Object context) {
         super.deserializeInternal(tag, context);
 
-        if (tag.hasKeyOfType(BLOCK_ENTITY_TAG.NBT, CraftMagicNumbers.NBT.TAG_COMPOUND)) {
+        if (tag.contains(BLOCK_ENTITY_TAG.NBT, CraftMagicNumbers.NBT.TAG_COMPOUND)) {
             blockEntityTag = tag.getCompound(BLOCK_ENTITY_TAG.NBT);
         }
     }
 
     @Override
-    void serializeInternal(final Map<String, NBTBase> internalTags) {
+    void serializeInternal(final Map<String, INBT> internalTags) {
         if (blockEntityTag != null) {
             internalTags.put(BLOCK_ENTITY_TAG.NBT, blockEntityTag);
         }
@@ -240,7 +240,6 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
             case BELL:
             case BLAST_FURNACE:
             case CAMPFIRE:
-            case SOUL_CAMPFIRE:
             case JIGSAW:
             case LECTERN:
             case SMOKER:
@@ -255,7 +254,7 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
     public CraftMetaBlockState clone() {
         CraftMetaBlockState meta = (CraftMetaBlockState) super.clone();
         if (blockEntityTag != null) {
-            meta.blockEntityTag = blockEntityTag.clone();
+            meta.blockEntityTag = blockEntityTag.copy();
         }
         return meta;
     }
@@ -267,12 +266,10 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
 
     @Override
     public BlockState getBlockState() {
-        Material stateMaterial = material; // Only actually used for jigsaws
         if (blockEntityTag != null) {
             switch (material) {
                 case SHIELD:
-                    blockEntityTag.setString("id", "banner");
-                    stateMaterial = shieldToBannerHack(blockEntityTag);
+                    blockEntityTag.putString("id", "banner");
                     break;
                 case SHULKER_BOX:
                 case WHITE_SHULKER_BOX:
@@ -291,15 +288,15 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
                 case GREEN_SHULKER_BOX:
                 case RED_SHULKER_BOX:
                 case BLACK_SHULKER_BOX:
-                    blockEntityTag.setString("id", "shulker_box");
+                    blockEntityTag.putString("id", "shulker_box");
                     break;
                 case BEE_NEST:
                 case BEEHIVE:
-                    blockEntityTag.setString("id", "beehive");
+                    blockEntityTag.putString("id", "beehive");
                     break;
             }
         }
-        TileEntity te = (blockEntityTag == null) ? null : TileEntity.create(CraftMagicNumbers.getBlock(stateMaterial).getBlockData(), blockEntityTag);
+        TileEntity te = (blockEntityTag == null) ? null : TileEntity.func_235657_b_(CraftMagicNumbers.getBlock(material).getDefaultState(), blockEntityTag);
 
         switch (material) {
         case ACACIA_SIGN:
@@ -319,55 +316,55 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
         case WARPED_SIGN:
         case WARPED_WALL_SIGN:
             if (te == null) {
-                te = new TileEntitySign();
+                te = new SignTileEntity();
             }
-            return new CraftSign(material, (TileEntitySign) te);
+            return new CraftSign(material, (SignTileEntity) te);
         case CHEST:
         case TRAPPED_CHEST:
             if (te == null) {
-                te = new TileEntityChest();
+                te = new ChestTileEntity();
             }
-            return new CraftChest(material, (TileEntityChest) te);
+            return new CraftChest(material, (ChestTileEntity) te);
         case FURNACE:
             if (te == null) {
-                te = new TileEntityFurnaceFurnace();
+                te = new FurnaceTileEntity();
             }
-            return new CraftFurnaceFurnace(material, (TileEntityFurnaceFurnace) te);
+            return new CraftFurnace(material, (FurnaceTileEntity) te);
         case DISPENSER:
             if (te == null) {
-                te = new TileEntityDispenser();
+                te = new DispenserTileEntity();
             }
-            return new CraftDispenser(material, (TileEntityDispenser) te);
+            return new CraftDispenser(material, (DispenserTileEntity) te);
         case DROPPER:
             if (te == null) {
-                te = new TileEntityDropper();
+                te = new DropperTileEntity();
             }
-            return new CraftDropper(material, (TileEntityDropper) te);
+            return new CraftDropper(material, (DropperTileEntity) te);
         case END_GATEWAY:
             if (te == null) {
-                te = new TileEntityEndGateway();
+                te = new EndGatewayTileEntity();
             }
-            return new CraftEndGateway(material, (TileEntityEndGateway) te);
+            return new CraftEndGateway(material, (EndGatewayTileEntity) te);
         case HOPPER:
             if (te == null) {
-                te = new TileEntityHopper();
+                te = new HopperTileEntity();
             }
-            return new CraftHopper(material, (TileEntityHopper) te);
+            return new CraftHopper(material, (HopperTileEntity) te);
         case SPAWNER:
             if (te == null) {
-                te = new TileEntityMobSpawner();
+                te = new MobSpawnerTileEntity();
             }
-            return new CraftCreatureSpawner(material, (TileEntityMobSpawner) te);
+            return new CraftCreatureSpawner(material, (MobSpawnerTileEntity) te);
         case JUKEBOX:
             if (te == null) {
-                te = new TileEntityJukeBox();
+                te = new JukeboxTileEntity();
             }
-            return new CraftJukebox(material, (TileEntityJukeBox) te);
+            return new CraftJukebox(material, (JukeboxTileEntity) te);
         case BREWING_STAND:
             if (te == null) {
-                te = new TileEntityBrewingStand();
+                te = new BrewingStandTileEntity();
             }
-            return new CraftBrewingStand(material, (TileEntityBrewingStand) te);
+            return new CraftBrewingStand(material, (BrewingStandTileEntity) te);
         case CREEPER_HEAD:
         case CREEPER_WALL_HEAD:
         case DRAGON_HEAD:
@@ -381,26 +378,26 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
         case ZOMBIE_HEAD:
         case ZOMBIE_WALL_HEAD:
             if (te == null) {
-                te = new TileEntitySkull();
+                te = new SkullTileEntity();
             }
-            return new CraftSkull(material, (TileEntitySkull) te);
+            return new CraftSkull(material, (SkullTileEntity) te);
         case COMMAND_BLOCK:
         case REPEATING_COMMAND_BLOCK:
         case CHAIN_COMMAND_BLOCK:
             if (te == null) {
-                te = new TileEntityCommand();
+                te = new CommandBlockTileEntity();
             }
-            return new CraftCommandBlock(material, (TileEntityCommand) te);
+            return new CraftCommandBlock(material, (CommandBlockTileEntity) te);
         case BEACON:
             if (te == null) {
-                te = new TileEntityBeacon();
+                te = new BeaconTileEntity();
             }
-            return new CraftBeacon(material, (TileEntityBeacon) te);
+            return new CraftBeacon(material, (BeaconTileEntity) te);
         case SHIELD:
             if (te == null) {
-                te = new TileEntityBanner();
+                te = new BannerTileEntity();
             }
-            ((TileEntityBanner) te).color = (blockEntityTag == null) ? EnumColor.WHITE : EnumColor.fromColorIndex(blockEntityTag.getInt(CraftMetaBanner.BASE.NBT));
+            ((BannerTileEntity) te).baseColor = (blockEntityTag == null) ? DyeColor.WHITE : DyeColor.byId(blockEntityTag.getInt(CraftMetaBanner.BASE.NBT));
         case BLACK_BANNER:
         case BLACK_WALL_BANNER:
         case BLUE_BANNER:
@@ -434,14 +431,14 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
         case YELLOW_BANNER:
         case YELLOW_WALL_BANNER:
             if (te == null) {
-                te = new TileEntityBanner();
+                te = new BannerTileEntity();
             }
-            return new CraftBanner(material == Material.SHIELD ? shieldToBannerHack(blockEntityTag) : material, (TileEntityBanner) te);
+            return new CraftBanner(material == Material.SHIELD ? shieldToBannerHack(blockEntityTag) : material, (BannerTileEntity) te);
         case STRUCTURE_BLOCK:
             if (te == null) {
-                te = new TileEntityStructure();
+                te = new StructureBlockTileEntity();
             }
-            return new CraftStructureBlock(material, (TileEntityStructure) te);
+            return new CraftStructureBlock(material, (StructureBlockTileEntity) te);
         case SHULKER_BOX:
         case WHITE_SHULKER_BOX:
         case ORANGE_SHULKER_BOX:
@@ -460,71 +457,70 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
         case RED_SHULKER_BOX:
         case BLACK_SHULKER_BOX:
             if (te == null) {
-                te = new TileEntityShulkerBox();
+                te = new ShulkerBoxTileEntity();
             }
-            return new CraftShulkerBox(material, (TileEntityShulkerBox) te);
+            return new CraftShulkerBox(material, (ShulkerBoxTileEntity) te);
         case ENCHANTING_TABLE:
             if (te == null) {
-                te = new TileEntityEnchantTable();
+                te = new EnchantingTableTileEntity();
             }
-            return new CraftEnchantingTable(material, (TileEntityEnchantTable) te);
+            return new CraftEnchantingTable(material, (EnchantingTableTileEntity) te);
         case ENDER_CHEST:
             if (te == null) {
-                te = new TileEntityEnderChest();
+                te = new EnderChestTileEntity();
             }
-            return new CraftEnderChest(material, (TileEntityEnderChest) te);
+            return new CraftEnderChest(material, (EnderChestTileEntity) te);
         case DAYLIGHT_DETECTOR:
             if (te == null) {
-                te = new TileEntityLightDetector();
+                te = new DaylightDetectorTileEntity();
             }
-            return new CraftDaylightDetector(material, (TileEntityLightDetector) te);
+            return new CraftDaylightDetector(material, (DaylightDetectorTileEntity) te);
         case COMPARATOR:
             if (te == null) {
-                te = new TileEntityComparator();
+                te = new ComparatorTileEntity();
             }
-            return new CraftComparator(material, (TileEntityComparator) te);
+            return new CraftComparator(material, (ComparatorTileEntity) te);
         case BARREL:
             if (te == null) {
-                te = new TileEntityBarrel();
+                te = new BarrelTileEntity();
             }
-            return new CraftBarrel(material, (TileEntityBarrel) te);
+            return new CraftBarrel(material, (BarrelTileEntity) te);
         case BELL:
             if (te == null) {
-                te = new TileEntityBell();
+                te = new BellTileEntity();
             }
-            return new CraftBell(material, (TileEntityBell) te);
+            return new CraftBell(material, (BellTileEntity) te);
         case BLAST_FURNACE:
             if (te == null) {
-                te = new TileEntityBlastFurnace();
+                te = new BlastFurnaceTileEntity();
             }
-            return new CraftBlastFurnace(material, (TileEntityBlastFurnace) te);
+            return new CraftBlastFurnace(material, (BlastFurnaceTileEntity) te);
         case CAMPFIRE:
-        case SOUL_CAMPFIRE:
             if (te == null) {
-                te = new TileEntityCampfire();
+                te = new CampfireTileEntity();
             }
-            return new CraftCampfire(material, (TileEntityCampfire) te);
+            return new CraftCampfire(material, (CampfireTileEntity) te);
         case JIGSAW:
             if (te == null) {
-                te = new TileEntityJigsaw();
+                te = new JigsawTileEntity();
             }
-            return new CraftJigsaw(material, (TileEntityJigsaw) te);
+            return new CraftJigsaw(material, (JigsawTileEntity) te);
         case LECTERN:
             if (te == null) {
-                te = new TileEntityLectern();
+                te = new LecternTileEntity();
             }
-            return new CraftLectern(material, (TileEntityLectern) te);
+            return new CraftLectern(material, (LecternTileEntity) te);
         case SMOKER:
             if (te == null) {
-                te = new TileEntitySmoker();
+                te = new SmokerTileEntity();
             }
-            return new CraftSmoker(material, (TileEntitySmoker) te);
+            return new CraftSmoker(material, (SmokerTileEntity) te);
         case BEE_NEST:
         case BEEHIVE:
             if (te == null) {
-                te = new TileEntityBeehive();
+                te = new BeehiveTileEntity();
             }
-            return new CraftBeehive(material, (TileEntityBeehive) te);
+            return new CraftBeehive(material, (BeehiveTileEntity) te);
         default:
             throw new IllegalStateException("Missing blockState for " + material);
         }
@@ -559,7 +555,7 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
             valid = blockState instanceof CraftChest;
             break;
         case FURNACE:
-            valid = blockState instanceof CraftFurnaceFurnace;
+            valid = blockState instanceof CraftFurnace;
             break;
         case DISPENSER:
             valid = blockState instanceof CraftDispenser;
@@ -683,7 +679,6 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
             valid = blockState instanceof CraftBlastFurnace;
             break;
         case CAMPFIRE:
-        case SOUL_CAMPFIRE:
             valid = blockState instanceof CraftCampfire;
             break;
         case JIGSAW:
@@ -709,12 +704,12 @@ public class CraftMetaBlockState extends CraftMetaItem implements BlockStateMeta
         blockEntityTag = ((CraftBlockEntityState) blockState).getSnapshotNBT();
         // Set shield base
         if (material == Material.SHIELD) {
-            blockEntityTag.setInt(CraftMetaBanner.BASE.NBT, ((CraftBanner) blockState).getBaseColor().getWoolData());
+            blockEntityTag.putInt(CraftMetaBanner.BASE.NBT, ((CraftBanner) blockState).getBaseColor().getWoolData());
         }
     }
 
-    private static Material shieldToBannerHack(NBTTagCompound tag) {
-        if (tag == null || !tag.hasKeyOfType(CraftMetaBanner.BASE.NBT, CraftMagicNumbers.NBT.TAG_INT)) {
+    private static Material shieldToBannerHack(CompoundNBT tag) {
+        if (tag == null || !tag.contains(CraftMetaBanner.BASE.NBT, CraftMagicNumbers.NBT.TAG_INT)) {
             return Material.WHITE_BANNER;
         }
 

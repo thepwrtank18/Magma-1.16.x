@@ -1,10 +1,10 @@
 package org.bukkit.craftbukkit.inventory;
 
 import com.google.common.base.Preconditions;
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.PacketPlayOutHeldItemSlot;
-import net.minecraft.server.PacketPlayOutSetSlot;
-import net.minecraft.server.PlayerInventory;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.network.play.server.SHeldItemChangePacket;
+import net.minecraft.network.play.server.SSetSlotPacket;
 import org.apache.commons.lang.Validate;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.HumanEntity;
@@ -13,7 +13,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.inventory.PlayerInventory, EntityEquipment {
-    public CraftInventoryPlayer(net.minecraft.server.PlayerInventory inventory) {
+    public CraftInventoryPlayer(PlayerInventory inventory) {
         super(inventory);
     }
 
@@ -24,12 +24,12 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
 
     @Override
     public ItemStack[] getStorageContents() {
-        return asCraftMirror(getInventory().items);
+        return asCraftMirror(getInventory().mainInventory);
     }
 
     @Override
     public ItemStack getItemInMainHand() {
-        return CraftItemStack.asCraftMirror(getInventory().getItemInHand());
+        return CraftItemStack.asCraftMirror(getInventory().getCurrentItem());
     }
 
     @Override
@@ -39,7 +39,7 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
 
     @Override
     public ItemStack getItemInOffHand() {
-        return CraftItemStack.asCraftMirror(getInventory().extraSlots.get(0));
+        return CraftItemStack.asCraftMirror(getInventory().offHandInventory.get(0));
     }
 
     @Override
@@ -63,8 +63,8 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
     public void setItem(int index, ItemStack item) {
         super.setItem(index, item);
         if (this.getHolder() == null) return;
-        EntityPlayer player = ((CraftPlayer) this.getHolder()).getHandle();
-        if (player.playerConnection == null) return;
+        ServerPlayerEntity player = ((CraftPlayer) this.getHolder()).getHandle();
+        if (player.connection == null) return;
         // PacketPlayOutSetSlot places the items differently than setItem()
         //
         // Between, and including, index 9 (the first index outside of the hotbar) and index 35 (the last index before
@@ -100,7 +100,7 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
         } else if (index > 35) {
             index = 8 - (index - 36);
         }
-        player.playerConnection.sendPacket(new PacketPlayOutSetSlot(player.defaultContainer.windowId, index, CraftItemStack.asNMSCopy(item)));
+        player.connection.sendPacket(new SSetSlotPacket(player.container.windowId, index, CraftItemStack.asNMSCopy(item)));
     }
 
     @Override
@@ -155,14 +155,14 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
 
     @Override
     public int getHeldItemSlot() {
-        return getInventory().itemInHandIndex;
+        return getInventory().currentItem;
     }
 
     @Override
     public void setHeldItemSlot(int slot) {
         Validate.isTrue(slot >= 0 && slot < PlayerInventory.getHotbarSize(), "Slot is not between 0 and 8 inclusive");
-        this.getInventory().itemInHandIndex = slot;
-        ((CraftPlayer) this.getHolder()).getHandle().playerConnection.sendPacket(new PacketPlayOutHeldItemSlot(slot));
+        this.getInventory().currentItem = slot;
+        ((CraftPlayer) this.getHolder()).getHandle().connection.sendPacket(new SHeldItemChangePacket(slot));
     }
 
     @Override
@@ -207,7 +207,7 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
 
     @Override
     public ItemStack[] getArmorContents() {
-        return asCraftMirror(getInventory().armor);
+        return asCraftMirror(getInventory().armorInventory);
     }
 
     private void setSlots(ItemStack[] items, int baseSlot, int length) {
@@ -227,22 +227,22 @@ public class CraftInventoryPlayer extends CraftInventory implements org.bukkit.i
 
     @Override
     public void setStorageContents(ItemStack[] items) throws IllegalArgumentException {
-        setSlots(items, 0, getInventory().items.size());
+        setSlots(items, 0, getInventory().mainInventory.size());
     }
 
     @Override
     public void setArmorContents(ItemStack[] items) {
-        setSlots(items, getInventory().items.size(), getInventory().armor.size());
+        setSlots(items, getInventory().mainInventory.size(), getInventory().armorInventory.size());
     }
 
     @Override
     public ItemStack[] getExtraContents() {
-        return asCraftMirror(getInventory().extraSlots);
+        return asCraftMirror(getInventory().offHandInventory);
     }
 
     @Override
     public void setExtraContents(ItemStack[] items) {
-        setSlots(items, getInventory().items.size() + getInventory().armor.size(), getInventory().extraSlots.size());
+        setSlots(items, getInventory().mainInventory.size() + getInventory().armorInventory.size(), getInventory().offHandInventory.size());
     }
 
     @Override
