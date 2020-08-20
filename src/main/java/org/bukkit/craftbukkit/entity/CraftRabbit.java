@@ -43,7 +43,7 @@ public class CraftRabbit extends CraftAnimals implements Rabbit {
             World world = ((CraftWorld) this.getWorld()).getHandle();
             entity.goalSelector = new GoalSelector(world.func_234924_Y_());
             entity.targetSelector = new GoalSelector(world.func_234924_Y_());
-            entity.initPathfinder();
+            entity.registerGoals();
             entity.initializePathFinderGoals();
         }
 

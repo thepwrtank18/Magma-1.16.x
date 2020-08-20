@@ -911,12 +911,12 @@ public abstract class CraftEntity implements org.bukkit.entity.Entity {
 
     @Override
     public int getPortalCooldown() {
-        return getHandle().timeUntilPortal;
+        return getHandle().field_242273_aw;
     }
 
     @Override
     public void setPortalCooldown(int cooldown) {
-        getHandle().timeUntilPortal = cooldown;
+        getHandle().field_242273_aw = cooldown;
     }
 
     @Override

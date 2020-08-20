@@ -1,6 +1,43 @@
 --- a/net/minecraft/server/dedicated/PropertyManager.java
 +++ b/net/minecraft/server/dedicated/PropertyManager.java
-@@ -39,7 +39,7 @@
+@@ -13,18 +13,33 @@
+ import java.util.function.Supplier;
+ import java.util.function.UnaryOperator;
+ import javax.annotation.Nullable;
++import joptsimple.OptionSet;
+ import net.minecraft.util.registry.DynamicRegistries;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
+ public abstract class PropertyManager<T extends PropertyManager<T>> {
+    private static final Logger field_164440_a = LogManager.getLogger();
+-   private final Properties field_73672_b;
++   public final Properties field_73672_b; // private->public CraftBukkit
+ 
+-   public PropertyManager(Properties p_i50717_1_) {
+-      this.field_73672_b = p_i50717_1_;
++   // CraftBukkit start
++   private OptionSet options = null;
++
++   public PropertyManager(Properties properties, final OptionSet options) {
++      this.field_73672_b = properties;
++
++      this.options = options;
+    }
+ 
++   private String getOverride(String name, String value) {
++      if ((this.options != null) && (this.options.has(name))) {
++         return String.valueOf(this.options.valueOf(name));
++      }
++
++      return value;
++   }
++   // CraftBukkit end
++
+    public static Properties func_218969_b(Path p_218969_0_) {
+       Properties properties = new Properties();
+ 
+@@ -39,7 +54,7 @@
  
     public void func_218970_c(Path p_218970_1_) {
        try (OutputStream outputstream = Files.newOutputStream(p_218970_1_)) {
@@ -9,3 +46,21 @@
        } catch (IOException ioexception) {
           field_164440_a.error("Failed to store properties to file: " + p_218970_1_);
        }
+@@ -155,7 +170,7 @@
+       return properties;
+    }
+ 
+-   protected abstract T func_241881_b(DynamicRegistries p_241881_1_, Properties p_241881_2_);
++   protected abstract T func_241881_b(DynamicRegistries p_241881_1_, Properties p_241881_2_, OptionSet optionset); // CraftBukkit
+ 
+    public class Property<V> implements Supplier<V> {
+       private final String field_219040_b;
+@@ -175,7 +190,7 @@
+       public T func_244381_a(DynamicRegistries p_244381_1_, V p_244381_2_) {
+          Properties properties = PropertyManager.this.func_218966_a();
+          properties.put(this.field_219040_b, this.field_219042_d.apply(p_244381_2_));
+-         return PropertyManager.this.func_241881_b(p_244381_1_, properties);
++         return PropertyManager.this.func_241881_b(p_244381_1_, properties, PropertyManager.this.options); // CraftBukkit
+       }
+    }
+ }

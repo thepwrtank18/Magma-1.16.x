@@ -25,6 +25,8 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.ChorusFlowerBlock;
 import net.minecraft.block.RedstoneDiodeBlock;
 import net.minecraft.entity.AreaEffectCloudEntity;
+import net.minecraft.entity.ILivingEntityData;
+import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.effect.LightningBoltEntity;
 import net.minecraft.entity.item.ArmorStandEntity;
 import net.minecraft.entity.item.BoatEntity;
@@ -56,11 +58,6 @@ import net.minecraft.entity.projectile.SnowballEntity;
 import net.minecraft.network.play.server.SPlaySoundEventPacket;
 import net.minecraft.network.play.server.SPlaySoundPacket;
 import net.minecraft.network.play.server.SUpdateTimePacket;
-import net.minecraft.server.EntityInsentient;
-import net.minecraft.server.EnumMobSpawn;
-import net.minecraft.server.Explosion;
-import net.minecraft.server.GroupDataEntity;
-import net.minecraft.server.SavedFile;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SortedArraySet;
@@ -72,6 +69,7 @@ import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.RuleKey;
 import net.minecraft.world.GameRules.RuleType;
@@ -88,6 +86,7 @@ import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.server.Ticket;
 import net.minecraft.world.server.TicketManager;
 import net.minecraft.world.server.TicketType;
+import net.minecraft.world.storage.FolderName;
 import org.apache.commons.lang.Validate;
 import org.bukkit.BlockChangeDelegate;
 import org.bukkit.Bukkit;
@@ -340,7 +339,8 @@ public class CraftWorld implements World {
 
     @Override
     public boolean isChunkLoaded(int x, int z) {
-        return world.getChunkProvider().isChunkLoaded(x, z);
+        net.minecraft.world.chunk.Chunk chunk = world.getChunkProvider().getChunk(x,z, false);
+        return chunk != null;
     }
 
     @Override
@@ -723,7 +723,7 @@ public class CraftWorld implements World {
             break;
         }
 
-        return gen.feature.func_241855_a(world, world.getChunkProvider().getChunkGenerator(), rand, pos, gen.feature);
+        return gen.feature.func_241855_a(world, world.getChunkProvider().getChunkGenerator(), rand, pos, gen.config);
     }
 
     @Override
@@ -821,7 +821,7 @@ public class CraftWorld implements World {
 
     @Override
     public boolean createExplosion(double x, double y, double z, float power, boolean setFire, boolean breakBlocks, Entity source) {
-        return !world.createExplosion(source == null ? null : ((CraftEntity) source).getHandle(), x, y, z, power, setFire, breakBlocks ? Explosion.Effect.BREAK : Explosion.Effect.NONE).wasCanceled;
+        return !world.createExplosion(source == null ? null : ((CraftEntity) source).getHandle(), x, y, z, power, setFire, breakBlocks ? Explosion.Mode.BREAK : Explosion.Mode.NONE).wasCanceled;
     }
 
     @Override
@@ -1082,7 +1082,7 @@ public class CraftWorld implements World {
         Validate.notNull(boundingBox, "Bounding box is null!");
 
         AxisAlignedBB bb = new AxisAlignedBB(boundingBox.getMinX(), boundingBox.getMinY(), boundingBox.getMinZ(), boundingBox.getMaxX(), boundingBox.getMaxY(), boundingBox.getMaxZ());
-        List<net.minecraft.entity.Entity> entityList = getHandle().getEntities((net.minecraft.server.Entity) null, bb, null);
+        List<net.minecraft.entity.Entity> entityList = getHandle().getEntitiesInAABBexcluding((net.minecraft.entity.Entity) null, bb, null);
         List<Entity> bukkitEntityList = new ArrayList<org.bukkit.entity.Entity>(entityList.size());
 
         for (net.minecraft.entity.Entity entity : entityList) {
@@ -1774,8 +1774,8 @@ public class CraftWorld implements World {
     public <T extends Entity> T addEntity(net.minecraft.entity.Entity entity, SpawnReason reason, Consumer<T> function) throws IllegalArgumentException {
         Preconditions.checkArgument(entity != null, "Cannot spawn null entity");
 
-        if (entity instanceof EntityInsentient) {
-            ((EntityInsentient) entity).prepare(getHandle(), getHandle().getDamageScaler(entity.getChunkCoordinates()), EnumMobSpawn.COMMAND, (GroupDataEntity) null, null);
+        if (entity instanceof MobEntity) {
+            ((MobEntity) entity).onInitialSpawn(getHandle(), getHandle().getDifficultyForLocation(entity.func_233580_cy_()), net.minecraft.entity.SpawnReason.COMMAND, (ILivingEntityData) null, null);
         }
 
         if (function != null) {
@@ -1861,7 +1861,7 @@ public class CraftWorld implements World {
 
     @Override
     public File getWorldFolder() {
-        return world.convertable.getWorldFolder(SavedFile.ROOT).toFile().getParentFile();
+        return world.convertable.func_237285_a_(FolderName.field_237253_i_).toFile().getParentFile();
     }
 
     @Override

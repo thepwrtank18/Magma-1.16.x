@@ -1,5 +1,14 @@
 --- a/net/minecraft/entity/monster/SlimeEntity.java
 +++ b/net/minecraft/entity/monster/SlimeEntity.java
+@@ -73,7 +73,7 @@
+       this.field_70180_af.func_187214_a(field_184711_bt, 1);
+    }
+ 
+-   protected void func_70799_a(int p_70799_1_, boolean p_70799_2_) {
++   public void func_70799_a(int p_70799_1_, boolean p_70799_2_) { // protected->public CraftBukkit
+       this.field_70180_af.func_187227_b(field_184711_bt, p_70799_1_);
+       this.func_226264_Z_();
+       this.func_213323_x_();
 @@ -127,6 +127,7 @@
        if (this.field_70122_E && !this.field_175452_bi) {
           int i = this.func_70809_q();
@@ -30,6 +39,15 @@
     }
  
     public void func_70108_f(Entity p_70108_1_) {
+@@ -257,7 +259,7 @@
+       return this.func_189101_db() ? SoundEvents.field_187900_fz : SoundEvents.field_187886_fs;
+    }
+ 
+-   protected ResourceLocation func_184647_J() {
++   public ResourceLocation func_184647_J() { // protected->public CraftBukkit
+       return this.func_70809_q() == 1 ? this.func_200600_R().func_220348_g() : LootTables.field_186419_a;
+    }
+ 
 @@ -324,6 +326,12 @@
        return super.func_213305_a(p_213305_1_).func_220313_a(0.255F * (float)this.func_70809_q());
     }

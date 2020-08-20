@@ -1,6 +1,25 @@
 --- a/net/minecraft/entity/merchant/villager/AbstractVillagerEntity.java
 +++ b/net/minecraft/entity/merchant/villager/AbstractVillagerEntity.java
-@@ -165,9 +165,9 @@
+@@ -36,8 +36,18 @@
+ import net.minecraft.world.server.ServerWorld;
+ import net.minecraftforge.api.distmarker.Dist;
+ import net.minecraftforge.api.distmarker.OnlyIn;
++import org.bukkit.craftbukkit.inventory.CraftMerchant;
+ 
+ public abstract class AbstractVillagerEntity extends AgeableEntity implements INPC, IMerchant {
++
++   // CraftBukkit start
++   private CraftMerchant craftMerchant;
++   @Override
++   public CraftMerchant getCraftMerchant() {
++      return (craftMerchant == null) ? craftMerchant = new CraftMerchant(this) : craftMerchant;
++   }
++   // CraftBukkit end
++
+    private static final DataParameter<Integer> field_222820_bA = EntityDataManager.func_187226_a(AbstractVillagerEntity.class, DataSerializers.field_187192_b);
+    @Nullable
+    private PlayerEntity field_213725_bA;
+@@ -165,9 +175,9 @@
     }
  
     @Nullable

@@ -1,6 +1,18 @@
 --- a/net/minecraft/entity/passive/AnimalEntity.java
 +++ b/net/minecraft/entity/passive/AnimalEntity.java
-@@ -121,7 +121,7 @@
+@@ -30,8 +30,9 @@
+ import net.minecraftforge.api.distmarker.OnlyIn;
+ 
+ public abstract class AnimalEntity extends AgeableEntity {
+-   private int field_70881_d;
+-   private UUID field_146084_br;
++   public int field_70881_d; // private->public CraftBukkit
++   public UUID field_146084_br; // private->public CraftBukkit
++   public ItemStack breedItem; // CraftBukkit - Add breedItem variable
+ 
+    protected AnimalEntity(EntityType<? extends AnimalEntity> p_i48568_1_, World p_i48568_2_) {
+       super(p_i48568_1_, p_i48568_2_);
+@@ -121,7 +122,7 @@
        ItemStack itemstack = p_230254_1_.func_184586_b(p_230254_2_);
        if (this.func_70877_b(itemstack)) {
           int i = this.func_70874_b();
@@ -9,7 +21,7 @@
              this.func_175505_a(p_230254_1_, itemstack);
              this.func_146082_f(p_230254_1_);
              return ActionResultType.SUCCESS;
-@@ -148,7 +148,7 @@
+@@ -148,7 +149,7 @@
  
     }
  
@@ -18,7 +30,7 @@
        return this.field_70881_d <= 0;
     }
  
-@@ -199,6 +199,17 @@
+@@ -199,6 +200,17 @@
  
     public void func_234177_a_(ServerWorld p_234177_1_, AnimalEntity p_234177_2_) {
        AgeableEntity ageableentity = this.func_241840_a(p_234177_1_, p_234177_2_);

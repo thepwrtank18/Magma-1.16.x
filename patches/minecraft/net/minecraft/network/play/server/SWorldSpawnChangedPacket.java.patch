@@ -1,0 +1,23 @@
+--- a/net/minecraft/network/play/server/SWorldSpawnChangedPacket.java
++++ b/net/minecraft/network/play/server/SWorldSpawnChangedPacket.java
+@@ -7,6 +7,7 @@
+ import net.minecraft.util.math.BlockPos;
+ import net.minecraftforge.api.distmarker.Dist;
+ import net.minecraftforge.api.distmarker.OnlyIn;
++import org.apache.commons.lang.NotImplementedException;
+ 
+ public class SWorldSpawnChangedPacket implements IPacket<IClientPlayNetHandler> {
+    private BlockPos field_240831_a_;
+@@ -20,7 +21,11 @@
+       this.field_244312_b = p_i242086_2_;
+    }
+ 
+-   public void func_148837_a(PacketBuffer p_148837_1_) throws IOException {
++   public SWorldSpawnChangedPacket(BlockPos p_i232581_1_) {
++      throw new NotImplementedException("Magma Todo");
++   }
++
++    public void func_148837_a(PacketBuffer p_148837_1_) throws IOException {
+       this.field_240831_a_ = p_148837_1_.func_179259_c();
+    }
+ 

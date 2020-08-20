@@ -1,0 +1,28 @@
+--- a/net/minecraft/tileentity/BeehiveTileEntity.java
++++ b/net/minecraft/tileentity/BeehiveTileEntity.java
+@@ -22,11 +22,13 @@
+ import net.minecraft.util.SoundCategory;
+ import net.minecraft.util.SoundEvents;
+ import net.minecraft.util.math.BlockPos;
++import org.apache.commons.lang.NotImplementedException;
+ 
+ public class BeehiveTileEntity extends TileEntity implements ITickableTileEntity {
+    private final List<BeehiveTileEntity.Bee> field_226958_a_ = Lists.newArrayList();
+    @Nullable
+-   private BlockPos field_226959_b_ = null;
++   public BlockPos field_226959_b_ = null; // private->public CraftBukkit
++   public int maxBees = 3; // CraftBukkit
+ 
+    public BeehiveTileEntity() {
+       super(TileEntityType.field_226985_G_);
+@@ -288,6 +290,10 @@
+       return listnbt;
+    }
+ 
++   public Entity[] releaseBees(BlockState handle, State beeReleased, boolean b) {
++      throw new NotImplementedException("Magma Todo");
++   }
++
+    static class Bee {
+       private final CompoundNBT field_226977_a_;
+       private int field_226978_b_;

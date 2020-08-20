@@ -19,6 +19,15 @@
     private static final Logger field_199558_c = LogManager.getLogger();
     public static final ItemStack field_190927_a = new ItemStack((Item)null);
     public static final DecimalFormat field_111284_a = Util.func_200696_a(new DecimalFormat("#.##"), (p_234699_0_) -> {
+@@ -91,7 +94,7 @@
+    private int field_77994_a;
+    private int field_77992_b;
+    @Deprecated
+-   private final Item field_151002_e;
++   private Item field_151002_e;
+    private CompoundNBT field_77990_d;
+    private boolean field_190928_g;
+    private Entity field_234693_k_;
 @@ -109,7 +112,10 @@
        p_i231596_3_.ifPresent(this::func_77982_d);
     }
@@ -31,15 +40,22 @@
        this.field_151002_e = p_i48204_1_ == null ? null : p_i48204_1_.func_199767_j();
        this.field_77994_a = p_i48204_2_;
        if (this.field_151002_e != null && this.field_151002_e.func_77645_m()) {
-@@ -117,6 +123,7 @@
+@@ -117,14 +123,23 @@
        }
  
        this.func_190923_F();
 +      this.forgeInit();
     }
  
++   // CraftBukkit start - Called to run this stack through the data converter to handle older storage methods and serialized items
++   public void convertStack(int version) {
++      // TODO: 19/08/2020 Magma Comeback
++   }
++   // CraftBukkit end
++
     private void func_190923_F() {
-@@ -125,6 +132,8 @@
+       this.field_190928_g = false;
+       this.field_190928_g = this.func_190926_b();
     }
  
     private ItemStack(CompoundNBT p_i47263_1_) {
@@ -48,7 +64,7 @@
        this.field_151002_e = Registry.field_212630_s.func_82594_a(new ResourceLocation(p_i47263_1_.func_74779_i("id")));
        this.field_77994_a = p_i47263_1_.func_74771_c("Count");
        if (p_i47263_1_.func_150297_b("tag", 10)) {
-@@ -137,6 +146,7 @@
+@@ -137,6 +152,7 @@
        }
  
        this.func_190923_F();
@@ -56,7 +72,7 @@
     }
  
     public static ItemStack func_199557_a(CompoundNBT p_199557_0_) {
-@@ -151,7 +161,7 @@
+@@ -151,7 +167,7 @@
     public boolean func_190926_b() {
        if (this == field_190927_a) {
           return true;
@@ -65,7 +81,7 @@
           return this.field_77994_a <= 0;
        } else {
           return true;
-@@ -167,10 +177,19 @@
+@@ -167,10 +183,19 @@
     }
  
     public Item func_77973_b() {
@@ -86,7 +102,7 @@
        PlayerEntity playerentity = p_196084_1_.func_195999_j();
        BlockPos blockpos = p_196084_1_.func_195995_a();
        CachedBlockInfo cachedblockinfo = new CachedBlockInfo(p_196084_1_.func_195991_k(), blockpos, false);
-@@ -178,7 +197,7 @@
+@@ -178,7 +203,7 @@
           return ActionResultType.PASS;
        } else {
           Item item = this.func_77973_b();
@@ -95,7 +111,7 @@
           if (playerentity != null && actionresulttype.func_226246_a_()) {
              playerentity.func_71029_a(Stats.field_75929_E.func_199076_b(item));
           }
-@@ -206,12 +225,15 @@
+@@ -206,12 +231,15 @@
        if (this.field_77990_d != null) {
           p_77955_1_.func_218657_a("tag", this.field_77990_d.func_74737_b());
        }
@@ -113,7 +129,7 @@
     }
  
     public boolean func_77985_e() {
-@@ -219,7 +241,7 @@
+@@ -219,7 +247,7 @@
     }
  
     public boolean func_77984_f() {
@@ -122,7 +138,7 @@
           CompoundNBT compoundnbt = this.func_77978_p();
           return compoundnbt == null || !compoundnbt.func_74767_n("Unbreakable");
        } else {
-@@ -228,19 +250,19 @@
+@@ -228,19 +256,19 @@
     }
  
     public boolean func_77951_h() {
@@ -146,7 +162,7 @@
     }
  
     public boolean func_96631_a(int p_96631_1_, Random p_96631_2_, @Nullable ServerPlayerEntity p_96631_3_) {
-@@ -276,6 +298,7 @@
+@@ -276,6 +304,7 @@
     public <T extends LivingEntity> void func_222118_a(int p_222118_1_, T p_222118_2_, Consumer<T> p_222118_3_) {
        if (!p_222118_2_.field_70170_p.field_72995_K && (!(p_222118_2_ instanceof PlayerEntity) || !((PlayerEntity)p_222118_2_).field_71075_bZ.field_75098_d)) {
           if (this.func_77984_f()) {
@@ -154,7 +170,7 @@
              if (this.func_96631_a(p_222118_1_, p_222118_2_.func_70681_au(), p_222118_2_ instanceof ServerPlayerEntity ? (ServerPlayerEntity)p_222118_2_ : null)) {
                 p_222118_3_.accept(p_222118_2_);
                 Item item = this.func_77973_b();
-@@ -308,7 +331,7 @@
+@@ -308,7 +337,7 @@
     }
  
     public boolean func_150998_b(BlockState p_150998_1_) {
@@ -163,7 +179,7 @@
     }
  
     public ActionResultType func_111282_a_(PlayerEntity p_111282_1_, LivingEntity p_111282_2_, Hand p_111282_3_) {
-@@ -319,7 +342,7 @@
+@@ -319,7 +348,7 @@
        if (this.func_190926_b()) {
           return field_190927_a;
        } else {
@@ -172,7 +188,7 @@
           itemstack.func_190915_d(this.func_190921_D());
           if (this.field_77990_d != null) {
              itemstack.field_77990_d = this.field_77990_d.func_74737_b();
-@@ -336,7 +359,7 @@
+@@ -336,7 +365,7 @@
           if (p_77970_0_.field_77990_d == null && p_77970_1_.field_77990_d != null) {
              return false;
           } else {
@@ -181,7 +197,7 @@
           }
        } else {
           return false;
-@@ -359,7 +382,7 @@
+@@ -359,7 +388,7 @@
        } else if (this.field_77990_d == null && p_77959_1_.field_77990_d != null) {
           return false;
        } else {
@@ -190,7 +206,7 @@
        }
     }
  
-@@ -673,6 +696,7 @@
+@@ -673,6 +702,7 @@
           }
        }
  
@@ -198,7 +214,7 @@
        return list;
     }
  
-@@ -817,7 +841,7 @@
+@@ -817,7 +847,7 @@
              }
           }
        } else {
@@ -207,7 +223,21 @@
        }
  
        return multimap;
-@@ -954,6 +978,35 @@
+@@ -839,6 +869,13 @@
+       listnbt.add(compoundnbt);
+    }
+ 
++   // CraftBukkit start
++   @Deprecated
++   public void setItem(Item item) {
++      this.field_151002_e = item;
++   }
++   // CraftBukkit end
++
+    public ITextComponent func_151000_E() {
+       IFormattableTextComponent iformattabletextcomponent = (new StringTextComponent("")).func_230529_a_(this.func_200301_q());
+       if (this.func_82837_s()) {
+@@ -954,6 +991,35 @@
        return this.func_77973_b().func_219971_r();
     }
  

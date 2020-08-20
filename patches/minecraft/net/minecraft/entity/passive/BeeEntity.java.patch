@@ -1,5 +1,22 @@
 --- a/net/minecraft/entity/passive/BeeEntity.java
 +++ b/net/minecraft/entity/passive/BeeEntity.java
+@@ -94,14 +94,14 @@
+    private float field_226361_bA_;
+    private int field_226362_bB_;
+    private int field_226363_bC_;
+-   private int field_226364_bD_;
++   public int field_226364_bD_; // private->public CraftBukkit
+    private int field_226365_bE_;
+    private int field_226366_bF_ = 0;
+    private int field_226367_bG_ = 0;
+    @Nullable
+    private BlockPos field_226368_bH_ = null;
+    @Nullable
+-   private BlockPos field_226369_bI_ = null;
++   public BlockPos field_226369_bI_ = null; // private->public CraftBukkit
+    private BeeEntity.PollinateGoal field_226370_bJ_;
+    private BeeEntity.FindBeehiveGoal field_226371_bK_;
+    private BeeEntity.FindFlowerGoal field_226372_bL_;
 @@ -425,7 +425,7 @@
           return false;
        } else {
@@ -7,5 +24,23 @@
 -         return tileentity != null && tileentity.func_200662_C() == TileEntityType.field_226985_G_;
 +         return tileentity instanceof BeehiveTileEntity;
        }
+    }
+ 
+@@ -433,7 +433,7 @@
+       return this.func_226456_v_(8);
+    }
+ 
+-   private void func_226447_r_(boolean p_226447_1_) {
++   public void func_226447_r_(boolean p_226447_1_) { // private->public CraftBukkit
+       if (p_226447_1_) {
+          this.func_226426_eu_();
+       }
+@@ -445,7 +445,7 @@
+       return this.func_226456_v_(4);
+    }
+ 
+-   private void func_226449_s_(boolean p_226449_1_) {
++   public void func_226449_s_(boolean p_226449_1_) { // private->public CraftBukkit
+       this.func_226404_d_(4, p_226449_1_);
     }
  

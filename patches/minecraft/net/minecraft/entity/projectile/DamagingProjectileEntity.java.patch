@@ -1,6 +1,21 @@
 --- a/net/minecraft/entity/projectile/DamagingProjectileEntity.java
 +++ b/net/minecraft/entity/projectile/DamagingProjectileEntity.java
-@@ -68,7 +68,7 @@
+@@ -16,11 +16,14 @@
+ import net.minecraft.world.World;
+ import net.minecraftforge.api.distmarker.Dist;
+ import net.minecraftforge.api.distmarker.OnlyIn;
++import org.apache.commons.lang.NotImplementedException;
+ 
+ public abstract class DamagingProjectileEntity extends ProjectileEntity {
+    public double field_70232_b;
+    public double field_70233_c;
+    public double field_70230_d;
++   public float bukkitYield = 1; // CraftBukkit
++   public boolean isIncendiary = true; // CraftBukkit
+ 
+    protected DamagingProjectileEntity(EntityType<? extends DamagingProjectileEntity> p_i50173_1_, World p_i50173_2_) {
+       super(p_i50173_1_, p_i50173_2_);
+@@ -68,7 +71,7 @@
           }
  
           RayTraceResult raytraceresult = ProjectileHelper.func_234618_a_(this, this::func_230298_a_);
@@ -9,3 +24,12 @@
              this.func_70227_a(raytraceresult);
           }
  
+@@ -167,4 +170,8 @@
+       int i = entity == null ? 0 : entity.func_145782_y();
+       return new SSpawnObjectPacket(this.func_145782_y(), this.func_110124_au(), this.func_226277_ct_(), this.func_226278_cu_(), this.func_226281_cx_(), this.field_70125_A, this.field_70177_z, this.func_200600_R(), i, new Vector3d(this.field_70232_b, this.field_70233_c, this.field_70230_d));
+    }
++
++    public void setDirection(double x, double y, double z) {
++      throw new NotImplementedException("Magma Todo");
++    }
+ }

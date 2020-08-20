@@ -1,5 +1,23 @@
 --- a/net/minecraft/server/management/PlayerList.java
 +++ b/net/minecraft/server/management/PlayerList.java
+@@ -94,7 +94,7 @@
+    private static final Logger field_148546_d = LogManager.getLogger();
+    private static final SimpleDateFormat field_72403_e = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+    private final MinecraftServer field_72400_f;
+-   private final List<ServerPlayerEntity> field_72404_b = Lists.newArrayList();
++   public final List<ServerPlayerEntity> field_72404_b = Lists.newArrayList(); // private->public CraftBukkit
+    private final Map<UUID, ServerPlayerEntity> field_177454_f = Maps.newHashMap();
+    private final BanList field_72401_g = new BanList(field_152613_a);
+    private final IPBanList field_72413_h = new IPBanList(field_152614_b);
+@@ -102,7 +102,7 @@
+    private final WhiteList field_72411_j = new WhiteList(field_152616_d);
+    private final Map<UUID, ServerStatisticsManager> field_148547_k = Maps.newHashMap();
+    private final Map<UUID, PlayerAdvancements> field_192055_p = Maps.newHashMap();
+-   private final PlayerData field_72412_k;
++   public final PlayerData field_72412_k; // private->public CraftBukkit
+    private boolean field_72409_l;
+    private final DynamicRegistries.Impl field_232639_s_;
+    protected final int field_72405_c;
 @@ -110,6 +110,7 @@
     private GameType field_72410_m;
     private boolean field_72407_n;
@@ -25,14 +43,18 @@
        this.field_177454_f.put(p_72355_2_.func_110124_au(), p_72355_2_);
        this.func_148540_a(new SPlayerListItemPacket(SPlayerListItemPacket.Action.ADD_PLAYER, p_72355_2_));
  
-@@ -225,6 +227,7 @@
+@@ -225,9 +227,10 @@
        }
  
        p_72355_2_.func_71116_b();
 +      net.minecraftforge.fml.hooks.BasicEventHooks.firePlayerLoggedIn( p_72355_2_ );
     }
  
-    protected void func_96456_a(ServerScoreboard p_96456_1_, ServerPlayerEntity p_96456_2_) {
+-   protected void func_96456_a(ServerScoreboard p_96456_1_, ServerPlayerEntity p_96456_2_) {
++   public void func_96456_a(ServerScoreboard p_96456_1_, ServerPlayerEntity p_96456_2_) { // protected->public CraftBukkit
+       Set<ScoreObjective> set = Sets.newHashSet();
+ 
+       for(ScorePlayerTeam scoreplayerteam : p_96456_1_.func_96525_g()) {
 @@ -285,6 +288,7 @@
           compoundnbt1 = compoundnbt;
           p_72380_1_.func_70020_e(compoundnbt);
@@ -98,7 +120,20 @@
        if (flag2) {
           serverplayerentity.field_71135_a.func_147359_a(new SPlaySoundEffectPacket(SoundEvents.field_232818_ms_, SoundCategory.BLOCKS, (double)blockpos.func_177958_n(), (double)blockpos.func_177956_o(), (double)blockpos.func_177952_p(), 1.0F, 1.0F));
        }
-@@ -786,7 +794,7 @@
+@@ -759,6 +767,12 @@
+       return serverstatisticsmanager;
+    }
+ 
++   // Craftbukkit
++   public ServerStatisticsManager getStatisticManager(UUID uuid, String displayName) {
++      // TODO: 18/08/2020 Magma Comeback
++      return null;
++   }
++
+    public PlayerAdvancements func_192054_h(ServerPlayerEntity p_192054_1_) {
+       UUID uuid = p_192054_1_.func_110124_au();
+       PlayerAdvancements playeradvancements = this.field_192055_p.get(uuid);
+@@ -786,7 +800,7 @@
     }
  
     public List<ServerPlayerEntity> func_181057_v() {
@@ -107,7 +142,7 @@
     }
  
     @Nullable
-@@ -816,4 +824,12 @@
+@@ -816,4 +830,12 @@
     public boolean func_206257_x() {
        return this.field_72407_n;
     }

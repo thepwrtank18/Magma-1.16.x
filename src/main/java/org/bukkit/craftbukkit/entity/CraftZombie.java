@@ -83,12 +83,12 @@ public class CraftZombie extends CraftMonster implements Zombie {
 
     @Override
     public int getAge() {
-        return getHandle().isBaby() ? -1 : 0;
+        return getHandle().isChild() ? -1 : 0;
     }
 
     @Override
     public void setAge(int i) {
-        getHandle().setBaby(i < 0);
+        getHandle().setChild(i < 0);
     }
 
     @Override
@@ -102,17 +102,17 @@ public class CraftZombie extends CraftMonster implements Zombie {
 
     @Override
     public void setBaby() {
-        getHandle().setBaby(true);
+        getHandle().setChild(true);
     }
 
     @Override
     public void setAdult() {
-        getHandle().setBaby(false);
+        getHandle().setChild(false);
     }
 
     @Override
     public boolean isAdult() {
-        return !getHandle().isBaby();
+        return !getHandle().isChild();
     }
 
     @Override

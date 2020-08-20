@@ -1,6 +1,17 @@
 --- a/net/minecraft/network/play/ServerPlayNetHandler.java
 +++ b/net/minecraft/network/play/ServerPlayNetHandler.java
-@@ -348,9 +348,11 @@
+@@ -141,8 +141,10 @@
+ import net.minecraft.world.IWorldReader;
+ import net.minecraft.world.World;
+ import net.minecraft.world.server.ServerWorld;
++import org.apache.commons.lang.NotImplementedException;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
++import org.bukkit.Location;
+ 
+ public class ServerPlayNetHandler implements IServerPlayNetHandler {
+    private static final Logger field_147370_c = LogManager.getLogger();
+@@ -348,9 +350,11 @@
              }
  
              entity.func_70080_a(d3, d4, d5, f, f1);
@@ -12,7 +23,7 @@
                 this.field_147371_a.func_179290_a(new SMoveVehiclePacket(entity));
                 return;
              }
-@@ -367,7 +369,7 @@
+@@ -367,7 +371,7 @@
     }
  
     private boolean func_241162_a_(Entity p_241162_1_) {
@@ -21,7 +32,7 @@
     }
  
     public void func_184339_a(CConfirmTeleportPacket p_184339_1_) {
-@@ -881,7 +883,9 @@
+@@ -881,7 +885,9 @@
        Direction direction = blockraytraceresult.func_216354_b();
        this.field_147369_b.func_143004_u();
        if (blockpos.func_177956_o() < this.field_147367_d.func_71207_Z()) {
@@ -32,7 +43,7 @@
              ActionResultType actionresulttype = this.field_147369_b.field_71134_c.func_219441_a(this.field_147369_b, serverworld, itemstack, hand, blockraytraceresult);
              if (direction == Direction.UP && !actionresulttype.func_226246_a_() && blockpos.func_177956_o() >= this.field_147367_d.func_71207_Z() - 1 && func_241166_a_(this.field_147369_b, itemstack)) {
                 ITextComponent itextcomponent = (new TranslationTextComponent("build.tooHigh", this.field_147367_d.func_71207_Z())).func_240699_a_(TextFormatting.RED);
-@@ -1014,7 +1018,9 @@
+@@ -1014,7 +1020,9 @@
           if (s.startsWith("/")) {
              this.func_147361_d(s);
           } else {
@@ -43,7 +54,7 @@
              this.field_147367_d.func_184103_al().func_232641_a_(itextcomponent, ChatType.CHAT, this.field_147369_b.func_110124_au());
           }
  
-@@ -1104,6 +1110,7 @@
+@@ -1104,6 +1112,7 @@
              if (p_147340_1_.func_149565_c() == CUseEntityPacket.Action.INTERACT) {
                 optional = Optional.of(this.field_147369_b.func_190775_a(entity, hand));
              } else if (p_147340_1_.func_149565_c() == CUseEntityPacket.Action.INTERACT_AT) {
@@ -51,7 +62,7 @@
                 optional = Optional.of(entity.func_184199_a(this.field_147369_b, p_147340_1_.func_179712_b(), hand));
              } else if (p_147340_1_.func_149565_c() == CUseEntityPacket.Action.ATTACK) {
                 if (entity instanceof ItemEntity || entity instanceof ExperienceOrbEntity || entity instanceof AbstractArrowEntity || entity == this.field_147369_b) {
-@@ -1315,6 +1322,8 @@
+@@ -1315,6 +1324,8 @@
     }
  
     public void func_147349_a(CCustomPayloadPacket p_147349_1_) {
@@ -60,3 +71,24 @@
     }
  
     public void func_217263_a(CSetDifficultyPacket p_217263_1_) {
+@@ -1330,4 +1341,20 @@
+          this.field_147367_d.func_213209_d(p_217261_1_.func_218776_b());
+       }
+    }
++
++    public void disconnect(String s) {
++      throw new NotImplementedException("Magma Todo");
++    }
++
++   public void chat(String msg, boolean b) {
++      throw new NotImplementedException("Magma Todo");
++   }
++
++   public void teleport(Location to) {
++      throw new NotImplementedException("Magma Todo");
++   }
++
++   public boolean isDisconnected() {
++      throw new NotImplementedException("Magma Todo");
++   }
+ }

@@ -30,6 +30,7 @@ import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.Heightmap.Type;
 import net.minecraft.world.lighting.WorldLightManager;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.storage.IWorldInfo;
 import org.jetbrains.annotations.Nullable;
 
@@ -80,6 +81,11 @@ public class DummyGeneratorAccess implements IWorld {
     @Override
     public void playEvent(@Nullable PlayerEntity player, int type, BlockPos pos, int data) {
         throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public ServerWorld getMinecraftWorld() {
+        return null;
     }
 
     @Override

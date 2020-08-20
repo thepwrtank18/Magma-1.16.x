@@ -34,16 +34,16 @@ public class CraftDragonBattle implements DragonBattle {
             return null;
         }
 
-        return new Location(handle.world.getWorld(), handle.exitPortalLocation.getX(), handle.exitPortalLocation.getY(), handle.exitPortalLocation.getZ());
+        return new Location(handle.world.getWorldCB(), handle.exitPortalLocation.getX(), handle.exitPortalLocation.getY(), handle.exitPortalLocation.getZ());
     }
 
     @Override
     public boolean generateEndPortal(boolean withPortals) {
-        if (handle.exitPortalLocation != null || handle.getExitPortalShape() != null) {
+        if (handle.exitPortalLocation != null || handle.findExitPortal() != null) {
             return false;
         }
 
-        this.handle.generateExitPortal(withPortals);
+        this.handle.generatePortal(withPortals);
         return true;
     }
 

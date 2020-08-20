@@ -8,7 +8,7 @@ import org.bukkit.block.Furnace;
 import org.bukkit.craftbukkit.inventory.CraftInventoryFurnace;
 import org.bukkit.inventory.FurnaceInventory;
 
-public abstract class CraftFurnace<T extends AbstractFurnaceTileEntity> extends CraftContainer<T> implements Furnace {
+public class CraftFurnace<T extends AbstractFurnaceTileEntity> extends CraftContainer<T> implements Furnace {
 
     public CraftFurnace(Block block, Class<T> tileEntityClass) {
         super(block, tileEntityClass);

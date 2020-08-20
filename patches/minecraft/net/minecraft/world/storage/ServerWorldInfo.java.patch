@@ -1,0 +1,16 @@
+--- a/net/minecraft/world/storage/ServerWorldInfo.java
++++ b/net/minecraft/world/storage/ServerWorldInfo.java
+@@ -449,4 +449,13 @@
+    public WorldSettings func_230408_H_() {
+       return this.field_237342_b_.func_234959_h_();
+    }
++
++   // CraftBukkit start - Check if the name stored in NBT is the correct one
++   public void checkName(String name) {
++      if (!this.field_237342_b_.field_234943_a_.equals(name)) {
++         this.field_237342_b_.field_234943_a_ = name;
++      }
++   }
++   // CraftBukkit end
++
+ }

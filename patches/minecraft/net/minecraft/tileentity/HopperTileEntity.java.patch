@@ -1,6 +1,64 @@
 --- a/net/minecraft/tileentity/HopperTileEntity.java
 +++ b/net/minecraft/tileentity/HopperTileEntity.java
-@@ -133,6 +133,7 @@
+@@ -31,6 +31,10 @@
+ import net.minecraft.util.text.ITextComponent;
+ import net.minecraft.util.text.TranslationTextComponent;
+ import net.minecraft.world.World;
++import org.bukkit.Location;
++import org.bukkit.craftbukkit.entity.CraftHumanEntity;
++import org.bukkit.entity.HumanEntity;
++import org.bukkit.inventory.InventoryHolder;
+ 
+ public class HopperTileEntity extends LockableLootTileEntity implements IHopper, ITickableTileEntity {
+    private NonNullList<ItemStack> field_145900_a = NonNullList.func_191197_a(5, ItemStack.field_190927_a);
+@@ -79,6 +83,46 @@
+ 
+    }
+ 
++   @Override
++   public int func_70297_j_() {
++      return 0;
++   }
++
++   @Override
++   public List<ItemStack> getContents() {
++      return null;
++   }
++
++   @Override
++   public void onOpen(CraftHumanEntity who) {
++
++   }
++
++   @Override
++   public void onClose(CraftHumanEntity who) {
++
++   }
++
++   @Override
++   public List<HumanEntity> getViewers() {
++      return null;
++   }
++
++   @Override
++   public InventoryHolder getOwner() {
++      return null;
++   }
++
++   @Override
++   public void setMaxStackSize(int size) {
++
++   }
++
++   @Override
++   public Location getLocation() {
++      return null;
++   }
++
+    protected ITextComponent func_213907_g() {
+       return new TranslationTextComponent("container.hopper");
+    }
+@@ -133,6 +177,7 @@
     }
  
     private boolean func_145883_k() {
@@ -8,7 +66,7 @@
        IInventory iinventory = this.func_145895_l();
        if (iinventory == null) {
           return false;
-@@ -177,6 +178,8 @@
+@@ -177,6 +222,8 @@
     }
  
     public static boolean func_145891_a(IHopper p_145891_0_) {
@@ -17,7 +75,7 @@
        IInventory iinventory = func_145884_b(p_145891_0_);
        if (iinventory != null) {
           Direction direction = Direction.DOWN;
-@@ -325,7 +328,7 @@
+@@ -325,7 +372,7 @@
        Block block = blockstate.func_177230_c();
        if (block instanceof ISidedInventoryProvider) {
           iinventory = ((ISidedInventoryProvider)block).func_219966_a(blockstate, p_145893_0_, blockpos);
@@ -26,7 +84,7 @@
           TileEntity tileentity = p_145893_0_.func_175625_s(blockpos);
           if (tileentity instanceof IInventory) {
              iinventory = (IInventory)tileentity;
-@@ -404,4 +407,13 @@
+@@ -404,4 +451,13 @@
     protected Container func_213906_a(int p_213906_1_, PlayerInventory p_213906_2_) {
        return new HopperContainer(p_213906_1_, p_213906_2_, this);
     }

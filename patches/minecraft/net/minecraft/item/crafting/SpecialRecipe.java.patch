@@ -1,0 +1,24 @@
+--- a/net/minecraft/item/crafting/SpecialRecipe.java
++++ b/net/minecraft/item/crafting/SpecialRecipe.java
+@@ -2,6 +2,7 @@
+ 
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.ResourceLocation;
++import org.bukkit.inventory.Recipe;
+ 
+ public abstract class SpecialRecipe implements ICraftingRecipe {
+    private final ResourceLocation field_199563_a;
+@@ -14,7 +15,12 @@
+       return this.field_199563_a;
+    }
+ 
+-   public boolean func_192399_d() {
++    @Override
++    public Recipe toBukkitRecipe() {
++        return null;
++    }
++
++    public boolean func_192399_d() {
+       return true;
+    }
+ 

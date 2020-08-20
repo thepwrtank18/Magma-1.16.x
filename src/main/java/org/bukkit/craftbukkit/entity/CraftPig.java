@@ -2,7 +2,6 @@ package org.bukkit.craftbukkit.entity;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.entity.passive.PigEntity;
-import net.minecraft.server.EntityPig;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
@@ -16,41 +15,41 @@ public class CraftPig extends CraftAnimals implements Pig {
 
     @Override
     public boolean hasSaddle() {
-        return getHandle().hasSaddle();
+        return getHandle().isHorseSaddled();
     }
 
     @Override
     public void setSaddle(boolean saddled) {
-        getHandle().saddleStorage.setSaddle(saddled);
+        getHandle().field_234214_bx_.func_233619_a_(saddled);
     }
 
     @Override
     public int getBoostTicks() {
-        return getHandle().saddleStorage.boosting ? getHandle().saddleStorage.boostTicks : 0;
+        return getHandle().field_234214_bx_.field_233610_a_ ? getHandle().field_234214_bx_.field_233612_c_ : 0;
     }
 
     @Override
     public void setBoostTicks(int ticks) {
         Preconditions.checkArgument(ticks >= 0, "ticks must be >= 0");
 
-        getHandle().saddleStorage.setBoostTicks(ticks);
+        getHandle().field_234214_bx_.setBoostTicks(ticks);
     }
 
     @Override
     public int getCurrentBoostTicks() {
-        return getHandle().saddleStorage.boosting ? getHandle().saddleStorage.currentBoostTicks : 0;
+        return getHandle().field_234214_bx_.field_233610_a_ ? getHandle().field_234214_bx_.field_233611_b_ : 0;
     }
 
     @Override
     public void setCurrentBoostTicks(int ticks) {
-        if (!getHandle().saddleStorage.boosting) {
+        if (!getHandle().field_234214_bx_.field_233610_a_) {
             return;
         }
 
-        int max = getHandle().saddleStorage.boostTicks;
+        int max = getHandle().field_234214_bx_.field_233612_c_;
         Preconditions.checkArgument(ticks >= 0 && ticks <= max, "boost ticks must not exceed 0 or %d (inclusive)", max);
 
-        this.getHandle().saddleStorage.currentBoostTicks = ticks;
+        this.getHandle().field_234214_bx_.field_233611_b_ = ticks;
     }
 
     @Override

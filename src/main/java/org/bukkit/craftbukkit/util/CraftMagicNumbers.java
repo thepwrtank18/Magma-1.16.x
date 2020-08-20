@@ -23,10 +23,12 @@ import net.minecraft.advancements.AdvancementManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.item.Item;
+import net.minecraft.loot.ConditionArrayParser;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTDynamicOps;
+import net.minecraft.nbt.StringNBT;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
@@ -34,6 +36,7 @@ import net.minecraft.util.SharedConstants;
 import net.minecraft.util.datafix.DataFixesManager;
 import net.minecraft.util.datafix.TypeReferences;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.storage.FolderName;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -176,11 +179,11 @@ public final class CraftMagicNumbers implements UnsafeValues {
             return Material.getMaterial(material);
         }
 
-        Dynamic<CompoundNBT> name = new Dynamic<>(NBTDynamicOps.INSTANCE, NBTTagString.a("minecraft:" + material.toLowerCase(Locale.ROOT)));
-        Dynamic<CompoundNBT> converted = DataConverterRegistry.a().update(DataConverterTypes.ITEM_NAME, name, version, this.getDataVersion());
+        Dynamic<INBT> name = new Dynamic<>(NBTDynamicOps.INSTANCE, StringNBT.valueOf("minecraft:" + material.toLowerCase(Locale.ROOT)));
+        Dynamic<INBT> converted = DataFixesManager.getDataFixer().update(TypeReferences.ITEM_NAME, name, version, this.getDataVersion());
 
         if (name.equals(converted)) {
-            converted = DataConverterRegistry.a().update(DataConverterTypes.BLOCK_NAME, name, version, this.getDataVersion());
+            converted = DataFixesManager.getDataFixer().update(TypeReferences.BLOCK_NAME, name, version, this.getDataVersion());
         }
 
         return Material.matchMaterial(converted.asString(""));
@@ -226,7 +229,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
     }
 
     private static File getBukkitDataPackFolder() {
-        return new File(MinecraftServer.getServer().a(SavedFile.DATAPACKS).toFile(), "bukkit");
+        return new File(MinecraftServer.getServer().func_240776_a_(FolderName.field_237251_g_).toFile(), "bukkit");
     }
 
     @Override
@@ -234,13 +237,13 @@ public final class CraftMagicNumbers implements UnsafeValues {
         if (Bukkit.getAdvancement(key) != null) {
             throw new IllegalArgumentException("Advancement " + key + " already exists.");
         }
-        MinecraftKey minecraftkey = CraftNamespacedKey.toMinecraft(key);
+        ResourceLocation minecraftkey = CraftNamespacedKey.toMinecraft(key);
 
-        JsonElement jsonelement = AdvancementDataWorld.DESERIALIZER.fromJson(advancement, JsonElement.class);
-        JsonObject jsonobject = ChatDeserializer.m(jsonelement, "advancement");
-        net.minecraft.server.Advancement.SerializedAdvancement nms = net.minecraft.server.Advancement.SerializedAdvancement.a(jsonobject, new LootDeserializationContext(minecraftkey, MinecraftServer.getServer().getLootPredicateManager()));
+        JsonElement jsonelement = AdvancementManager.GSON.fromJson(advancement, JsonElement.class);
+        JsonObject jsonobject = JSONUtils.getJsonObject(jsonelement, "advancement");
+        net.minecraft.advancements.Advancement.Builder nms = net.minecraft.advancements.Advancement.Builder.func_241043_a_(jsonobject, new ConditionArrayParser(minecraftkey, MinecraftServer.getServer().func_229736_aP_()));
         if (nms != null) {
-            MinecraftServer.getServer().getAdvancementData().REGISTRY.a(Maps.newHashMap(Collections.singletonMap(minecraftkey, nms)));
+            MinecraftServer.getServer().getAdvancementManager().advancementList.loadAdvancements(Maps.newHashMap(Collections.singletonMap(minecraftkey, nms)));
             Advancement bukkit = Bukkit.getAdvancement(key);
 
             if (bukkit != null) {

@@ -1,0 +1,38 @@
+--- a/net/minecraft/world/storage/MapData.java
++++ b/net/minecraft/world/storage/MapData.java
+@@ -6,6 +6,7 @@
+ import java.util.Iterator;
+ import java.util.List;
+ import java.util.Map;
++import java.util.UUID;
+ import javax.annotation.Nullable;
+ import net.minecraft.entity.item.ItemFrameEntity;
+ import net.minecraft.entity.player.PlayerEntity;
+@@ -27,6 +28,8 @@
+ import net.minecraft.world.World;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
++import org.bukkit.craftbukkit.CraftServer;
++import org.bukkit.craftbukkit.map.CraftMapView;
+ 
+ public class MapData extends WorldSavedData {
+    private static final Logger field_237240_k_ = LogManager.getLogger();
+@@ -44,8 +47,18 @@
+    public final Map<String, MapDecoration> field_76203_h = Maps.newLinkedHashMap();
+    private final Map<String, MapFrame> field_212442_l = Maps.newHashMap();
+ 
++   // CraftBukkit start
++   public final CraftMapView mapView;
++   private CraftServer server;
++   private UUID uniqueId = null;
++   // CraftBukkit end
++
+    public MapData(String p_i2140_1_) {
+       super(p_i2140_1_);
++      // CraftBukkit start
++      mapView = new CraftMapView(this);
++      server = (CraftServer) org.bukkit.Bukkit.getServer();
++      // CraftBukkit end
+    }
+ 
+    public void func_237241_a_(int p_237241_1_, int p_237241_2_, int p_237241_3_, boolean p_237241_4_, boolean p_237241_5_, RegistryKey<World> p_237241_6_) {

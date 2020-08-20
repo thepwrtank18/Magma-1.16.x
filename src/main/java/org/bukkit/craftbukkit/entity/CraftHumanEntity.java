@@ -461,7 +461,7 @@ public class CraftHumanEntity extends CraftLivingEntity implements HumanEntity {
 
     @Override
     public float getAttackCooldown() {
-        return getHandle().getAttackCooldown(0.5f);
+        return getHandle().getCooldownPeriod();
     }
 
     @Override

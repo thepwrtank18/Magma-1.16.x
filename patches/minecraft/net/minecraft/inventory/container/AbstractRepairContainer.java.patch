@@ -1,0 +1,24 @@
+--- a/net/minecraft/inventory/container/AbstractRepairContainer.java
++++ b/net/minecraft/inventory/container/AbstractRepairContainer.java
+@@ -9,6 +9,7 @@
+ import net.minecraft.inventory.Inventory;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.IWorldPosCallable;
++import org.bukkit.inventory.InventoryView;
+ 
+ public abstract class AbstractRepairContainer extends Container {
+    protected final CraftResultInventory field_234642_c_ = new CraftResultInventory();
+@@ -86,7 +87,12 @@
+       return false;
+    }
+ 
+-   public ItemStack func_82846_b(PlayerEntity p_82846_1_, int p_82846_2_) {
++    @Override
++    public InventoryView getBukkitView() {
++        return null;
++    }
++
++    public ItemStack func_82846_b(PlayerEntity p_82846_1_, int p_82846_2_) {
+       ItemStack itemstack = ItemStack.field_190927_a;
+       Slot slot = this.field_75151_b.get(p_82846_2_);
+       if (slot != null && slot.func_75216_d()) {

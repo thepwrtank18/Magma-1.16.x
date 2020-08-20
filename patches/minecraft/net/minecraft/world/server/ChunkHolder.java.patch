@@ -1,6 +1,24 @@
 --- a/net/minecraft/world/server/ChunkHolder.java
 +++ b/net/minecraft/world/server/ChunkHolder.java
-@@ -204,7 +204,7 @@
+@@ -73,6 +73,17 @@
+       this.func_219292_a(p_i50716_2_);
+    }
+ 
++   // CraftBukkit start
++   public Chunk getFullChunk() {
++      if (!func_219286_c(this.field_219316_k).func_219065_a(LocationType.BORDER)) {
++         return null; // note: using oldTicketLevel for isLoaded checks
++      }
++      CompletableFuture<Either<IChunk, IChunkLoadingError>> statusFuture = this.func_219301_a(ChunkStatus.field_222617_m);
++      Either<IChunk, IChunkLoadingError> either = (Either<IChunk, IChunkLoadingError>) statusFuture.getNow(null);
++      return either == null ? null : (Chunk) either.left().orElse(null);
++   }
++   // CraftBukkit end
++
+    public CompletableFuture<Either<IChunk, ChunkHolder.IChunkLoadingError>> func_219301_a(ChunkStatus p_219301_1_) {
+       CompletableFuture<Either<IChunk, ChunkHolder.IChunkLoadingError>> completablefuture = this.field_219312_g.get(p_219301_1_.func_222584_c());
+       return completablefuture == null ? field_219307_b : completablefuture;
+@@ -204,7 +215,7 @@
     }
  
     private void func_244385_a(World p_244385_1_, BlockPos p_244385_2_, BlockState p_244385_3_) {

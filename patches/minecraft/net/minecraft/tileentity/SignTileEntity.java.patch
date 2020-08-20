@@ -1,0 +1,13 @@
+--- a/net/minecraft/tileentity/SignTileEntity.java
++++ b/net/minecraft/tileentity/SignTileEntity.java
+@@ -25,8 +25,8 @@
+ import net.minecraftforge.api.distmarker.OnlyIn;
+ 
+ public class SignTileEntity extends TileEntity {
+-   private final ITextComponent[] field_145915_a = new ITextComponent[]{StringTextComponent.field_240750_d_, StringTextComponent.field_240750_d_, StringTextComponent.field_240750_d_, StringTextComponent.field_240750_d_};
+-   private boolean field_145916_j = true;
++   public final ITextComponent[] field_145915_a = new ITextComponent[]{StringTextComponent.field_240750_d_, StringTextComponent.field_240750_d_, StringTextComponent.field_240750_d_, StringTextComponent.field_240750_d_}; // private->public CraftBukkit
++   public boolean field_145916_j = true; // private->public CraftBukkit
+    private PlayerEntity field_145917_k;
+    private final IReorderingProcessor[] field_212367_h = new IReorderingProcessor[4];
+    private DyeColor field_214073_l = DyeColor.BLACK;

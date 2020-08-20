@@ -1,0 +1,17 @@
+--- a/net/minecraft/command/arguments/EntityArgument.java
++++ b/net/minecraft/command/arguments/EntityArgument.java
+@@ -86,7 +86,14 @@
+       }
+    }
+ 
++   // TODO: 18/08/2020 Magma comeback
+    public EntitySelector parse(StringReader p_parse_1_) throws CommandSyntaxException {
++      // CraftBukkit start
++      return parse(p_parse_1_, false);
++   }
++
++   public EntitySelector parse(StringReader p_parse_1_, boolean overridePermissions) throws CommandSyntaxException {
++      // CraftBukkit end
+       int i = 0;
+       EntitySelectorParser entityselectorparser = new EntitySelectorParser(p_parse_1_);
+       EntitySelector entityselector = entityselectorparser.func_201345_m();

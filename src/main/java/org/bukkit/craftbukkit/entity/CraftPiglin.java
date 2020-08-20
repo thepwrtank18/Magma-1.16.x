@@ -1,7 +1,6 @@
 package org.bukkit.craftbukkit.entity;
 
 import net.minecraft.entity.monster.piglin.PiglinEntity;
-import net.minecraft.server.EntityPiglin;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Piglin;
@@ -14,12 +13,12 @@ public class CraftPiglin extends CraftPiglinAbstract implements Piglin {
 
     @Override
     public boolean isAbleToHunt() {
-        return getHandle().cannotHunt;
+        return getHandle().field_234407_bB_;
     }
 
     @Override
     public void setIsAbleToHunt(boolean flag) {
-        getHandle().cannotHunt = flag;
+        getHandle().field_234407_bB_ = flag;
     }
 
     @Override

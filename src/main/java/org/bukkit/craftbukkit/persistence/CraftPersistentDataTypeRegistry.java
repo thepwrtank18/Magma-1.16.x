@@ -14,6 +14,7 @@ import net.minecraft.nbt.FloatNBT;
 import net.minecraft.nbt.INBT;
 import net.minecraft.nbt.IntArrayNBT;
 import net.minecraft.nbt.IntNBT;
+import net.minecraft.nbt.ListNBT;
 import net.minecraft.nbt.LongArrayNBT;
 import net.minecraft.nbt.LongNBT;
 import net.minecraft.nbt.ShortNBT;
@@ -151,9 +152,9 @@ public final class CraftPersistentDataTypeRegistry {
             Complex Arrays
          */
         if (Objects.equals(PersistentDataContainer[].class, type)) {
-            return createAdapter(PersistentDataContainer[].class, NBTTagList.class,
+            return createAdapter(PersistentDataContainer[].class, ListNBT.class,
                     (containerArray) -> {
-                        NBTTagList list = new NBTTagList();
+                        ListNBT list = new ListNBT();
                         for (int i = 0; i < containerArray.length; i++) {
                             list.add(((CraftPersistentDataContainer) containerArray[i]).toTagCompound());
                         }
@@ -163,8 +164,8 @@ public final class CraftPersistentDataTypeRegistry {
                         PersistentDataContainer[] containerArray = new CraftPersistentDataContainer[tag.size()];
                         for (int i = 0; i < tag.size(); i++) {
                             CraftPersistentDataContainer container = new CraftPersistentDataContainer(this);
-                            NBTTagCompound compound = tag.getCompound(i);
-                            for (String key : compound.getKeys()) {
+                            CompoundNBT compound = tag.getCompound(i);
+                            for (String key : compound.keySet()) {
                                 container.put(key, compound.get(key));
                             }
                             containerArray[i] = container;

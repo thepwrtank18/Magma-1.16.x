@@ -1,0 +1,11 @@
+--- a/net/minecraft/entity/passive/PigEntity.java
++++ b/net/minecraft/entity/passive/PigEntity.java
+@@ -53,7 +53,7 @@
+    private static final DataParameter<Boolean> field_184763_bv = EntityDataManager.func_187226_a(PigEntity.class, DataSerializers.field_187198_h);
+    private static final DataParameter<Integer> field_191520_bx = EntityDataManager.func_187226_a(PigEntity.class, DataSerializers.field_187192_b);
+    private static final Ingredient field_184764_bw = Ingredient.func_199804_a(Items.field_151172_bF, Items.field_151174_bG, Items.field_185164_cV);
+-   private final BoostHelper field_234214_bx_ = new BoostHelper(this.field_70180_af, field_191520_bx, field_184763_bv);
++   public final BoostHelper field_234214_bx_ = new BoostHelper(this.field_70180_af, field_191520_bx, field_184763_bv); // private->public CraftBukkit
+ 
+    public PigEntity(EntityType<? extends PigEntity> p_i50250_1_, World p_i50250_2_) {
+       super(p_i50250_1_, p_i50250_2_);

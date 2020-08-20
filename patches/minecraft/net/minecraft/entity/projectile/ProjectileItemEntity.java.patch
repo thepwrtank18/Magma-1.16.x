@@ -1,0 +1,17 @@
+--- a/net/minecraft/entity/projectile/ProjectileItemEntity.java
++++ b/net/minecraft/entity/projectile/ProjectileItemEntity.java
+@@ -44,7 +44,13 @@
+ 
+    protected abstract Item func_213885_i();
+ 
+-   protected ItemStack func_213882_k() {
++   // CraftBukkit start
++   public Item getDefaultItemPublic() {
++      return func_213885_i();
++   }
++   // CraftBukkit end
++
++   public ItemStack func_213882_k() { // private->public CraftBukkit
+       return this.func_184212_Q().func_187225_a(field_213886_e);
+    }
+ 

@@ -65,7 +65,7 @@ public class CraftBlockProjectileSource implements BlockProjectileSource {
     public <T extends Projectile> T launchProjectile(Class<? extends T> projectile, Vector velocity) {
         Validate.isTrue(getBlock().getType() == Material.DISPENSER, "Block is no longer dispenser");
         // Copied from DispenserBlock.dispense()
-        ProxyBlockSource isourceblock = new ProxyBlockSource(dispenserBlock.getWorld(), dispenserBlock.getPos());
+        ProxyBlockSource isourceblock = new ProxyBlockSource(dispenserBlock.getWorld().getMinecraftWorld(), dispenserBlock.getPos());
         // Copied from DispenseTaskProjectile
         IPosition iposition = DispenserBlock.getDispensePosition(isourceblock);
         Direction enumdirection = (Direction) isourceblock.getBlockState().get(DispenserBlock.FACING);

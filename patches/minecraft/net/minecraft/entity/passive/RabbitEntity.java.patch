@@ -1,6 +1,21 @@
 --- a/net/minecraft/entity/passive/RabbitEntity.java
 +++ b/net/minecraft/entity/passive/RabbitEntity.java
-@@ -500,7 +500,7 @@
+@@ -74,7 +74,13 @@
+       this.func_175515_b(0.0D);
+    }
+ 
+-   protected void func_184651_r() {
++   // CraftBukkit start - code from constructor
++   public void initializePathFinderGoals(){
++      this.func_175515_b(0.0D);
++   }
++   // CraftBukkit end
++
++   public void func_184651_r() { // protected->public CraftBukkit
+       this.field_70714_bg.func_75776_a(1, new SwimGoal(this));
+       this.field_70714_bg.func_75776_a(1, new RabbitEntity.PanicGoal(this, 2.2D));
+       this.field_70714_bg.func_75776_a(2, new BreedGoal(this, 0.8D));
+@@ -500,7 +506,7 @@
  
        public boolean func_75250_a() {
           if (this.field_179496_a <= 0) {

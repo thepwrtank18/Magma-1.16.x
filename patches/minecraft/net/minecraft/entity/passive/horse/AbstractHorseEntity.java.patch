@@ -1,6 +1,32 @@
 --- a/net/minecraft/entity/passive/horse/AbstractHorseEntity.java
 +++ b/net/minecraft/entity/passive/horse/AbstractHorseEntity.java
-@@ -276,6 +276,7 @@
+@@ -83,7 +83,7 @@
+    public int field_110278_bp;
+    public int field_110279_bq;
+    protected boolean field_110275_br;
+-   protected Inventory field_110296_bG;
++   public Inventory field_110296_bG; // protected->public CraftBukkit
+    protected int field_110274_bs;
+    protected float field_110277_bt;
+    private boolean field_110294_bI;
+@@ -95,6 +95,7 @@
+    private float field_110288_bO;
+    protected boolean field_190688_bE = true;
+    protected int field_110285_bP;
++   public int maxDomestication = 100; // CraftBukkit - store max domestication value
+ 
+    protected AbstractHorseEntity(EntityType<? extends AbstractHorseEntity> p_i48563_1_, World p_i48563_2_) {
+       super(p_i48563_1_, p_i48563_2_);
+@@ -259,7 +260,7 @@
+       return 2;
+    }
+ 
+-   protected void func_110226_cD() {
++   public void func_110226_cD() { // protected->public CraftBukkit
+       Inventory inventory = this.field_110296_bG;
+       this.field_110296_bG = new Inventory(this.func_190686_di());
+       if (inventory != null) {
+@@ -276,6 +277,7 @@
  
        this.field_110296_bG.func_110134_a(this);
        this.func_230275_fc_();
@@ -8,7 +34,7 @@
     }
  
     protected void func_230275_fc_() {
-@@ -334,9 +335,9 @@
+@@ -334,9 +336,9 @@
     protected void func_180429_a(BlockPos p_180429_1_, BlockState p_180429_2_) {
        if (!p_180429_2_.func_185904_a().func_76224_d()) {
           BlockState blockstate = this.field_70170_p.func_180495_p(p_180429_1_.func_177984_a());
@@ -20,7 +46,7 @@
           }
  
           if (this.func_184207_aI() && this.field_190688_bE) {
-@@ -694,6 +695,7 @@
+@@ -694,6 +696,7 @@
                 this.func_213293_j(vector3d.field_72450_a, d1, vector3d.field_72449_c);
                 this.func_110255_k(true);
                 this.field_70160_al = true;
@@ -28,7 +54,7 @@
                 if (f1 > 0.0F) {
                    float f2 = MathHelper.func_76126_a(this.field_70177_z * ((float)Math.PI / 180F));
                    float f3 = MathHelper.func_76134_b(this.field_70177_z * ((float)Math.PI / 180F));
-@@ -1010,4 +1012,22 @@
+@@ -1010,4 +1013,22 @@
        this.func_230273_eI_();
        return super.func_213386_a(p_213386_1_, p_213386_2_, p_213386_3_, p_213386_4_, p_213386_5_);
     }

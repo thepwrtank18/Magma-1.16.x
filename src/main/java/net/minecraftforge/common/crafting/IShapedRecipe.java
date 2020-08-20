@@ -21,6 +21,7 @@ package net.minecraftforge.common.crafting;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.crafting.IRecipe;
+import org.bukkit.inventory.Recipe;
 
 /**
  * Used to mark a recipe that shape matters so that the recipe
@@ -31,4 +32,9 @@ public interface IShapedRecipe<T extends IInventory> extends IRecipe<T>
 {
     int getRecipeWidth();
     int getRecipeHeight();
+
+    @Override
+    default Recipe toBukkitRecipe() {
+        return null;
+    }
 }
