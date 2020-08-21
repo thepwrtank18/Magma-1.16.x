@@ -278,7 +278,19 @@
        explosion.func_77278_a();
        explosion.func_77279_a(false);
        if (p_230546_12_ == Explosion.Mode.NONE) {
-@@ -1379,4 +1442,17 @@
+@@ -1367,6 +1430,11 @@
+       return this;
+    }
+ 
++   // CraftBukkit
++   public static void func_241121_a_(ServerWorld p_241206_1_, Entity entity) {
++      // TODO: 08/07/2020 Comeback
++   }
++
+    public static void func_241121_a_(ServerWorld p_241121_0_) {
+       BlockPos blockpos = field_241108_a_;
+       int i = blockpos.func_177958_n();
+@@ -1379,4 +1447,17 @@
           p_241121_0_.func_175656_a(p_241122_1_, Blocks.field_150343_Z.func_176223_P());
        });
     }

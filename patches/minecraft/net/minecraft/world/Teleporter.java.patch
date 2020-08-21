@@ -1,11 +1,24 @@
 --- a/net/minecraft/world/Teleporter.java
 +++ b/net/minecraft/world/Teleporter.java
-@@ -19,7 +19,7 @@
+@@ -18,14 +18,20 @@
+ import net.minecraft.world.gen.Heightmap;
  import net.minecraft.world.server.ServerWorld;
  import net.minecraft.world.server.TicketType;
++import org.apache.commons.lang3.NotImplementedException;
  
 -public class Teleporter {
 +public class Teleporter implements net.minecraftforge.common.util.ITeleporter {
     protected final ServerWorld field_85192_a;
  
     public Teleporter(ServerWorld p_i1963_1_) {
+       this.field_85192_a = p_i1963_1_;
+    }
+ 
++   // TODO: 21/08/2020 Magma
++   public Optional<TeleportationRepositioner.Result> func_242957_a(BlockPos p_242957_1_, int radius) {
++      throw new NotImplementedException("Magma Todo");
++   }
++
+    public Optional<TeleportationRepositioner.Result> func_242957_a(BlockPos p_242957_1_, boolean p_242957_2_) {
+       PointOfInterestManager pointofinterestmanager = this.field_85192_a.func_217443_B();
+       int i = p_242957_2_ ? 16 : 128;
