@@ -1,6 +1,6 @@
 --- a/net/minecraft/inventory/Inventory.java
 +++ b/net/minecraft/inventory/Inventory.java
-@@ -10,6 +10,10 @@
+@@ -10,12 +10,18 @@
  import net.minecraft.nbt.CompoundNBT;
  import net.minecraft.nbt.ListNBT;
  import net.minecraft.util.NonNullList;
@@ -11,7 +11,15 @@
  
  public class Inventory implements IInventory, IRecipeHelperPopulator {
     private final int field_70481_b;
-@@ -124,6 +128,11 @@
+    private final NonNullList<ItemStack> field_70482_c;
+    private List<IInventoryChangedListener> field_70480_d;
+ 
++   protected org.bukkit.inventory.InventoryHolder bukkitOwner;
++
+    public Inventory(int p_i50397_1_) {
+       this.field_70481_b = p_i50397_1_;
+       this.field_70482_c = NonNullList.func_191197_a(p_i50397_1_, ItemStack.field_190927_a);
+@@ -124,6 +130,11 @@
        this.func_70296_d();
     }
  
@@ -23,7 +31,7 @@
     public int func_70302_i_() {
        return this.field_70481_b;
     }
-@@ -151,6 +160,41 @@
+@@ -151,6 +162,41 @@
        return true;
     }
  
